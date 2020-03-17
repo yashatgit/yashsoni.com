@@ -1,0 +1,98 @@
+import Date from '../../components/date'
+import Post from '../../components/post'
+
+export const meta = {
+date: '2017-07-15',
+description: 'Visualize my journey through the scenic lands of Norway with rich, stunning pictures and daily travel logs.',
+image: '/static/images/10-days-in-norway/banner.png',
+slug: '10-days-in-norway',
+title: '10 Days in Norway'
+}
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# 10 Days in Norway
+
+<Date>{meta.date}</Date>
+
+![Norway](/static/images/10-days-in-norway/banner.png)
+
+### Why Norway?
+
+A few years ago I stumbled onto a picture of the legendary [Trolltunga](https://www.visitnorway.com/places-to-go/fjord-norway/the-hardangerfjord-region/listings-hardanger-fjord/trolltunga/8625/) while browsing Instagram. I was captivated by its beauty and decided to add visiting Norway and trekking out to visit this abnormal rock structure to my bucket list. Since then, I had been keeping tabs on prices for flights to Oslo, Norway. In March 2017, I noticed that the round trip prices from Chicago to Oslo had significantly dropped due to a special sale. I contacted my friend Andrew asking if he would want to join, knowing he also had the same desire to explore and hike through Norway. Andrew was starting physical therapy school at the end of summer and would soon have limited free time (and a limited budget) so this was the perfect opportunity to take the trip of a lifetime with one of my best friends. We also invited Andrew’s friend JD who I'd not met but had heard great things about. I checked my work schedule and PTO balance and took the plunge - I purchased my plane ticket and committed to the adventure. The three of us were ecstatic and hungry for an unforgettable experience. Throughout the next two months, we planned out our trip determining where to stay, what to visit, and how to most effectively use our time. You'll find my daily travel logs below. Enjoy!
+
+---
+
+```bash
+$ git clone https://github.com/leerob/yashsoni.com.git
+$ cd yashsoni.com
+$ yarn
+$ yarn dev
+```
+
+```html
+<div class="meta">Friday, March 9, 2018 at 11:53pm UTC+11</div>
+<div class="comment">Some post, comment, song, or link shared</div>
+```
+
+```js
+import fetch from 'isomorphic-unfetch';
+
+export default async function(...args) {
+    const res = await fetch(...args);
+
+    return res.json();
+}
+```
+
+`data` will contain the JSON response from our API route.
+
+```json
+// /api/unsplash
+
+{
+    "downloads": 7995,
+    "views": 1134429
+}
+```
+
+```python
+venue_list = []
+try:
+	data = make_request(url)
+for item in data['response']['groups'][0]['items']:
+	venue = item['venue']
+	venue_list.append(Business(
+		venue['name'],
+		venue['location']['address'],
+		venue['rating'],
+		venue['ratingSignals'],
+		venue['stats']['checkinsCount']))
+except Exception, e:
+	print e
+```
+
+```css
+@keyframes color {
+    0% {
+        fill: #99002f;
+    }
+    50% {
+        fill: #ffc426;
+    }
+    100% {
+        fill: #99002f;
+    }
+}
+```
+
+```YAML
+---
+title: Migrating to Hugo
+description: Why I chose this static site generator and the benefits you can receive.
+date: 2017-09-29
+images: ["http://www.leejamesrobinson.com/static/images/migrating-to-hugo/hugo.png"]
+categories:
+  - code
+---
+```
