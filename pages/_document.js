@@ -35,6 +35,10 @@ class CustomDocument extends Document {
         return (
             <html lang="en">
                 <Head>
+                    <link rel="preconnect" href="https://fonts.googleapis.com" />
+                    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+                    <link rel="preconnect" href="https://www.googletagmanager.com" />
+                    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
                     <link
                         href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700&display=swap"
                         rel="stylesheet"
