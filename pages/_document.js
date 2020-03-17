@@ -2,7 +2,7 @@ import Document, {Head, Main, NextScript} from 'next/document';
 import React from 'react';
 import {ServerStyleSheet} from 'styled-components';
 
-const GA_TRACKING_ID = 'UA-131784128-1';
+const GA_TRACKING_ID = 'UA-39425421-1';
 
 class CustomDocument extends Document {
     static async getInitialProps(ctx) {
