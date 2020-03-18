@@ -1,7 +1,7 @@
 export const column = `
     flex: 1;
     margin: 0 auto;
-    max-width: 690px;
+    max-width: 790px;
     width: 100%;
 `;
 

@@ -45,13 +45,27 @@ const Main = styled.main`
 `;
 
 /*
- * const editUrl = slug =>
- *     `https://github.com/yashatgit/yashsoni.com/edit/master/pages/blog/${slug}.mdx`;
- * const discussUrl = slug =>
- *     `https://mobile.twitter.com/search?q=${encodeURIComponent(
- *         `https://yashsoni.com/blog/${slug}`,
- *     )}`;
- */
+const EditAndDiscuss = ({meta}) => {
+    const editUrl = (slug) => `https://github.com/yashatgit/yashsoni.com/edit/master/pages/blog/${slug}.mdx`;
+    const discussUrl = (slug) =>
+        `https://mobile.twitter.com/search?q=${encodeURIComponent(`https://yashsoni.com/blog/${slug}`)}`;
+
+    return (
+        <>
+            <p>
+                <Link href={discussUrl(meta.slug)} rel="noopener noreferrer" target="_blank">
+                    {'Discuss on Twitter'}
+                </Link>
+                {` • `}
+                <Link href={editUrl(meta.slug)} rel="noopener noreferrer" target="_blank">
+                    {'Edit on GitHub'}
+                </Link>
+            </p>
+            <Subscribe />
+        </>
+    );
+};
+*/
 
 const Post = ({children, meta}) => (
     <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
@@ -61,24 +75,6 @@ const Post = ({children, meta}) => (
                 <article>{children}</article>
             </MDXProvider>
             <hr />
-            {/* <p>
-                <Link
-                    href={discussUrl(meta.slug)}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    {'Discuss on Twitter'}
-                </Link>
-                {` • `}
-                <Link
-                    href={editUrl(meta.slug)}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    {'Edit on GitHub'}
-                </Link>
-            </p>
-            <Subscribe /> */}
         </Main>
         <Footer />
     </Page>

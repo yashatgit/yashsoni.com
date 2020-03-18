@@ -1,12 +1,9 @@
 export default [
     {
-        date: 'February 24, 2020',
-        slug: 'sample-code',
-        title: 'Create a Dashboard with Next.js API Routes - Fetching Data with SWR'
-    },
-    {
-        date: 'February 24, 2020',
-        slug: 'sample-code',
-        title: 'Create a Dashboard with Next.js API Routes - Fetching Data with SWR'
+        date: '2018-11-10',
+        description: 'How I analyzed the data from my FitBit to improve my overall health.',
+        image: '/static/images/10-days-in-norway/banner.png',
+        slug: 'fitbit-data-analysis',
+        title: 'How I analyzed the data from my FitBit to improve my overall health.'
     }
 ];
