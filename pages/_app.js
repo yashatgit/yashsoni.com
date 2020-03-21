@@ -7,7 +7,7 @@ import {lightTheme, darkTheme} from '../styles/theme';
 
 import '../styles/prism.css';
 
-const DarkMode = ({children}) => {
+const AppWithTheme = ({children}) => {
     const darkMode = useDarkMode(false);
     const theme = darkMode.value ? darkTheme : lightTheme;
 
@@ -19,9 +19,9 @@ class CustomApp extends App {
         const {Component, pageProps} = this.props;
 
         return (
-            <DarkMode>
+            <AppWithTheme>
                 <Component {...pageProps} />
-            </DarkMode>
+            </AppWithTheme>
         );
     }
 }
