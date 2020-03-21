@@ -17,7 +17,7 @@ const ToggleButton = styled.button`
     padding: 0;
     transition: all 0.15s ease;
 
-    @media (min-width: 737px) {
+    @media (min-width: 768px) {
         margin: 0 0 0 2em;
     }
 `;

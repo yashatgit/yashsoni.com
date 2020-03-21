@@ -1,7 +1,7 @@
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 
-import {spacing} from '../styles/vars';
+import {spacing, breakpoints} from '../styles/vars';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -31,8 +31,8 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
         line-height: 1.65;
-        text-rendering: optimizeLegibility;
-    }
+        text-rendering: optimizeLegibility;        
+    }    
 
     table {  
         color: #333;
@@ -129,34 +129,32 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
     
-    @media (min-width: 768px) {
+    @media (min-width: ${breakpoints.m}) {
         body {
             font-size: 18px;
+            border-left: 10px solid #000;
+            border-right: 10px solid #000;  
+        }
+
+        body:before, body:after {
+            content: "";
+            position: fixed;
+            background: #000;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+        body:before {
+            top: 0;
+        }
+        body:after {
+            bottom: 0;
         }
 
         code, pre {
             font-size: 14px;
         }
-    }
-
-    body:before, body:after {
-        content: "";
-        position: fixed;
-        background: #000;
-        left: 0;
-        right: 0;
-        height: 10px;
-    }
-    body:before {
-        top: 0;
-    }
-    body:after {
-        bottom: 0;
-    }
-    body {
-        border-left: 10px solid #000;
-        border-right: 10px solid #000;  
-    }
+    }    
 `;
 
 export default GlobalStyle;
