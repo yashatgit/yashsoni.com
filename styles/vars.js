@@ -26,3 +26,10 @@ export const spacing = {
     normal: '1.5em',
     small: '1em'
 };
+
+export const breakpoints = {
+    xl: '1200px',
+    l: '992px',
+    m: '768px',
+    s: '600px'
+};

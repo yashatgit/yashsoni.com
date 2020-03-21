@@ -10,10 +10,20 @@ const Blockquote = styled.blockquote`
     letter-spacing: -0.012em;
     line-height: 1.48;
     padding-left: 50px;
-    padding: ${spacing.small} ${spacing.normal};
+    padding: ${spacing.extrasmall} ${spacing.normal};
 
     @media (min-width: 768px) {
         font-size: 1.2em;
+    }
+
+    :after {
+        content: '';
+        height: 100%;
+        width: 10px;
+        background-color: ${(props) => props.theme.code};
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 `;
 

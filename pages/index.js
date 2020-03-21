@@ -45,11 +45,7 @@ const Title = styled.h1`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 30px 0;
-
-    @media (min-width: 737px) {
-        padding: 30px 0 30px;
-    }
+    padding-bottom: 30px;
 `;
 
 const Details = styled.div`
@@ -70,7 +66,7 @@ const Index = () => (
                     <Container>
                         <Title>{'Hello!'}</Title>
                     </Container>
-                    <Details>{`Welcome to my personal slice of the internet 👋🏼 Here you'll find everything you need to know about me - blog posts, work history, projects, contact information, and more!`}</Details>
+                    <Details>{`Welcome to my personal slice of the internet 👋🏼`}</Details>
                 </Content>
             </Main>
         </Page>

@@ -1,0 +1,63 @@
+import Post from '../../components/post'
+import til from '../../data/til'
+
+export const meta = til[0]
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# Anatomy of a good git commit message
+
+[![XKCD](https://imgs.xkcd.com/comics/git_commit.png)](https://xkcd.com/1296/)
+
+Git commits history follows a vicious cycle. If the commit history is unstructured and inconsitent, one doesn't spend much time using or taking care of it.
+And because it isn't cared for, it remains unstructured and inconsitent.
+
+The importance of good commit messages has been discussed numerous times. And what is a better place to learn it from other than Git itself? Their [guidelines to submit patches](https://git.kernel.org/pub/scm/git/git.git/tree/Documentation/SubmittingPatches?id=HEAD) explains it more comprehensibly.
+
+Follwing are some of the rules which I try to stick by.
+
+
+### Follow a git template.
+
+Follwing is a great template originally written by [Tim Pope](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
+```
+Capitalized, short (50 chars or less) summary
+
+More detailed explanatory text, if necessary.  
+Wrap it to about 72 characters or so.  
+The blank line separating the summary from the body is critical (unless you omit
+the body entirely); tools like rebase can get confused if you run the
+two together.
+
+Write your commit message in the imperative: "Fix bug" and not "Fixed bug"
+or "Fixes bug."  This convention matches up with commit messages generated
+by commands like git merge and git revert.
+
+If you use an issue tracker, put references to them at the bottom,
+like this:
+Resolves: #123
+See also: #456, #789
+```
+
+### Write in imperative mode 
+The use of the imperative, present tense is one that takes a little getting used to.
+Git is a distributed version control system where there are potentially many places to get changes from. Rather than writing messages that say *what you’ve done*; consider these messages as the instructions for *what applying the commit will do*.
+
+If you look at your repository history you will see that the Git generated messages are written in this tense as well - “Merge” not “Merged”, “Rebase” not “Rebased” so writing in the same tense keeps things consistent.
+
+
+### Use conventional commits
+The [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification is a lightweight convention on top of commit messages. It provides an easy set of rules for creating an explicit commit history; which makes it easier to write automated tools on top of.
+
+Just prefix the commit message summary with one of following identifiers for a better categorization.
+```
+- feat (new feature)
+- fix (bug fix)
+- docs (changes to documentation)
+- style (formatting, missing semi colons, etc; no code change)
+- refactor (refactoring production code)
+- test (adding missing tests, refactoring tests; no production code change)
+- chore (updating grunt tasks etc; no production code change)
+```
+
+Specifying the type of commit in the summary can help finding specific commits more quickly. It also can be used to automatically generate changelogs from your commit logs, e.g. using `semantic-release` or `lerna` for monorepos.

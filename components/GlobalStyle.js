@@ -1,7 +1,7 @@
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 
-import {spacing} from '../styles/vars';
+import {spacing, breakpoints} from '../styles/vars';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -31,8 +31,8 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
         line-height: 1.65;
-        text-rendering: optimizeLegibility;
-    }
+        text-rendering: optimizeLegibility;        
+    }    
 
     table {  
         color: #333;
@@ -74,15 +74,19 @@ const GlobalStyle = createGlobalStyle`
         cursor: pointer;
     }
 
+    li p {
+        margin: 0.2em 0;
+    }
+
     p {
-        margin: 1.5em 0;
+        margin: 1em 0;
         color: ${(props) => props.theme.primary};
     }
 
     code {
         color: ${(props) => props.theme.inlineCode};
         background-color: ${(props) => props.theme.inlineCodeBg};
-        border-radius: 3px;
+        border-radius: 12px;
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 14px;
         padding: .2em .4em;
@@ -97,7 +101,8 @@ const GlobalStyle = createGlobalStyle`
         padding: ${spacing.normal};
         white-space: pre;
         background: ${(props) => props.theme.code};
-        border-radius: 4px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 
         code {
             padding: 0;
@@ -124,15 +129,32 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
     
-    @media (min-width: 768px) {
+    @media (min-width: ${breakpoints.m}) {
         body {
             font-size: 18px;
+            border-left: 10px solid #000;
+            border-right: 10px solid #000;  
+        }
+
+        body:before, body:after {
+            content: "";
+            position: fixed;
+            background: #000;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+        body:before {
+            top: 0;
+        }
+        body:after {
+            bottom: 0;
         }
 
         code, pre {
-            font-size: 16px;
+            font-size: 14px;
         }
-    }
+    }    
 `;
 
 export default GlobalStyle;

@@ -8,6 +8,11 @@ This portfolio is built using Next.js/React/MDX.
 -   `pages/blog/*` - Static pre-rendered blog pages using [MDX](https://github.com/mdx-js/mdx).
 -   `pages/*` - All other static pages.
 
+## Deployment
+
+-   Netlify: https://app.netlify.com/sites/yashsoninew/deploys
+-   Zeit: https://zeit.co/yashsoni/yashsoni.com
+
 ## Running Locally
 
 ```bash
@@ -16,7 +21,6 @@ $ cd yashsoni.com
 $ yarn
 $ yarn dev
 ```
-
 
 To use anything that requires API routes, you will need to run `now dev` and have a `.env` file similar to this.
 

@@ -39,7 +39,7 @@ const Article = ({article}) => (
         <StyledLink href={`/til/${article.slug}`}>
             {/* <Date>{article.date}</Date> */}
             <H3>{article.title}</H3>
-            <div>{`${article.title} - ${article.ttr} read`}</div>
+            <div>{`${article.desc} - ${article.ttr} read`}</div>
         </StyledLink>
     </StyledArticle>
 );
