@@ -143,6 +143,7 @@ const GlobalStyle = createGlobalStyle`
             left: 0;
             right: 0;
             height: 10px;
+            z-index: 10;
         }
         body:before {
             top: 0;
