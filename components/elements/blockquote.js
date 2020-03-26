@@ -11,9 +11,15 @@ const Blockquote = styled.blockquote`
     line-height: 1.48;
     padding-left: 50px;
     padding: ${spacing.extrasmall} ${spacing.normal};
+    position: relative;
+    margin: 10px 0;
 
     @media (min-width: 768px) {
         font-size: 1.2em;
+    }
+
+    p {
+        margin: 0;
     }
 
     :after {
