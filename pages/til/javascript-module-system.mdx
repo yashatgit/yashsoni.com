@@ -5,18 +5,17 @@ export const meta = til[1]
 
 export default ({children}) => <Post meta={meta}>{children}</Post>
 
-# Javascript Module System
-
 # JS module system
 
 When we say an application is **modular**, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules.
-Unlike other traditional programming languages however, for a long time, JavaScript didn't provide developers with the means to import such modules of code in a clean, organized manner.
 
-This didn't stop the community, and they created impressive work-arounds. Looking back from 2020, following are the most used module loading patterns used by the developers:
+However, unlike other traditional programming languages, for a long time, JavaScript didn't provide developers with the means to import such modules of code in a clean, organized manner.
+
+But, this didn't stop the community and they created impressive work-arounds. Following are the most used module loading patterns used by the developers:
 
 - `Scripts` are code fragments that browsers run in global scope. They are precursors of modules.
 - `CommonJS` modules are a module format that is mainly used on servers (e.g., via Node.js).
-- `AMD modules` are a module format that is mainly used in browsers.
+- `AMD` is a module format that is mainly used in browsers.
 - `ECMAScript modules` are JavaScript’s built-in module format. It supersedes all previous formats.
 
 ## CommonJS modules
@@ -26,7 +25,7 @@ The CommonJS module proposal specifies a simple API for declaring modules server
 
 There are essentially two elements to interact with the module system: `require` and `exports`
 - `require` is a function that can be used to import symbols from another module to the current scope
-- `exports` is a special object: anything put in it will get exported as a public element
+- `exports` is a special object: anything put in it will get exported
 
 
 ```JavaScript
@@ -42,7 +41,8 @@ exports.foo = foo;
 ```    
 
 **Implementations**
-Since it was made primarily for the server, it is well implemented in [NodeJs](https://nodejs.org/api/modules.html) (Node.js modules have a few features that go beyond CommonJS)
+
+Since it was made primarily for the server, it is well implemented in [NodeJs](https://nodejs.org/api/modules.html) (Node.js modules have a few features that go beyond CommonJS).
 For the client there are currently two popular options: [webpack](https://webpack.github.io/docs/commonjs.html) and [browserify](http://browserify.org/index.html) which help bundle these modules.
 
 
@@ -68,14 +68,15 @@ define(function (require) {
 ```    
 
 **Implementations**
+
 Currently the most popular implementations of AMD are [require.js](http://requirejs.org/) and [Dojo](https://dojotoolkit.org/).
 
 
 
 ## ECMAScript 6 modules 
 
-Fortunately, the ECMA team behind the standardization of JavaScript decided to tackle the issue of modules. We finally have a standard to define module in Javascript 
-which is syntactically pleasing and compatible with both synchronous and asynchronous modes of operation.
+Fortunately, the ECMA team behind the standardization of JavaScript decided to standardize modules. We finally have a standard to define modules in Javascript 
+which compatible with both synchronous and asynchronous modes of operation.
 
 - On lines of `require` and `define`, ES6 modules have an `import` directive which can be used to bring in modules into namespace.
 - `export` helps to explicitly make elements public. A module can have 2 types of exports
@@ -130,6 +131,9 @@ export { foo, bar } from 'src/other_module';
 
 // Export other_module’s foo as myFoo
 export { foo as myFoo, bar } from 'src/other_module';
+
+// Re-export other_module's default export
+export { default } from 'src/other_module';
 ```    
 
 The above exampled are taken from the [wonderful 2ality post](https://2ality.com/2014/09/es6-modules-final.html#fn1) 
