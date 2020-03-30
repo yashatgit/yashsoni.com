@@ -1,0 +1,71 @@
+import Post from '../../components/post'
+import til from '../../data/til'
+
+export const meta = til[1]
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# Semantic Versioning
+
+With new plugins, addons, bug-fixes, and libraries being released every other day,
+having a universal way of versioning software development projects is a good thing.
+It help us keep track of what’s going on and ensure our software has the latest update available.
+
+In order for everyone to speak and understand the same versioning system intricasies, software entities generally follow the `Semver` (Semantic Versioning) rules.
+
+The [Semantic versioning specification](https://semver.org/) was authored by [Tom Preston-Werner](http://tom.preston-werner.com/), co-founder of Github.
+It lays down simple set of rules and requirements that dictate how version numbers are assigned and incremented.
+
+```
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+- MAJOR version when you make incompatible API changes,
+- MINOR version when you add functionality in a backwards compatible manner, and
+- PATCH version when you make backwards compatible bug fixes.
+
+Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
+eg 2.0.0-rc.1, 2.0.0-rc.2
+
+[Breaking Change].[New feature].[Bugfix]
+```
+
+## Semver in NPM
+
+NPM also follows the Semver system. The types of accepatable updates which the packages can recieve is described in the `package.json` file.
+
+We can even add `programmatic operators` (e.g. >=, ~, -) to define acceptable semver ranges. These [node-semver](https://github.com/npm/node-semver) operators make it possible to define acceptable upgrading paths for each package based on a range of accepted versions.
+
+| **semver range** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | **verbose ex.** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | **description**                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `*`                                                                      | `>=0.0.0`                                                               | The most recent version will be used whatever that might be (note that either \*, or X, or x can be used)                                                                                                                |
+| `1.2.3 - 2.3.4`                                                          | `>=1.2.3 <=2.3.4`                                                       | use the most recent version greater than or equal 1.2.3 and less than or equal to 2.3.4 found in the repository                                                                                                          |
+| `1.2.3 - 2`                                                              | `>=1.2.3 <3.0.0`                                                        | use the most recent version greater than or equal to 1.2.3 and less than 3.0.0 found in the repository                                                                                                                   |
+| `1.*`                                                                    | `>=1.0.0 <2.0.0`                                                        | use the most recent version greater than or equal to 1.0.0 and less than 2.0.0 in the repository (i.e. get any major version change greater than or equal to 1.0.0 and less than 2.0.0)                                  |
+| `1.2.*`                                                                  | `>=1.2.0 <1.3.0`                                                        | use the most recent version greater than or equal to 1.2.0 and less than 1.3.0 in the repository (i.e. get any major and minor version change greater than or equal to 1.2.0 and less than 1.3.0)                        |
+| `~1.2.3`                                                                 | `>=1.2.3 <1.3.0`                                                        | use the most recent version greater than or equal to 1.2.3 and less than 1.3.0 in the repository (i.e. Allows patch-level changes if a minor version is specified on the comparator. Allows minor-level changes if not.) |
+| `^1.2.3`                                                                 | `>=1.2.3 <2.0.0`                                                        | use the most recent version greater than or equal to 1.2.3 and less than 2.0.0 in the repository (i.e. Allows changes that do not modify the left-most non-zero digit in the [major, minor, patch])                      |
+
+Once these are defined, running `npm update` will update all the packages listed to the latest version, respecting Semver.
+
+eg. If app’s package.json contains:
+
+```json
+"dependencies": {
+  "dep1": "^1.1.1"
+}
+```
+
+Then `npm update` will install `dep1@1.2.2`, because `1.2.2` is latest and `1.2.2` satisfies `^1.1.1`.
+
+## Automate versioning in your packages
+
+There are a lot of libraries out there to help automate the process of versioning.
+
+-   [**semver**](https://github.com/npm/node-semver) - Semver parser for node (the one npm uses)
+-   [**semantic-release**](https://github.com/semantic-release/semantic-release) - Fully automated version management and package publishing
+-   [**np**](https://github.com/sindresorhus/np) - A better `npm publish`
+
+## Additional Resources
+
+-   [Semver FAQs](https://semver.org/#faq)
+-   [Semver Calculator](https://semver.npmjs.com/)

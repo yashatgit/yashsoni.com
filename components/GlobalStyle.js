@@ -65,6 +65,10 @@ const GlobalStyle = createGlobalStyle`
         text-align: left;
     }
 
+    td code {
+        white-space: nowrap;
+    }
+
     tr {
         border-bottom: 1px solid #ccc;
     }

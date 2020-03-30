@@ -1,0 +1,27 @@
+import Post from '../../components/post'
+import til from '../../data/til'
+
+export const meta = til[2]
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# Preprocessors
+
+-   package manager
+-   transpiler
+-   module bundler
+-   task runner
+-   preprocessors
+-   postprocessor
+
+During everyday development, we come across the following words and sometimes used them interchangelbely.
+
+## Package Manager
+
+Projects have a lot in common in terms of components and logic so it might be an better idea to abstract functionalities into reusable libraries, so that they may be shared across projects.
+It can be difficult to manage these libraries (or dependencies, as they’re commonly called) manually. This is where a package manager comes in. Package managers automate the process of installing, upgrading, configuring and removing packages (or dependencies or libraries) in your project.
+
+https://www.sitepoint.com/javascript-modules-bundling-transpiling/
+https://stackoverflow.com/questions/43459558/what-is-the-difference-between-preprocessor-and-transpiler
+https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them
+https://alphacoder.xyz/understanding-modern-front-end-development/

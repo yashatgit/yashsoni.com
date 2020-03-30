@@ -12,5 +12,12 @@ export default [
         title: 'Javascript Module System',
         desc: 'Javascript Module System',
         ttr: '5 mins'
+    },
+    {
+        date: 'March 30, 2020',
+        slug: 'semantic-versioning',
+        title: 'Semantic Versioning',
+        desc: 'rules to overcome the dependency',
+        ttr: '5 mins'
     }
 ];
