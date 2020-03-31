@@ -1,7 +1,7 @@
 import {createGlobalStyle} from 'styled-components';
 import reset from 'styled-reset';
 
-import {spacing, breakpoints} from '../styles/vars';
+import {spacing, mediaQuery} from '../styles/vars';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -63,10 +63,12 @@ const GlobalStyle = createGlobalStyle`
         color: ${(props) => props.theme.primary};
         padding: 5px;
         text-align: left;
-    }
+    }    
 
-    td code {
-        white-space: nowrap;
+    ${mediaQuery.l} {
+        td code {
+            white-space: nowrap;
+        }
     }
 
     tr {
@@ -98,7 +100,7 @@ const GlobalStyle = createGlobalStyle`
 
     pre {
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 14px;
+        font-size: 11px;
         line-height: 1.4em;
         margin: 0 0 ${spacing.normal};
         overflow-x: auto;
@@ -111,7 +113,15 @@ const GlobalStyle = createGlobalStyle`
         code {
             padding: 0;
             background: none;
+            color: ${(props) => props.theme.codeBg};
         }
+        margin
+    }
+
+    ${mediaQuery.l} {
+        pre {
+            font-size: 12px            
+        } 
     }
 
     hr {
@@ -133,7 +143,7 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
     
-    @media (min-width: ${breakpoints.m}) {
+    ${mediaQuery.m}{
         body {
             font-size: 18px;
             border-left: 10px solid #000;
@@ -154,12 +164,8 @@ const GlobalStyle = createGlobalStyle`
         }
         body:after {
             bottom: 0;
-        }
-
-        code, pre {
-            font-size: 14px;
-        }
-    }    
+        }          
+    }   
 `;
 
 export default GlobalStyle;

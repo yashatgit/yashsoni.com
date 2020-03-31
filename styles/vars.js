@@ -33,3 +33,10 @@ export const breakpoints = {
     m: '768px',
     s: '600px'
 };
+
+export const mediaQuery = {
+    xl: `@media (min-width: ${breakpoints.xl})`,
+    l: `@media (min-width: ${breakpoints.l})`,
+    m: `@media (min-width: ${breakpoints.m})`,
+    s: `@media (min-width: ${breakpoints.s})`
+};
