@@ -26,5 +26,12 @@ export default [
         title: 'Special theory of relativity - Time Dilation',
         desc: 'why time flows at a different rate for different observers',
         ttr: '6 mins'
+    },
+    {
+        date: 'April 24, 2020',
+        slug: 'literate-programming',
+        title: 'Literate Programming',
+        desc: 'considering programs to be works of literature',
+        ttr: '6 mins'
     }
 ];

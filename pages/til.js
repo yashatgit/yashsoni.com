@@ -6,7 +6,7 @@ import Main from '../components/main';
 import Nav from '../components/nav';
 import Page from '../components/page';
 import TILArticle from '../components/articles/til';
-import tils from '../data/til';
+import tils from '../data/til_data';
 import {spacing} from '../styles/vars';
 import {heading} from '../styles/mixins';
 
