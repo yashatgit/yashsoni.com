@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import {spacing} from '../../styles/vars';
 import Date from '../date';
-import {H3} from '../elements/text';
+import {H3, H5} from '../elements/text';
 import Link from '../link';
 
 const StyledArticle = styled.li`
-    margin-bottom: ${spacing.normal};
+    margin-bottom: ${spacing.extrasmall};
     transition: all 0.15s ease;
 
     + li {
@@ -16,6 +16,7 @@ const StyledArticle = styled.li`
 
     h3 {
         margin-top: 0;
+        margin-bottom: 5px;
     }
 
     :hover {
@@ -37,8 +38,9 @@ const StyledLink = styled(Link)`
 const Article = ({article}) => (
     <StyledArticle>
         <StyledLink href={`/blog/${article.slug}`}>
-            <Date>{article.date}</Date>
+            {/* <Date>{article.date}</Date> */}
             <H3>{article.title}</H3>
+            {article.desc ? <H5>{article.desc}</H5> : ''}
         </StyledLink>
     </StyledArticle>
 );

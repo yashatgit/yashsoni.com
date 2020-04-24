@@ -1,7 +1,7 @@
 import Date from '../../components/date'
 import Post from '../../components/post'
 import ImageGrid from '../../components/imageGrid'
-import articles from '../../data/articles'
+import articles from '../../data/blog_data'
 
 export const meta = {
 date: '2017-07-15',

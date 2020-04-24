@@ -6,7 +6,7 @@ import Main from '../components/main';
 import Nav from '../components/nav';
 import Page from '../components/page';
 import Article from '../components/articles/article';
-import articles from '../data/articles';
+import articles from '../data/blog_data';
 import {spacing} from '../styles/vars';
 import {heading} from '../styles/mixins';
 

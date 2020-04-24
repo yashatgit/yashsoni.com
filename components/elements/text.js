@@ -48,8 +48,14 @@ const StyledH4 = styled.h4`
     font-size: 18px;
 `;
 
-export const H1 = ({children}) => <StyledH1>{titleStyle(children)}</StyledH1>;
+const StyledH5 = styled.h4`
+    color: ${(props) => props.theme.subText};
+    font-size: 16px;
+    font-weight: 500;
+`;
 
+export const H1 = ({children}) => <StyledH1>{titleStyle(children)}</StyledH1>;
 export const H2 = ({children}) => <StyledH2 id={createId(children)}>{titleStyle(children)}</StyledH2>;
 export const H3 = ({children}) => <StyledH3 id={createId(children)}>{titleStyle(children)}</StyledH3>;
 export const H4 = ({children}) => <StyledH4>{titleStyle(children)}</StyledH4>;
+export const H5 = ({children}) => <StyledH5>{titleStyle(children)}</StyledH5>;

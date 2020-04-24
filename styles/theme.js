@@ -12,7 +12,8 @@ export const lightTheme = {
     darkGrey: colors.grey[700],
     primary: colors.text,
     secondary: '#fff',
-    text: '#2e2e2e'
+    text: '#2e2e2e',
+    subText: 'rgb(108, 118, 147);'
 };
 
 export const darkTheme = {
@@ -27,5 +28,6 @@ export const darkTheme = {
     darkGrey: colors.grey[200],
     primary: '#F5F7FA',
     secondary: '#1F2933',
-    text: '#F5F7FA'
+    text: '#F5F7FA',
+    subText: 'rgb(126, 140, 154);'
 };

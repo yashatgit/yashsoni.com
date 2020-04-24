@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import {spacing} from '../../styles/vars';
 //import Date from '../date';
-import {H3} from '../elements/text';
+import {H3, H5} from '../elements/text';
 import Link from '../link';
 
 const StyledArticle = styled.li`
@@ -39,7 +39,7 @@ const Article = ({article}) => (
         <StyledLink href={`/til/${article.slug}`}>
             {/* <Date>{article.date}</Date> */}
             <H3>{article.title}</H3>
-            <div>{`${article.desc} - ${article.ttr} read`}</div>
+            {article.desc ? <H5>{`${article.desc} - ${article.ttr} read`}</H5> : ''}
         </StyledLink>
     </StyledArticle>
 );

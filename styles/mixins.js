@@ -6,8 +6,8 @@ export const column = `
 `;
 
 export const heading = `
-    font-weight: bold;
-    line-height: 1.25;
+    font-weight: 600;
     letter-spacing: -1px;
+    line-height: 1.25;
     text-rendering: geometricPrecision;
 `;

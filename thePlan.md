@@ -31,3 +31,5 @@ When things makes no sense. Words are beautiful.
 
 -   Add screener in Coffee can
 -   Literate learning
+-   Cap theorem
+-   AWS world

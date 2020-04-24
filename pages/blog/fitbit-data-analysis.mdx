@@ -1,7 +1,7 @@
 import Date from '../../components/date'
 import Post from '../../components/post'
 import ImageGrid from '../../components/imageGrid'
-import articles from '../../data/articles'
+import articles from '../../data/blog_data'
 
 export const meta = articles[0];
 
@@ -11,13 +11,13 @@ export default ({children}) => <Post meta={meta}>{children}</Post>
 
 <Date>{meta.date}</Date>
 
-<ImageGrid 
-    images={['https://cdn-images-1.medium.com/max/8064/0*tFLhws9xNR64HVbz']}    
-    height="1"
-    caption={<span>Photo Credit: <a href="https://unsplash.com/@franki?utm_source=medium&utm_medium=referral">Franki Chamaki</a></span>}
+<ImageGrid
+images={['https://cdn-images-1.medium.com/max/8064/0*tFLhws9xNR64HVbz']}  
+ height="1"
+caption={<span>Photo Credit: <a href="https://unsplash.com/@franki?utm_source=medium&utm_medium=referral">Franki Chamaki</a></span>}
 />
 
-Physical activity trackers have become a multimillion-dollar product category. I have had my fair share of fancy trackers, starting early from [Nike Fuelband](https://www.wareable.com/fitness-trackers/not-so-happy-birthday-nike-fuelband-2351) and then [MI activity band](https://www.mi.com/in/miband/). 
+Physical activity trackers have become a multimillion-dollar product category. I have had my fair share of fancy trackers, starting early from [Nike Fuelband](https://www.wareable.com/fitness-trackers/not-so-happy-birthday-nike-fuelband-2351) and then [MI activity band](https://www.mi.com/in/miband/).
 Personally, I couldn’t adopt any of them very well and eventually, they all ended up being a fancy digital watch which needed a re-charge every few days in order for them to tell the correct time.
 
 And then, a few months back, I was gifted a [Fitbit Versa](https://www.fitbit.com/versa) by a friend of mine. Something clicked. Why?
@@ -26,43 +26,40 @@ A lot had happened since I gave up the idea of health bands being effective. Whe
 
 So, I thought of giving Fitbit a clean slate and tried it for a week. The Fitbit app did a pretty good job of capturing and showcasing the data in a consumable format.
 
-<ImageGrid 
-    images={[
-        'https://cdn-images-1.medium.com/max/2000/1*pB38gxz_TRCwzyHSFUv7WQ@2x.jpeg', 
-        'https://cdn-images-1.medium.com/max/2000/1*VdpaanOHJIiCAqVgTH5RRg@2x.jpeg', 
-        'https://cdn-images-1.medium.com/max/2000/1*GxOPKy1ZvXylH7IQzRTJGw@2x.jpeg'
-        ]}
-    height="2"
-    width="1"
-    caption="Activity, calorie burn and sleep analysis on the Fitbit app."
+<ImageGrid
+images={[
+'https://cdn-images-1.medium.com/max/2000/1*pB38gxz_TRCwzyHSFUv7WQ@2x.jpeg',
+'https://cdn-images-1.medium.com/max/2000/1*VdpaanOHJIiCAqVgTH5RRg@2x.jpeg',
+'https://cdn-images-1.medium.com/max/2000/1*GxOPKy1ZvXylH7IQzRTJGw@2x.jpeg'
+]}
+height="2"
+width="1"
+caption="Activity, calorie burn and sleep analysis on the Fitbit app."
 />
-
 
 It had been two weeks since my break up with my mechanical watch. Intrigued by the sheer variety of data points Fitbit could capture, an urge began to see what lies hidden behind the data.
 
-![The experimentation cycle. [Src](https://thehealthsciencesacademy.org/health-tips/how-to-conduct-an-effective-self-experiment/)](https://cdn-images-1.medium.com/max/2324/1*yNDw2TyePM6mkizddREj-A.png)*The experimentation cycle. [Src](https://thehealthsciencesacademy.org/health-tips/how-to-conduct-an-effective-self-experiment/)*
+![The experimentation cycle. [Src](https://thehealthsciencesacademy.org/health-tips/how-to-conduct-an-effective-self-experiment/)](https://cdn-images-1.medium.com/max/2324/1*yNDw2TyePM6mkizddREj-A.png)_The experimentation cycle. [Src](https://thehealthsciencesacademy.org/health-tips/how-to-conduct-an-effective-self-experiment/)_
 
 I soon began an experiment to see how well I could keep up with the goals that I had defined. I also wanted to know if there were any extraneous factors which influenced these goals. Finally, I wanted to uncover any hidden and interesting findings along the way. I was particularly interested to discover:
 
-* How active are my days? Do I spend a considerable amount of time being sedentary?
+-   How active are my days? Do I spend a considerable amount of time being sedentary?
 
-* How does this data vary on weekdays vs weekends?
+-   How does this data vary on weekdays vs weekends?
 
-* What factors contribute to the highest calorie burn?
+-   What factors contribute to the highest calorie burn?
 
-* Which exercises are the best and easiest way to achieve my daily goals?
+-   Which exercises are the best and easiest way to achieve my daily goals?
 
-* Have I been following a steady sleep schedule? What factors influence it?
+-   Have I been following a steady sleep schedule? What factors influence it?
 
-* Understand the sleep stages and find out what it takes to get a better deep sleep.
+-   Understand the sleep stages and find out what it takes to get a better deep sleep.
 
-* What is the impact of a Netflix binge on weekend sleep?
+-   What is the impact of a Netflix binge on weekend sleep?
 
-* Train a simple Machine Learning model to see if there is a hidden pattern to attain better sleep.
+-   Train a simple Machine Learning model to see if there is a hidden pattern to attain better sleep.
 
 I couldn’t find the answers to these from the standard Fitbit app. I needed the raw data.
-
-
 
 ## Getting the Data
 
@@ -72,18 +69,17 @@ Sometimes, the seductive lure of knowing about our general wellness makes us for
 
 I registered my app and got the necessary client side credentials to begin the data grabbing. After going through the necessary authorization steps, I collected and merged my daily Activity, Sleep and Heart rate data and dumped it in an Excel file. After some data cleansing, the dataset was ready!
 
-<ImageGrid 
-    images={[
-        {src: 'https://cdn-images-1.medium.com/max/2000/1*uBMNBHuX40Lut0XCU7vXCQ.png', width:'1'},
-        {src: 'https://cdn-images-1.medium.com/max/4020/1*wOkOYXYJO78ef2OihFW1TA.png', width: '3'}         
-        ]}    
-    caption="Sample data grabber session and the corresponding Pandas DataFrame"
+<ImageGrid
+images={[
+{src: 'https://cdn-images-1.medium.com/max/2000/1*uBMNBHuX40Lut0XCU7vXCQ.png', width:'1'},
+{src: 'https://cdn-images-1.medium.com/max/4020/1*wOkOYXYJO78ef2OihFW1TA.png', width: '3'}
+]}  
+ caption="Sample data grabber session and the corresponding Pandas DataFrame"
 />
 
-*PS. The entire code can be found [here](https://github.com/yashatgit/fitbit-analyzer) along with the [Jupyter notebook](https://github.com/yashatgit/fitbit-analyzer/blob/master/Fitbit_Data_Analysis.ipynb).*
+_PS. The entire code can be found [here](https://github.com/yashatgit/fitbit-analyzer) along with the [Jupyter notebook](https://github.com/yashatgit/fitbit-analyzer/blob/master/Fitbit_Data_Analysis.ipynb)._
 
-*PPS. Disclaimer: This data analysis is based on a very limited set of data points and will be difficult to generalise to the masses. Please consider it as a fun read!*
-
+_PPS. Disclaimer: This data analysis is based on a very limited set of data points and will be difficult to generalise to the masses. Please consider it as a fun read!_
 
 ## Activity analysis
 
@@ -91,7 +87,7 @@ Fitbit has a wide array of data points to measure daily activity levels. Steps, 
 
 Not fussing on the daily calorie burn, I had kept a goal of attaining 8000 steps each day on my Fitbit device. The graphs below suggested I am averaging about ~7800 steps per day which is quite close to my goal. There are some studies which suggest hitting [10000](https://blog.fitbit.com/should-you-really-take-10000-steps-a-day/) [steps per day is ideal](https://www.huffingtonpost.ca/leigh-vanderloo/10000-steps-a-day_b_16077702.html) and that shall be the next target.
 
-Tuesdays to Saturdays were the days where I averaged about 40 minutes of *very active minutes — *which simply translates to [active exercise](https://help.fitbit.com/articles/en_US/Help_article/1853/?l=en_US&c=Topics%3ADashboard&fs=Search&pn=1). Fewer minutes on Sundays were due to purely due to laziness/recovery time. The drop in *active minutes* on Mondays proves that I am falling for the Monday Blues and guess it’s time to fix that. 💪🏼
+Tuesdays to Saturdays were the days where I averaged about 40 minutes of *very active minutes — *which simply translates to [active exercise](https://help.fitbit.com/articles/en_US/Help_article/1853/?l=en_US&c=Topics%3ADashboard&fs=Search&pn=1). Fewer minutes on Sundays were due to purely due to laziness/recovery time. The drop in _active minutes_ on Mondays proves that I am falling for the Monday Blues and guess it’s time to fix that. 💪🏼
 
 ![Activity Analysis](https://cdn-images-1.medium.com/max/4052/1*2iSQdtdf453zCyzA0DVqmw.png)
 
@@ -111,9 +107,7 @@ Lastly, it is useful to see how the various data points correlate with each othe
 
 ![Coorelation](https://cdn-images-1.medium.com/max/2592/1*eR4Ftxe968vwJ6HjQhKJVQ.png)
 
-The calories burned is strongly related to amount of *steps* and *active minutes*. *Minutes sedentary* has a negative correlation with Weekdays which implies that I spend more time slacking off on weekends.
-
-
+The calories burned is strongly related to amount of _steps_ and _active minutes_. _Minutes sedentary_ has a negative correlation with Weekdays which implies that I spend more time slacking off on weekends.
 
 ## Sleep Analysis
 
@@ -121,15 +115,15 @@ Sleep is essential to helping maintain mood, memory, and cognitive performance a
 
 Reading more on this, I found that there are some standard ways which can help achieve a good night sleep.
 
-* [Following a good sleep schedule](http://time.com/3183183/best-time-to-sleep/)
+-   [Following a good sleep schedule](http://time.com/3183183/best-time-to-sleep/)
 
-* [Avoid bright/blue light at night before hitting the bed](https://justgetflux.com/research.html)
+-   [Avoid bright/blue light at night before hitting the bed](https://justgetflux.com/research.html)
 
-* Avoid caffeine later in the day
+-   Avoid caffeine later in the day
 
-* Sleep in a cool and dark room
+-   Sleep in a cool and dark room
 
-* Getting at-least [7–9 hours](https://www.sleepfoundation.org/how-sleep-works/how-much-sleep-do-we-really-need/page/0/2) of sleep. There are some studies which say that even in [5 hours](https://blog.bulletproof.com/sleep-hacking-1-million-people-prove-sleeping-5-hours-is-healther-than-sleeping-8-hours/) you can achieve the most out of your sleep.
+-   Getting at-least [7–9 hours](https://www.sleepfoundation.org/how-sleep-works/how-much-sleep-do-we-really-need/page/0/2) of sleep. There are some studies which say that even in [5 hours](https://blog.bulletproof.com/sleep-hacking-1-million-people-prove-sleeping-5-hours-is-healther-than-sleeping-8-hours/) you can achieve the most out of your sleep.
 
 Over the course of this experiment, I tried to follow the above steps to bind myself to a strict sleep schedule. It was time to validate them.
 
@@ -139,7 +133,7 @@ From the graphs below, I found that I was averaging a sleep of 7 hours without m
 
 ![S2](https://cdn-images-1.medium.com/max/3980/1*xd7ZpYGZFp7WGwM-digSzg.png)
 
-Though the average duration was somewhat similar, the overall sleep quality was not the same. On some days, I was very active even by attaining 6 hours of sleep, while there have been many instances when even after sleeping late, I wasn’t feeling fresh. I found the answer by analysing the mystic [**sleep cycles](https://www.sleepfoundation.org/how-sleep-works)**.
+Though the average duration was somewhat similar, the overall sleep quality was not the same. On some days, I was very active even by attaining 6 hours of sleep, while there have been many instances when even after sleeping late, I wasn’t feeling fresh. I found the answer by analysing the mystic [\*\*sleep cycles](https://www.sleepfoundation.org/how-sleep-works)\*\*.
 
 While we are asleep, our body typically goes through several sleep cycles, alternating between the following stages:
 
@@ -151,22 +145,21 @@ While we are asleep, our body typically goes through several sleep cycles, alter
 
 The plot below shows that on an average, my body spends just about 17% in Deep sleep, 19% REM and the rest in either light or being slightly awake. The date-time plot of Light and Deep sleep shows that these numbers vary a lot.
 
-
-<ImageGrid 
-    images={[
-        {src: 'https://cdn-images-1.medium.com/max/2000/1*WX7SIdwLzpsHVe-4Ovrkcw.png'},
-        {src: 'https://cdn-images-1.medium.com/max/2856/1*DVw67urapotR2y4dNlXG-A.png'}         
-        ]}    
-    caption=""
+<ImageGrid
+images={[
+{src: 'https://cdn-images-1.medium.com/max/2000/1*WX7SIdwLzpsHVe-4Ovrkcw.png'},
+{src: 'https://cdn-images-1.medium.com/max/2856/1*DVw67urapotR2y4dNlXG-A.png'}
+]}  
+ caption=""
 />
-
 
 If we plot the correlation of different sleep stages, we see that time spent in bed is highly correlated with Light sleep but there is no strong correlation with Deep sleep.
 
 ![S1](https://cdn-images-1.medium.com/max/2668/1*cz39drB_qv4pifnED9rXJw.png)
 
 This essentially means that just by sleeping more doesn’t always guarantee a good deep sleep. I guess this helps validate the important learning about sleep:
-> It is the quality of sleep that matters and not the quantity. [src.](https://www.sleep.org/articles/quality-quantity-matters-sleep/)
+
+> It is the quality of sleep that matters and not the quantity [🔗](https://www.sleep.org/articles/quality-quantity-matters-sleep/)
 
 Following a strict sleep schedule on weekdays is easy, but weekends are a different ballgame altogether.
 
