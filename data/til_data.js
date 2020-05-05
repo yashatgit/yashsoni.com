@@ -33,5 +33,12 @@ export default [
         title: 'Literate Programming',
         desc: 'considering programs to be works of literature',
         ttr: '6 mins'
+    },
+    {
+        date: 'May 5, 2020',
+        slug: 'pm2-nodejs-process-management',
+        title: 'Getting started with PM2 - the Node.js process management',
+        desc: 'how to manage your production node processes efficiently',
+        ttr: '6 mins'
     }
 ];

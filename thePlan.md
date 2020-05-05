@@ -33,3 +33,11 @@ When things makes no sense. Words are beautiful.
 -   Literate learning
 -   Cap theorem
 -   AWS world
+-   Dogs scared of thunder
+-   DX and importance
+-   gettiig started with logging - can't put debugger in your life (https://www.freecodecamp.org/news/how-to-log-a-node-js-api-in-an-express-js-app-with-mongoose-plugins-efe32717b59/)
+-   coffee brewing
+
+About page:
+timeline through th years
+writing and learnings
