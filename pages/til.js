@@ -40,10 +40,10 @@ const Index = () => (
             <StyledArticles>
                 <StyledArticlesTitle>{'Today I Learned'}</StyledArticlesTitle>
                 <StyledArticlesDesc>
-                    This is not a blog, just a collection of small bits and pieces of knowledge I picked up on my way.
-                    We learn something new every day, so I wanted to keep that gained knowledge accessible for later. It
-                    also makes sharing easier. Most of it is just random thoughts and code snippets, with links to
-                    further resources.
+                    This is just a collection of small bits and pieces of knowledge I picked up on my way. We learn
+                    something new every day, so I wanted to keep that gained knowledge accessible for later. It also
+                    makes sharing easier. Most of it is just random thoughts and code snippets, with links to further
+                    resources.
                 </StyledArticlesDesc>
                 <ul>
                     {tils.map((article) => (

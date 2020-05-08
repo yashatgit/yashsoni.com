@@ -40,4 +40,9 @@ When things makes no sense. Words are beautiful.
 
 About page:
 timeline through th years
+focus from design to dev - quotes by naval
+teaching by learning
+learn everyday
+why TIL and blog exists.
+
 writing and learnings

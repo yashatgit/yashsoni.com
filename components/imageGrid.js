@@ -16,16 +16,12 @@ const StyledCaption = styled.div`
     text-align: center;
 `;
 
-function ImageGrid({images, height = 1, width = 1, caption = ''}) {
-    const photosForGallery = [...images].map((image) => {
-        const imgConfig = typeof image === 'object' ? image : {src: image};
-
-        return {
-            ...imgConfig,
-            height: imgConfig.height || height,
-            width: imgConfig.width || width
-        };
-    });
+/*
+photos: [
+    {src: '', width: '', height: ''} //use aspect ratio for w/h
+]
+*/
+function ImageGrid({rowHeight, photos, caption = ''}) {
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
@@ -41,13 +37,13 @@ function ImageGrid({images, height = 1, width = 1, caption = ''}) {
 
     return (
         <div>
-            <Gallery photos={photosForGallery} onClick={openLightbox} />
+            <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
             <ModalGateway>
                 {viewerIsOpen ? (
                     <Modal onClose={closeLightbox}>
                         <Carousel
                             currentIndex={currentImage}
-                            views={photosForGallery.map((x) => ({
+                            views={photos.map((x) => ({
                                 ...x,
                                 caption: x.title,
                                 srcset: x.srcSet
