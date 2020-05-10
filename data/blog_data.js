@@ -12,5 +12,11 @@ export default [
         slug: 'coffee-can-investing',
         title: 'Coffee can Investing',
         desc: 'Book review'
+    },
+    {
+        date: '2020-05-10',
+        slug: 'intercepting-network-data-transmitted-by-apps',
+        title: 'Intercepting network data transmitted by apps',
+        desc: 'performing man in middle attacks'
     }
 ];
