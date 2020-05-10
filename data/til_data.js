@@ -40,5 +40,12 @@ export default [
         title: 'Getting started with PM2 - the Node.js process management',
         desc: 'how to manage your production node processes efficiently',
         ttr: '6 mins'
+    },
+    {
+        date: 'May 10, 2020',
+        slug: 'tale-of-alice-and-bob',
+        title: 'Alice and Bob',
+        desc: '- and eve, grace and mallory',
+        ttr: '3 mins'
     }
 ];
