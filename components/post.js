@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {column} from '../styles/mixins';
 import {spacing} from '../styles/vars';
 
-import Blockquote from './elements/blockquote';
+import Blockquote, {Citation} from './elements/blockquote';
 import Code from './elements/code';
 import Em from './elements/em';
 import Footer from './footer';
@@ -23,6 +23,7 @@ import Ul from './elements/ul';
 const components = {
     a: Link,
     blockquote: Blockquote,
+    cite: Citation,
     em: Em,
     h1: H1,
     h2: H2,

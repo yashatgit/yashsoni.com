@@ -13,7 +13,8 @@ export const lightTheme = {
     primary: colors.text,
     secondary: '#fff',
     text: '#2e2e2e',
-    subText: 'rgb(108, 118, 147);'
+    subText: 'rgb(108, 118, 147);',
+    quoteHighlight: '#cc3232'
 };
 
 export const darkTheme = {
@@ -29,5 +30,6 @@ export const darkTheme = {
     primary: '#F5F7FA',
     secondary: '#1F2933',
     text: '#F5F7FA',
-    subText: 'rgb(126, 140, 154);'
+    subText: 'rgb(126, 140, 154);',
+    quoteHighlight: '#cc3232'
 };

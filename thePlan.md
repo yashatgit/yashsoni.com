@@ -18,6 +18,12 @@ When things makes no sense. Words are beautiful.
 
 -   need good fonts and
 
+## Photos Page
+
+photo categories
+
+hover shows the image macros
+
 ## Travels Page
 
 ### Blog infra
@@ -27,16 +33,24 @@ When things makes no sense. Words are beautiful.
 -   -   images, excerpt.js, mdx/react page
 -   -   build step moves things in right place
 
+# Design
+
+https://fs.blog/2018/04/first-principles/
+
 ### what to write about
 
 -   Add screener in Coffee can
--   Literate learning
+-   improve Literate learning
 -   Cap theorem
 -   AWS world
 -   Dogs scared of thunder
 -   DX and importance
--   gettiig started with logging - can't put debugger in your life (https://www.freecodecamp.org/news/how-to-log-a-node-js-api-in-an-express-js-app-with-mongoose-plugins-efe32717b59/)
+-   getting started with logging - can't put debugger in your life (https://www.freecodecamp.org/news/how-to-log-a-node-js-api-in-an-express-js-app-with-mongoose-plugins-efe32717b59/)
 -   coffee brewing
+-   Raspberry retropi
+-   Scuba
+-   First principles
+-   Feynmann technique
 
 About page:
 timeline through th years

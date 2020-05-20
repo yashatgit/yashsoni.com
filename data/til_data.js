@@ -45,7 +45,14 @@ export default [
         date: 'May 10, 2020',
         slug: 'tale-of-alice-and-bob',
         title: 'Alice and Bob',
-        desc: '- and eve, grace and mallory',
+        desc: 'and eve, grace and mallory',
         ttr: '3 mins'
     }
+    // {
+    //     date: 'May 20, 2020',
+    //     slug: 'learning-by-first-principles',
+    //     title: 'Learning by First Principles',
+    //     desc: 'mental model for figuring out solutions when stuck',
+    //     ttr: '3 mins'
+    // }
 ];
