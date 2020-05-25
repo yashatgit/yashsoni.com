@@ -48,11 +48,4 @@ export default [
         desc: 'and eve, grace and mallory',
         ttr: '3 mins'
     }
-    // {
-    //     date: 'May 20, 2020',
-    //     slug: 'learning-by-first-principles',
-    //     title: 'Learning by First Principles',
-    //     desc: 'mental model for figuring out solutions when stuck',
-    //     ttr: '3 mins'
-    // }
 ];

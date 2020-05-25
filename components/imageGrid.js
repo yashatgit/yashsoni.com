@@ -16,6 +16,10 @@ const StyledCaption = styled.div`
     text-align: center;
 `;
 
+const StyledGallery = styled.div`
+    margin: 40px 0;
+`;
+
 /*
 photos: [
     {src: '', width: '', height: ''} //use aspect ratio for w/h
@@ -36,7 +40,7 @@ function ImageGrid({rowHeight, photos, caption = ''}) {
     };
 
     return (
-        <div>
+        <StyledGallery>
             <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
             <ModalGateway>
                 {viewerIsOpen ? (
@@ -53,7 +57,7 @@ function ImageGrid({rowHeight, photos, caption = ''}) {
                 ) : null}
             </ModalGateway>
             {caption && <StyledCaption>{caption}</StyledCaption>}
-        </div>
+        </StyledGallery>
     );
 }
 

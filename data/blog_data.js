@@ -19,4 +19,11 @@ export default [
         title: 'Intercepting network data transmitted by apps',
         desc: 'performing man in middle attacks'
     }
+    // {
+    //     date: 'May 21, 2020',
+    //     slug: 'form-follows-function',
+    //     title: 'Form follows Function',
+    //     desc: 'mental model for figuring out solutions when stuck',
+    //     ttr: '7 mins'
+    // }
 ];
