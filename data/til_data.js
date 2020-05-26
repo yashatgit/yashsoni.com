@@ -47,5 +47,12 @@ export default [
         title: 'Alice and Bob',
         desc: 'and eve, grace and mallory',
         ttr: '3 mins'
+    },
+    {
+        date: 'May 26, 2020',
+        slug: 'what-is-cron',
+        title: 'Cron',
+        desc: 'automate everything',
+        ttr: '3 mins'
     }
 ];
