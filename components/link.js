@@ -3,19 +3,19 @@ import Link from 'next/link';
 
 import A from './elements/a';
 
-const CustomLink = (props) => {
-    const href = props.href;
-    const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'));
+const CustomLink = props => {
+  const { href } = props;
+  const isInternalLink = href && (href.startsWith('/') || href.startsWith('#'));
 
-    if (isInternalLink) {
-        return (
-            <Link href={href}>
-                <A {...props} />
-            </Link>
-        );
-    }
+  if (isInternalLink) {
+    return (
+      <Link href={href}>
+        <A {...props} />
+      </Link>
+    );
+  }
 
-    return <A {...props} />;
+  return <A {...props} />;
 };
 
 export default CustomLink;

@@ -1,15 +1,15 @@
-import {MDXProvider} from '@mdx-js/react';
+import { MDXProvider } from '@mdx-js/react';
 import React from 'react';
 import styled from 'styled-components';
 
-import {column} from '../styles/mixins';
-import {spacing} from '../styles/vars';
+import { column } from '../styles/mixins';
+import { spacing } from '../styles/vars';
 
-import Blockquote, {Citation} from './elements/blockquote';
+import Blockquote, { Citation } from './elements/blockquote';
 import Code from './elements/code';
 import Em from './elements/em';
 import Footer from './footer';
-import {H1, H2, H3} from './elements/text';
+import { H1, H2, H3 } from './elements/text';
 import Img from './elements/img';
 import Li from './elements/li';
 import Link from './link';
@@ -21,19 +21,19 @@ import Ul from './elements/ul';
 //import Subscribe from './subscribe';
 
 const components = {
-    a: Link,
-    blockquote: Blockquote,
-    cite: Citation,
-    em: Em,
-    h1: H1,
-    h2: H2,
-    h3: H3,
-    img: Img,
-    li: Li,
-    ol: Ol,
-    pre: Code,
-    strong: Strong,
-    ul: Ul
+  a: Link,
+  blockquote: Blockquote,
+  cite: Citation,
+  em: Em,
+  h1: H1,
+  h2: H2,
+  h3: H3,
+  img: Img,
+  li: Li,
+  ol: Ol,
+  pre: Code,
+  strong: Strong,
+  ul: Ul,
 };
 
 const Main = styled.main`
@@ -68,17 +68,17 @@ const EditAndDiscuss = ({meta}) => {
 };
 */
 
-const Post = ({children, meta}) => (
-    <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
-        <Nav />
-        <Main>
-            <MDXProvider components={components}>
-                <article>{children}</article>
-            </MDXProvider>
-            <hr />
-        </Main>
-        <Footer />
-    </Page>
+const Post = ({ children, meta }) => (
+  <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
+    <Nav />
+    <Main>
+      <MDXProvider components={components}>
+        <article>{children}</article>
+      </MDXProvider>
+      <hr />
+    </Main>
+    <Footer />
+  </Page>
 );
 
 export default Post;

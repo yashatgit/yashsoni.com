@@ -1,18 +1,18 @@
 import React from 'react';
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
-const Code = (props) => {
-    const codeElementProps = props.children.props;
+const Code = ({ children, language }) => {
+  const codeElementProps = children.props;
 
-    return (
-        <SyntaxHighlighter language={props.language} style={{overflow: 'scroll'}} useInlineStyles={false}>
-            <>{codeElementProps.children}</>
-        </SyntaxHighlighter>
-    );
+  return (
+    <SyntaxHighlighter language={language} style={{ overflow: 'scroll' }} useInlineStyles={false}>
+      <>{codeElementProps.children}</>
+    </SyntaxHighlighter>
+  );
 };
 
 Code.defaultProps = {
-    language: 'jsx'
+  language: 'jsx',
 };
 
 export default Code;

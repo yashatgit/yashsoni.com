@@ -1,7 +1,7 @@
 export default [
-    {
-        description: 'Kinectotherapy',
-        link: 'https://www.kinectotherapy.in',
-        name: '🏆 Kinectotherapy'
-    }
+  {
+    description: 'Kinectotherapy',
+    link: 'https://www.kinectotherapy.in',
+    name: '🏆 Kinectotherapy',
+  },
 ];

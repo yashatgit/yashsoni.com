@@ -6,20 +6,20 @@ import Sun from '../icons/sun.svg';
 import Moon from '../icons/moon.svg';
 
 const ToggleButton = styled.button`
-    background: none;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1rem;
-    letter-spacing: 0.025em;
-    margin: 0 0 0 1em;
-    padding: 0;
-    transition: all 0.15s ease;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 0.025em;
+  margin: 0 0 0 1em;
+  padding: 0;
+  transition: all 0.15s ease;
 
-    @media (min-width: 768px) {
-        margin: 0 0 0 2em;
-    }
+  @media (min-width: 768px) {
+    margin: 0 0 0 2em;
+  }
 `;
 
 const iconStyles = `
@@ -33,24 +33,24 @@ const iconStyles = `
 `;
 
 const SunIcon = styled(Sun)`
-    color: ${(props) => props.theme.accent};
-    ${iconStyles};
+  color: ${props => props.theme.accent};
+  ${iconStyles};
 `;
 
 const MoonIcon = styled(Moon)`
-    color: ${(props) => props.theme.accent};
-    ${iconStyles};
+  color: ${props => props.theme.accent};
+  ${iconStyles};
 `;
 
 const DarkModeToggle = () => {
-    const darkMode = useDarkMode(false);
-    const label = darkMode.value ? 'Use dark theme' : 'Use light theme';
+  const darkMode = useDarkMode(false);
+  const label = darkMode.value ? 'Use dark theme' : 'Use light theme';
 
-    return (
-        <ToggleButton aria-label={label} onClick={darkMode.toggle} type="button">
-            {darkMode.value ? <SunIcon /> : <MoonIcon />}
-        </ToggleButton>
-    );
+  return (
+    <ToggleButton aria-label={label} onClick={darkMode.toggle} type="button">
+      {darkMode.value ? <SunIcon /> : <MoonIcon />}
+    </ToggleButton>
+  );
 };
 
 export default DarkModeToggle;

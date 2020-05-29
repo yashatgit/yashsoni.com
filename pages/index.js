@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import {LogoJsonLd} from 'next-seo';
+import { LogoJsonLd } from 'next-seo';
 
 import Page from '../components/page';
-import {column} from '../styles/mixins';
-import {spacing} from '../styles/vars';
+import { column } from '../styles/mixins';
+import { spacing } from '../styles/vars';
 import Nav from '../components/nav';
 
 const Main = styled.main`
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
 `;
 
 const Content = styled.div`
@@ -30,48 +30,49 @@ const Content = styled.div`
 // `;
 
 const Title = styled.h1`
-    display: initial;
-    font-size: 1.65em;
-    text-align: center;
-    line-height: 1.35;
-    font-weight: bold;
-    margin: 0 auto;
+  display: initial;
+  font-size: 1.65em;
+  text-align: center;
+  line-height: 1.35;
+  font-weight: bold;
+  margin: 0 auto;
 
-    @media (min-width: 737px) {
-        font-size: 2.3em;
-    }
+  @media (min-width: 737px) {
+    font-size: 2.3em;
+  }
 `;
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
 `;
 
 const Details = styled.div`
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-    margin-bottom: ${spacing.extrasmall};
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: ${spacing.extrasmall};
 `;
 
-const description = `Yash Soni is a developer, writer, and UI/UX enthusiast. He's interested in all things JAMstack (JavaScript, APIs, Markup) and Design Systems.`;
+const description =
+  "Yash Soni is a developer, writer, and UI/UX enthusiast. He's interested in all things JAMstack (JavaScript, APIs, Markup) and Design Systems.";
 
 const Index = () => (
-    <>
-        <Page description={description} image={'/static/images/speaking/speaking.jpg'} title={'Yash Soni'}>
-            <Nav />
-            <Main>
-                <Content>
-                    <Container>
-                        <Title>{'Hello!'}</Title>
-                    </Container>
-                    <Details>{`Welcome to my personal slice of the internet 👋🏼`}</Details>
-                </Content>
-            </Main>
-        </Page>
-        <LogoJsonLd logo="https://yashsoni.com/static/images/lee.jpg" url="https://yashsoni.com" />
-    </>
+  <>
+    <Page description={description} image="/static/images/speaking/speaking.jpg" title="Yash Soni">
+      <Nav />
+      <Main>
+        <Content>
+          <Container>
+            <Title>Hello!</Title>
+          </Container>
+          <Details>Welcome to my personal slice of the internet 👋🏼</Details>
+        </Content>
+      </Main>
+    </Page>
+    <LogoJsonLd logo="https://yashsoni.com/static/images/lee.jpg" url="https://yashsoni.com" />
+  </>
 );
 
 export default Index;

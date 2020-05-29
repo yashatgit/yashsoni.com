@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Strong = styled.strong`
-    font-weight: bold;
+  font-weight: bold;
 `;
 
 export default Strong;

@@ -1,7 +1,7 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-import {spacing, mediaQuery} from '../styles/vars';
+import { spacing, mediaQuery } from '../styles/vars';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
@@ -25,8 +25,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background-color: ${(props) => props.theme.secondary};
-        color: ${(props) => props.theme.primary};
+        background-color: ${props => props.theme.secondary};
+        color: ${props => props.theme.primary};
         font-size: 15px;
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
@@ -46,21 +46,21 @@ const GlobalStyle = createGlobalStyle`
     }
     
     thead {
-        background: ${(props) => props.theme.inlineCodeBg};
+        background: ${props => props.theme.inlineCodeBg};
         border-radius: 5px;
         text-transform: uppercase;
         font-size: 0.9rem;
     }
 
     th {
-        color: ${(props) => props.theme.primary};
+        color: ${props => props.theme.primary};
         font-weight: 500;
         text-align: left;
         padding: 5px;
     }
     
     td {
-        color: ${(props) => props.theme.primary};
+        color: ${props => props.theme.primary};
         padding: 5px;
         text-align: left;
     }    
@@ -76,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     a {
-        color: ${(props) => props.theme.primary};
+        color: ${props => props.theme.primary};
         cursor: pointer;
     }
 
@@ -86,12 +86,12 @@ const GlobalStyle = createGlobalStyle`
 
     p {
         margin: 1em 0;
-        color: ${(props) => props.theme.primary};
+        color: ${props => props.theme.primary};
     }
 
     code {
-        color: ${(props) => props.theme.inlineCode};
-        background-color: ${(props) => props.theme.inlineCodeBg};
+        color: ${props => props.theme.inlineCode};
+        background-color: ${props => props.theme.inlineCodeBg};
         border-radius: 12px;
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 14px;
@@ -106,14 +106,14 @@ const GlobalStyle = createGlobalStyle`
         overflow-x: auto;
         padding: ${spacing.normal};
         white-space: pre;
-        background: ${(props) => props.theme.code};
+        background: ${props => props.theme.code};
         border-radius: 8px;
         box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 
         code {
             padding: 0;
             background: none;
-            color: ${(props) => props.theme.codeBg};
+            color: ${props => props.theme.codeBg};
         }
         margin
     }

@@ -1,10 +1,10 @@
 # Why this blog?
 
 improve on writing. Learn by reiterating. Learn in public.
-Personal bookkmarks to find the good content in the wild.
+Personal bookmarks to find the good content in the wild.
 Segmented content
 
--   add link to previous versions
+-   add link to previous versions of website
 
 ## Books Page
 
@@ -14,17 +14,13 @@ Segmented content
 
 ## Proverbs Page
 
-When things makes no sense. Words are beautiful.
-
+-   When things makes no sense. Words are beautiful.
 -   need good fonts and
 
 ## Photos Page
 
-photo categories
-
-hover shows the image macros
-
-## Travels Page
+-   photo categories
+-   hover shows the image macros
 
 ### Blog infra
 
@@ -32,10 +28,6 @@ hover shows the image macros
 -   folder for one entity
 -   -   images, excerpt.js, mdx/react page
 -   -   build step moves things in right place
-
-# Design
-
-https://fs.blog/2018/04/first-principles/
 
 ### what to write about
 
@@ -45,18 +37,18 @@ https://fs.blog/2018/04/first-principles/
 -   AWS world
 -   Dogs scared of thunder
 -   DX and importance
--   getting started with logging - can't put debugger in your life (https://www.freecodecamp.org/news/how-to-log-a-node-js-api-in-an-express-js-app-with-mongoose-plugins-efe32717b59/)
+-   getting started with logging - can't put debugger in your life
 -   coffee brewing
 -   Raspberry retropi
 -   Scuba
--   First principles
+-   [First principles](https://fs.blog/2018/04/first-principles/)
 -   Feynmann technique
 
-About page:
-timeline through th years
-focus from design to dev - quotes by naval
-teaching by learning
-learn everyday
-why TIL and blog exists.
+## About page:
 
-writing and learnings
+-   timeline through the years
+-   focus from design to dev - quotes by naval
+-   teaching by learning
+-   learn everyday
+-   why TIL and blog exists.
+-   writing and learnings

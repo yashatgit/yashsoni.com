@@ -9,13 +9,13 @@ import Projects from '../components/projects/projects';
 const description = `Projects I've done personally or for clients.`;
 
 const Index = () => (
-    <Page description={description} image={'/static/images/speaking/speaking.jpg'} title={`Yash Soni - Projects`}>
-        <Nav />
-        <Main>
-            <Projects />
-        </Main>
-        <Footer />
-    </Page>
+  <Page description={description} image={'/static/images/speaking/speaking.jpg'} title={`Yash Soni - Projects`}>
+    <Nav />
+    <Main>
+      <Projects />
+    </Main>
+    <Footer />
+  </Page>
 );
 
 export default Index;
