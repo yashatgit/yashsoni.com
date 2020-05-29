@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "name": "yashsoni",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [{ "source": "/git", "destination": "https://yashsoni.com/git" }]
+}
