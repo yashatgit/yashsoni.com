@@ -10,6 +10,7 @@ This portfolio is built using
 Deployed using
 
 - [Vercel](https://vercel.com/)
+- Changes to this Git repo are continuously deployed. [Deployment Status](https://vercel.com/yashsoni/yashsoni.com/deployments)
 
 ## Overview
 
@@ -25,5 +26,3 @@ $ cd yashsoni.com
 $ yarn
 $ yarn dev
 ```
-
-[Deployment Status](https://vercel.com/yashsoni/yashsoni.com/deployments)
