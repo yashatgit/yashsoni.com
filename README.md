@@ -25,3 +25,5 @@ $ cd yashsoni.com
 $ yarn
 $ yarn dev
 ```
+
+[Deployment Status](https://vercel.com/yashsoni/yashsoni.com/deployments)
