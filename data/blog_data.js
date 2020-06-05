@@ -19,6 +19,12 @@ export default [
     title: 'Intercepting network data transmitted by apps',
     desc: 'performing man in middle attacks',
   },
+  {
+    date: '2020-05-31',
+    slug: 'iceland-photo-essay',
+    title: 'Iceland - The Land Of Fire & Ice',
+    desc: 'a photo Essay',
+  },
   // {
   //     date: 'May 21, 2020',
   //     slug: 'form-follows-function',
