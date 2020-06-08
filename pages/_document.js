@@ -35,6 +35,45 @@ class CustomDocument extends Document {
     return (
       <html lang="en">
         <Head>
+          <meta charset="utf-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+          />
+          <meta name="application-name" content="yashsoni.com" />
+
+          {/* https://github.com/gokulkrishh/awesome-meta-and-manifest? */}
+          {/* <!-- iOS --> */}
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          <meta name="apple-mobile-web-app-title" content="yashsoni.com" />
+
+          {/* <!-- Android  --> */}
+          <meta name="theme-color" content="#000000" />
+          <meta name="mobile-web-app-capable" content="yes" />
+
+          {/* <!-- Windows  --> */}
+          <meta name="msapplication-config" content="/static/browserconfig.xml" />
+          <meta name="msapplication-TileColor" content="#000000" />
+          <meta name="msapplication-tap-highlight" content="no" />
+
+          <link href="/static/site.webmanifest" rel="manifest" />
+          <link href="/static/favicons/favicon.ico" rel="shortcut icon" />
+
+          {/* <!-- Pinned Tab  --> */}
+          <link color="#000000" href="/static/favicons/safari-pinned-tab.svg" rel="mask-icon" />
+
+          <link href="/static/favicons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
+
+          {/* <!-- Main Link Tags  --> */}
+          <link href="/static/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
+          <link href="/static/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
+
+          <meta content="summary_large_image" name="twitter:card" />
+          <meta content="@yashs0ni" name="twitter:site" />
+          <meta content="@yashs0ni" name="twitter:creator" />
+
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://www.googletagmanager.com" />
