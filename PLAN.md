@@ -43,6 +43,7 @@ Segmented content
 - Scuba
 - [First principles](https://fs.blog/2018/04/first-principles/)
 - Feynmann technique
+- [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)
 
 ## About page:
 
