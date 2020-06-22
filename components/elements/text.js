@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { heading } from '../../styles/mixins';
 import { spacing } from '../../styles/vars';
-import titleStyle from '../../utils/title-style';
 
 const createId = text => text.toLowerCase().replace(/ /gu, '-');
 
@@ -54,8 +53,8 @@ const StyledH5 = styled.h4`
   font-weight: 500;
 `;
 
-export const H1 = ({ children }) => <StyledH1>{titleStyle(children)}</StyledH1>;
-export const H2 = ({ children }) => <StyledH2 id={createId(children)}>{titleStyle(children)}</StyledH2>;
-export const H3 = ({ children }) => <StyledH3 id={createId(children)}>{titleStyle(children)}</StyledH3>;
-export const H4 = ({ children }) => <StyledH4>{titleStyle(children)}</StyledH4>;
-export const H5 = ({ children }) => <StyledH5>{titleStyle(children)}</StyledH5>;
+export const H1 = ({ children }) => <StyledH1>{children}</StyledH1>;
+export const H2 = ({ children }) => <StyledH2 id={createId(children)}>{children}</StyledH2>;
+export const H3 = ({ children }) => <StyledH3 id={createId(children)}>{children}</StyledH3>;
+export const H4 = ({ children }) => <StyledH4>{children}</StyledH4>;
+export const H5 = ({ children }) => <StyledH5>{children}</StyledH5>;

@@ -25,6 +25,12 @@ export default [
     title: 'Iceland - The Land Of Fire & Ice',
     desc: 'a photo Essay',
   },
+  {
+    date: '2020-06-20',
+    slug: 'abstract-syntax-trees',
+    title: 'Abstract Syntax Trees',
+    desc: 'abstraction is powerful',
+  },
   // {
   //     date: 'May 21, 2020',
   //     slug: 'form-follows-function',

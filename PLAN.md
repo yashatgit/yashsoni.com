@@ -44,6 +44,7 @@ Segmented content
 - [First principles](https://fs.blog/2018/04/first-principles/)
 - Feynmann technique
 - [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)
+- Fight & Flight
 
 ## About page:
 
@@ -53,3 +54,4 @@ Segmented content
 - learn everyday
 - why TIL and blog exists.
 - writing and learnings
+- shaping up the blog from previous versions
