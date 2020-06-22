@@ -9,6 +9,7 @@ import React, { useState, useCallback } from 'react';
 import Gallery from 'react-photo-gallery';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import styled from 'styled-components';
+import useDarkMode from 'use-dark-mode';
 
 const StyledCaption = styled.div`
   font-size: 16px;
@@ -25,7 +26,8 @@ photos: [
     {src: '', width: '', height: ''} //use aspect ratio for w/h
 ]
 */
-function ImageGrid({ rowHeight, photos, caption = '' }) {
+function ImageGrid({ rowHeight, photos, caption = '', darkMode }) {
+  const darkModeSettings = useDarkMode();
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
@@ -40,7 +42,8 @@ function ImageGrid({ rowHeight, photos, caption = '' }) {
   };
 
   return (
-    <StyledGallery>
+    // convert to dark mode if props and global dark mode is set to true
+    <StyledGallery className={darkMode && darkModeSettings.value ? 'dark-gallery' : ''}>
       <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
       <ModalGateway>
         {viewerIsOpen ? (

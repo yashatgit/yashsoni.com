@@ -142,6 +142,11 @@ const GlobalStyle = createGlobalStyle`
         flex-direction: column;
         min-height: 100vh;
     }
+
+    .dark-gallery img {
+        -webkit-filter: invert(.862745) hue-rotate(180deg);
+        filter: invert(.862745) hue-rotate(180deg);
+    }
     
     ${mediaQuery.m}{
         body {
