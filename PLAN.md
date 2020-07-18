@@ -45,6 +45,7 @@ Segmented content
 - Feynmann technique
 - [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)
 - Fight & Flight
+- [How to build a smart speaker](https://www.coursera.org/learn/ai-for-everyone/lecture/ahvm7/case-study-smart-speaker)
 
 ## About page:
 
