@@ -170,7 +170,7 @@ const GlobalStyle = createGlobalStyle`
         body:after {
             bottom: 0;
         }          
-    }   
+    }    
 `;
 
 export default GlobalStyle;

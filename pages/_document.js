@@ -46,7 +46,7 @@ class CustomDocument extends Document {
           {/* https://github.com/gokulkrishh/awesome-meta-and-manifest? */}
           {/* <!-- iOS --> */}
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          {/* <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> */}
           <meta name="apple-mobile-web-app-title" content="yashsoni.com" />
 
           {/* <!-- Android  --> */}

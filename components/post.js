@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { column } from '../styles/mixins';
 import { spacing } from '../styles/vars';
+import PageProgress from '../components/pageProgress';
 
 import Blockquote, { Citation } from './elements/blockquote';
 import Code from './elements/code';
@@ -70,6 +71,7 @@ const EditAndDiscuss = ({meta}) => {
 
 const Post = ({ children, meta }) => (
   <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
+    <PageProgress />
     <Nav />
     <Main>
       <MDXProvider components={components}>
