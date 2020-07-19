@@ -111,16 +111,6 @@ The `--kill-others` argument kills other processes if one exits or dies.
 
 Since we are on a subject of npm scripts, here is a list of things that I have discovered and found useful.
 
-**npm scripts auto-complete**
-
-There is no common convention on the scripts we have. Some projects use `npm run dev` other use `npm run start`. Hence it could take a while to build muscle memory to learn all the available scrips.
-A better alternative is to enable [**npm scripts completion**](https://docs.npmjs.com/cli/completion) in your terminal.
-
-```bash
-npm run #press tab
-build   dev   export  imageoptim  imageoptim:gif  imageoptim:jpg  imageoptim:png  lint  prettier  start  test
-```
-
 **Always consider windows environment**
 
 Always pay attention to whether the commands you are writing are environment friendly. Some of them may not run in windows.
@@ -129,6 +119,7 @@ Always pay attention to whether the commands you are writing are environment fri
 - Use [rimraf](https://www.npmjs.com/package/rimraf) package in case of `rm -rf` for cross env support.
 - Setting environment variables using [cross-env](https://www.npmjs.com/package/cross-env)
 
-## References
+**npm scripts auto-complete**
 
-- [https://corgibytes.com/blog/2017/04/18/npm-tips/](https://corgibytes.com/blog/2017/04/18/npm-tips/)
+There is no common convention on the scripts we have. Some projects use `npm run dev` other use `npm run start`. Hence it could take a while to build muscle memory to learn all the available scrips.
+A better alternative is to enable [**npm scripts completion**](https://docs.npmjs.com/cli/completion) in your terminal.

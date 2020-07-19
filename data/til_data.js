@@ -53,13 +53,13 @@ export default [
     slug: 'what-is-cron',
     title: 'Cron',
     desc: 'automate everything',
-    ttr: '3 mins',
+    ttr: '4 mins',
   },
   {
     date: 'July 18, 2020',
     slug: 'npm-scripts',
     title: 'Sequential & Parallel execution of npm scripts',
     desc: 'and general mistakes to avoid',
-    ttr: '4 mins',
+    ttr: '5 mins',
   },
 ];
