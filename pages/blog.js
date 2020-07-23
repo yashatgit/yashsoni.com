@@ -34,7 +34,7 @@ const Index = () => (
     <Nav />
     <Main>
       <StyledArticles>
-        <StyledArticlesTitle>Articles</StyledArticlesTitle>
+        <StyledArticlesTitle>Writing</StyledArticlesTitle>
         <ul>
           {articles.map(article => (
             <Article article={article} key={article.slug || article.url} />

@@ -71,7 +71,8 @@ const Nav = () => (
     </Link>
     <Centered>
       <NavLink href="/til">TIL</NavLink>
-      <NavLink href="/blog">Blog</NavLink>
+      <NavLink href="/blog">Writing</NavLink>
+      <NavLink href="/about">About</NavLink>
       {/* <ProjectsLink href="/projects">{'Projects'}</ProjectsLink> */}
       <ThemeSwitcher />
     </Centered>
