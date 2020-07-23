@@ -5,19 +5,18 @@ import articles from '../../data/blog_data'
 
 export const meta = {
 date: '2017-07-15',
-description: 'Visualize my journey through the scenic lands of Norway with rich, stunning pictures and daily travel logs.',
-image: '/static/images/10-days-in-norway/banner.png',
-slug: '10-days-in-norway',
-title: '10 Days in Norway'
+description: 'description',
+image: '/static/images',
+slug: 'template',
+title: 'template'
 }
 
 export default ({children}) => <Post meta={meta}>{children}</Post>
 
-# 10 Days in Norway
+# template
 
 <Date>{meta.date}</Date>
 
-![Norway](/static/images/10-days-in-norway/banner.png)
 [![XKCD](https://imgs.xkcd.com/comics/git_commit.png)](https://xkcd.com/1296/)
 
 <ImageGrid
@@ -46,12 +45,10 @@ $ yarn dev
 ```
 
 ```js
-import fetch from 'isomorphic-unfetch';
-
 export default async function(...args) {
-    const res = await fetch(...args);
+  const res = await fetch(...args);
 
-    return res.json();
+  return res.json();
 }
 ```
 
@@ -61,8 +58,8 @@ export default async function(...args) {
 // /api/unsplash
 
 {
-    "downloads": 7995,
-    "views": 1134429
+  "downloads": 7995,
+  "views": 1134429
 }
 ```
 
@@ -84,15 +81,15 @@ except Exception, e:
 
 ```css
 @keyframes color {
-    0% {
-        fill: #99002f;
-    }
-    50% {
-        fill: #ffc426;
-    }
-    100% {
-        fill: #99002f;
-    }
+  0% {
+    fill: #99002f;
+  }
+  50% {
+    fill: #ffc426;
+  }
+  100% {
+    fill: #99002f;
+  }
 }
 ```
 
