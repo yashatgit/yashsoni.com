@@ -11,6 +11,7 @@ Segmented content
 - books read.
 - bookshelf for upcoming or pending books
 - how to read books. Tips from naval. Article on keep forgetting things
+- https://3d-book-css.netlify.app/
 
 ## Proverbs Page
 
@@ -26,16 +27,26 @@ Segmented content
 
 - Prettier for mdx
 - folder for one entity
+- https://mailgo.dev/
+- https://blog.tailwindcss.com/building-the-tailwind-blog
 - - images, excerpt.js, mdx/react page
 - - build step moves things in right place
 
 ### what to write about
 
+#### P1
+
+- AWS world - clearing the exam
+- Smart Mirror IOT
+- [How to build a smart speaker](https://www.coursera.org/learn/ai-for-everyone/lecture/ahvm7/case-study-smart-speaker)
+- NN hello world
+- State Machines
+
+#### P2
+
 - Add screener in Coffee can
 - improve Literate learning
 - Cap theorem
-- AWS world
-- Dogs scared of thunder
 - DX and importance
 - getting started with logging - can't put debugger in your life
 - coffee brewing
@@ -45,7 +56,8 @@ Segmented content
 - Feynmann technique
 - [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)
 - Fight & Flight
-- [How to build a smart speaker](https://www.coursera.org/learn/ai-for-everyone/lecture/ahvm7/case-study-smart-speaker)
+
+# Done & Dusted
 
 ## About page:
 

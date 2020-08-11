@@ -1,6 +1,9 @@
-import Post from '../../components/post'
-import articles from '../../data/blog_data'
-import ImageGrid from '../../components/imageGrid'
+import Post from '../../../components/post'
+import articles from '../../../data/blog_data'
+import ImageGrid from '../../../components/imageGrid'
+
+import image1 from './images/coffee_can_investing.jpg'
+import image2 from './images/coffee-collection-container.jpg'
 
 export const meta = articles[1]
 
@@ -9,7 +12,7 @@ export default ({children}) => <Post meta={meta}>{children}</Post>
 # Coffee can Investing
 
 <ImageGrid
-photos={[{src:'/static/images/coffee-can-investing/coffee_can_investing.jpg', width: 528, height: 790}]}  
+photos={[{src:image1, width: 528, height: 790}]}  
 rowHeight="300"
 />
 
@@ -17,7 +20,7 @@ Coffee can investing by Mukherjea, Rakshit et.al is a great book to understand t
 
 **_Coffee Can Investing_** refers to “buy and forget” approach to investing in shares of companies which have performed well consistently.
 
-![](/static/images/coffee-can-investing/coffee-collection-container.jpg)
+<img alt="Coffee collection container" src={image2}/>
 
 The idea of the Coffee Can portfolio traces its roots back to the American Old West, when people would secure their valuables by putting them in a coffee can. The coffee can was then placed under their mattress for safe-keeping, where it stayed for years, or even decades. A portfolio manager by the name of [Robert Kirby proposed in 1984](https://jpm.pm-research.com/content/11/1/76) that investors could the follow the same approach — identify a diversified portfolio of consistently performing companies, invest in their stocks and keep invested for at least 10 years.
 
@@ -31,10 +34,10 @@ In the Indian context, coffee can portfolio has been defined in book to refer to
 
 ## Key takeaways from the Book
 
--   It is important to not adhere to the age-old wisdom of investing heavily in fixed deposits, real estate and gold. These assets have unperformed equity by significant margins over long periods of time. In fact, these assets have often given returns lower than inflation over long periods of time and thus damaged investors’ wealth.
--   learning from legendary investors like Warren Buffett, Akash Prakash, Sanjoy Bhattacharyya and K.N. Sivasubramanian is that to consistently generate healthy returns from equity investing, one has to invest in high-quality companies and then sit tight for long (often very long) without losing sleep about where the share price is going.
--   Unlike earlier years, the alpha (or outperformance) in large-cap equity mutual funds is now negligible. In this scenario, it makes much more sense to invest in passive funds or ETFs. Already, in the US, active funds have started seeing massive outflows, which are becoming inflows for passive funds.
--   A broker suggesting funds to an investor leads to a conflict of interest. Driven by SEBI, the country has already moved on to an ‘only advisory’ or ‘only broking’ model. Thus, an investor is better off paying a certain percentage as advisory and investing in the most inexpensive funds (as opposed to the traditional practice of using an intermediary who is remunerated by the fund manufacturers).
+- It is important to not adhere to the age-old wisdom of investing heavily in fixed deposits, real estate and gold. These assets have unperformed equity by significant margins over long periods of time. In fact, these assets have often given returns lower than inflation over long periods of time and thus damaged investors’ wealth.
+- learning from legendary investors like Warren Buffett, Akash Prakash, Sanjoy Bhattacharyya and K.N. Sivasubramanian is that to consistently generate healthy returns from equity investing, one has to invest in high-quality companies and then sit tight for long (often very long) without losing sleep about where the share price is going.
+- Unlike earlier years, the alpha (or outperformance) in large-cap equity mutual funds is now negligible. In this scenario, it makes much more sense to invest in passive funds or ETFs. Already, in the US, active funds have started seeing massive outflows, which are becoming inflows for passive funds.
+- A broker suggesting funds to an investor leads to a conflict of interest. Driven by SEBI, the country has already moved on to an ‘only advisory’ or ‘only broking’ model. Thus, an investor is better off paying a certain percentage as advisory and investing in the most inexpensive funds (as opposed to the traditional practice of using an intermediary who is remunerated by the fund manufacturers).
 
 ## Quotes from the Book
 
