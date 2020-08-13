@@ -1,5 +1,15 @@
 import { colors } from './vars';
 
+export const chartColors = {
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(201, 203, 207)',
+};
+
 export const lightTheme = {
   accent: '#0967D2',
   accentLight: '#ff5252',
@@ -15,6 +25,12 @@ export const lightTheme = {
   text: '#2e2e2e',
   subText: 'rgb(108, 118, 147);',
   quoteHighlight: '#cc3232',
+  chart: {
+    colors: chartColors,
+    lineColor: colors.grey[200],
+    tickColor: colors.grey[600],
+    gridLineColor: colors.grey[200],
+  },
 };
 
 export const darkTheme = {
@@ -32,4 +48,10 @@ export const darkTheme = {
   text: '#F5F7FA',
   subText: 'rgb(126, 140, 154);',
   quoteHighlight: '#cc3232',
+  chart: {
+    colors: chartColors,
+    lineColor: colors.grey[400],
+    tickColor: colors.grey[400],
+    gridLineColor: colors.grey[800],
+  },
 };

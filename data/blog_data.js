@@ -34,7 +34,7 @@ export default [
   {
     date: '2020-08-13',
     slug: 'neural-networks-hello-world',
-    title: '"Hello World" of Deep Learning with Neural Networks - Tensorflow.js',
+    title: '"Hello World" of Neural Networks in Tensorflow.js',
     desc: 'Deep Learning in your Browser!',
   },
   // {

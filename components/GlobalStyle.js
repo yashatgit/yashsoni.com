@@ -143,7 +143,7 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
     }
 
-    .dark-gallery img {
+    .dark-gallery img, .dark-image {
         -webkit-filter: invert(.862745) hue-rotate(180deg);
         filter: invert(.862745) hue-rotate(180deg);
     }

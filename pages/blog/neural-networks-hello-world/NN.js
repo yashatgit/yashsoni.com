@@ -1,10 +1,18 @@
 //https://codesandbox.io/s/blue-rain-xf6nz?file=/src/App.js:0-2842
+//https://www.chartjs.org/docs/latest/charts/line.html#line-styling
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import { useTheme } from 'styled-components';
+import { chartColors } from '../../../styles/theme';
+
 const tf = require('@tensorflow/tfjs');
 
-const x = tf.tensor([-1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
-const y = tf.tensor([-5, -2, 1, 4, 7, 10, 13, 16, 19, 22]);
+const getY = x => 3 * x - 2;
+const X = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const Y = X.map(getY);
+
+const x = tf.tensor(X);
+const y = tf.tensor(Y);
 
 const buildModel = () => {
   const model = tf.sequential({
@@ -42,22 +50,36 @@ const trainModel = ({ epochs, onEpochEnd = noop, onDone = noop, restart = true }
     });
 };
 
-const chartColors = {
-  red: 'rgb(255, 99, 132)',
-  orange: 'rgb(255, 159, 64)',
-  yellow: 'rgb(255, 205, 86)',
-  green: 'rgb(75, 192, 192)',
-  blue: 'rgb(54, 162, 235)',
-  purple: 'rgb(153, 102, 255)',
-  grey: 'rgb(201, 203, 207)',
-};
-
-const lineChartData = {
-  labels: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+const getLineChartData = theme => ({
+  labels: [...X, 10],
   options: {
     responsive: true,
     legend: {
       display: false,
+    },
+    scales: {
+      xAxes: [
+        {
+          ticks: { fontColor: theme.chart.tickColor },
+          gridLines: {
+            color: theme.chart.gridLineColor,
+          },
+          scaleLabel: {
+            labelString: 'x',
+          },
+        },
+      ],
+      yAxes: [
+        {
+          ticks: { fontColor: theme.chart.tickColor },
+          gridLines: {
+            color: theme.chart.gridLineColor,
+          },
+          scaleLabel: {
+            labelString: 'y',
+          },
+        },
+      ],
     },
   },
   datasets: [
@@ -66,35 +88,25 @@ const lineChartData = {
       fill: false,
       pointRadius: 5,
       pointHoverRadius: 8,
-      pointBackgroundColor: [
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.red,
-        chartColors.blue,
-      ],
-      data: [-5, -2, 1, 4, 7, 10, 13, 16, 19, 22, 25, 0],
+      pointBackgroundColor: [...Y.map(y => chartColors.red), chartColors.blue],
+      backgroundColor: 'red',
+      borderColor: theme.chart.lineColor,
+      data: [...Y, 0],
     },
   ],
-};
+});
 
 export default function App() {
+  const theme = useTheme();
   const [isOn, setIsOn] = useState(false);
   const [summary, setSummary] = useState('');
 
-  //const [chartData, updateChartData] = useState(lineChartData);
+  const chartData = React.useMemo(() => getLineChartData(theme), [theme]);
   const chartRef = React.useRef();
 
   const updateChartPoint = newValue => {
     if (chartRef.current) {
-      lineChartData.datasets[0].data[11] = newValue;
+      chartData.datasets[0].data[11] = newValue;
       chartRef.current.chartInstance.update();
     }
   };
@@ -121,7 +133,7 @@ export default function App() {
   };
   return (
     <>
-      <Line ref={chartRef} data={lineChartData} options={lineChartData.options} />
+      <Line ref={chartRef} data={chartData} options={chartData.options} />
       <button onClick={() => startTraining()} disabled={isOn}>
         {'Train Model'}
       </button>
