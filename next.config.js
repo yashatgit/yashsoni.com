@@ -6,26 +6,26 @@ const withMDX = require('@next/mdx')({
     rehypePlugins: [rehypePrism],
   },
 });
-const withPWA = require('next-pwa');
+//const withPWA = require('next-pwa');
 
 module.exports = withImages(
-  withPWA(
-    withMDX({
-      experimental: {
-        modern: true,
-      },
-      pageExtensions: ['js', 'mdx'],
-      webpack: (config, { isServer }) => {
-        if (isServer) {
-          require('./scripts/generate-sitemap');
-        }
+  //withPWA(
+  withMDX({
+    experimental: {
+      modern: true,
+    },
+    pageExtensions: ['js', 'mdx'],
+    webpack: (config, { isServer }) => {
+      if (isServer) {
+        require('./scripts/generate-sitemap');
+      }
 
-        return config;
-      },
-      pwa: {
-        disable: process.env.NODE_ENV === 'development',
-        dest: 'public',
-      },
-    })
-  )
+      return config;
+    },
+    pwa: {
+      disable: process.env.NODE_ENV === 'development',
+      dest: 'public',
+    },
+  })
+  // )
 );
