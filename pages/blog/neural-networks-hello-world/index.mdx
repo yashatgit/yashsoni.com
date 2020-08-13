@@ -1,0 +1,144 @@
+import Post from '../../../components/post'
+import articles from '../../../data/blog_data'
+import ImageGrid from '../../../components/imageGrid'
+import NN from './NN';
+
+export const meta = articles[2]
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# "Hello World" of Deep Learning with Neural Networks - Tensorflow.js
+
+Machine learning differs from Traditional programming in a different way.
+When we talk about Traditional Programming, we usually have a set of rules/formulas to which we provide the data and get the answers from it.
+
+Whereas in Machine learning, we train the computer to figure out the rules given a set of data and the answers.
+ML algorithms figure out the specific patterns in the dataset and try to build a set of rules around it.
+
+<img alt="Traditional Programming Vs Machine Learning" src={require('./traditionalProgramming-Vs-MachineLearning.jpg')}/>
+
+Following are few great resources which explain ML and AL in detail
+
+- [Visual intro to machine learning](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/)
+- [Machine Learnings for Humans](https://medium.com/machine-learning-for-humans/why-machine-learning-matters-6164faf1df12)
+
+Let's look at a simple example to illustrate this with Neural Networks(NN).
+A neural network is a slightly more advanced implementation of machine learning which we call deep learning.
+
+## Understanding the problem
+
+Like every first app, we start with something super simple that shows the overall scaffolding for how the code works.
+For neural networks, we can take an example where we ask the network to **learn** the relationship between two numbers.
+
+```javascript
+const myFunction(x) {
+    const y = 3*x - 2;
+    return y;
+}
+
+// x -> input
+// rule -> 3x - 2
+// y -> answer
+```
+
+Let's task this NN to **figure out** this rule of `y=3x-2` by providing it some inputs and the output values.
+
+We can divide this task into following steps:
+
+### Step 1: Defining and compiling the Neural Network
+
+Since the input and output are scalars, we can define the network with a single layer having a single neuron.
+
+```javascript
+const tf = require('@tensorflow/tfjs-node');
+
+const model = tf.sequential({
+  layers: [tf.layers.dense({ units: 1, inputShape: [1] })],
+});
+```
+
+To compile this NN, we need to provide 2 functions. A **loss function** and an **optimizer**.
+
+The NN can start with making a guess which could look like `y=10x+4`. The **loss function** measures the guessed answers against the known correct answers. It then tells us how well or how bad the assumption is.
+
+It then uses the **optimizer** function to make another guess. Based on how the loss function went, it will try to minimize the loss.
+It may endup with `y=5x+2`. This is still bad, but better than the previous answer.
+
+We repeat this process for a number of **EPOCHS** which slowly brings us to the actual result minimizing the loss.
+
+```javascript
+model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' });
+```
+
+The loss function is [Mean Squared Error](https://en.wikipedia.org/wiki/Mean_squared_error) and the optimizer is [Stochastic gradient descent](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)
+
+### Step 2: Providing the data
+
+Next, we feed in some data to the NN. As you can see below, the relationship between x and y is `y=3x-2`.
+
+Tensorflow, as the name suggests, consumes [tensors](https://www.tensorflow.org/guide/tensor) which are generalizations of matrices to N-dimensional space.
+
+```javascript
+const x = tf.tensor([-1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+const y = tf.tensor([-5, -2, 1, 4, 7, 10, 13, 16, 19, 22]);
+```
+
+### Step 3: Training the network
+
+Next up is the training process. The NN learns the relationship between input and output variables in the `model.fit` method.
+We train the network for 600 **epochs** to give it sufficient time to learn the relationship, minimizing the loss.
+
+```javascript
+model.fit(x, y, {epochs: 600}});
+```
+
+### Step 4: Prediction
+
+Once the model completes the training task, the relationship between the input and output is encoded in the neurons.
+We can use the `model.predict` function to give us the value of a new `x` which the network hasn't seen yet.
+
+```javascript
+model.predict(tf.tensor([10])).print();
+
+// outputs: 27.9856529
+```
+
+By the formula, the correct answer should have been 28. But, the answer is a little less.
+The reason is that neural networks deal with probabilities. So, once we feed the NN with the data, it calculated that there is a very high
+probability that the relationship between `x` and `y` is `Y=3X-2`, but with only 10 data points we can't know for sure.
+Hence, the result for 10 is very close to 28, but not necessarily 28.
+
+This is the comple code for a full glance.
+
+```javascript
+const tf = require('@tensorflow/tfjs-node');
+
+const model = tf.sequential({
+  layers: [tf.layers.dense({ units: 1, inputShape: [1] })],
+});
+
+model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' });
+
+const x = tf.tensor([-1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+const y = tf.tensor([-5, -2, 1, 4, 7, 10, 13, 16, 19, 22]);
+
+model
+  .fit(x, y, {epochs: 600}})
+  .then(history => {
+    console.log('training done!');
+    model.predict(tf.tensor([10])).print();
+  });
+```
+
+These are just ~10 lines but, the sheer magic that runs behind this is immense.
+
+## Interactive Demo
+
+Follwing is a demo depicting what we have covered so far.
+
+The graph below plots `y=3x-2`. The **red dots** are the known values and the **blue dot** is the unknown value of `y=10` which is currently being predicted by our NN.
+Once you click on **Train Model** button, it will train a neural network in the browser and update the prediction with every passing epoch.
+
+Go ahead, give it a try!
+
+<NN/>
