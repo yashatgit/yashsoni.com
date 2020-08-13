@@ -7,7 +7,7 @@ const A = styled.a`
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${props => props.theme.primary};
+    text-decoration: underline;
   }
 
   ${props =>
