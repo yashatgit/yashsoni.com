@@ -124,7 +124,7 @@ export default function App() {
         if (epoch % 5 === 0 && chartRef.current) {
           updateChartPoint(prediction);
         }
-        setSummary(`Loss after epoch ${epoch} is ${loss}. Current prediction for y=10 is: ${prediction}`);
+        setSummary(`Loss after epoch ${epoch} is ${loss}. Current prediction for y when x=10 is: ${prediction}`);
       },
       onDone: () => {
         setIsOn(false);
