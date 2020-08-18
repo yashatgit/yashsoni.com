@@ -5,7 +5,7 @@ import Footer from '../components/footer';
 import Main from '../components/main';
 import Nav from '../components/nav';
 import Page from '../components/page';
-import Article from '../components/articles/article';
+import Article from '../components/article';
 import articles from '../data/blog_data';
 import { spacing } from '../styles/vars';
 import { heading } from '../styles/mixins';
@@ -27,17 +27,14 @@ const StyledArticles = styled.section`
 `;
 
 const Index = () => (
-  <Page
-    description="Thoughts on the software industry, programming, tech, videography, music, and my personal life."
-    title="Yash Soni - Blog"
-  >
+  <Page description="Experiments on programming, tech, ML/AI and life in general." title="Yash Soni - Blog">
     <Nav />
     <Main>
       <StyledArticles>
         <StyledArticlesTitle>Writing</StyledArticlesTitle>
         <ul>
           {articles.map(article => (
-            <Article article={article} key={article.slug || article.url} />
+            <Article article={article} key={article.slug || article.url} buildUrl={slug => `/blog/${slug}`} />
           ))}
         </ul>
       </StyledArticles>

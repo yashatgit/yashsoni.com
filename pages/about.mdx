@@ -1,6 +1,10 @@
 import Post from '../components/post'
 
-export default ({children}) => <Post meta={{}}>{children}</Post>
+export const meta = {
+description: 'Why this blog',
+title: 'About me'
+}
+export default ({children}) => <Post meta={meta}>{children}</Post>
 
 ### Hello Again!
 

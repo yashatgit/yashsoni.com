@@ -55,8 +55,7 @@ const Details = styled.div`
   margin-bottom: ${spacing.extrasmall};
 `;
 
-const description =
-  "Yash Soni is a developer, writer, and UI/UX enthusiast. He's interested in all things JAMstack (JavaScript, APIs, Markup) and Design Systems.";
+const description = 'Yash Soni is a developer and a UI/UX enthusiast.';
 
 const Index = () => (
   <>
@@ -71,7 +70,7 @@ const Index = () => (
         </Content>
       </Main>
     </Page>
-    <LogoJsonLd logo="https://yashsoni.com/static/images/lee.jpg" url="https://yashsoni.com" />
+    <LogoJsonLd logo="https://yashsoni.com/static/images/logo.png" url="https://yashsoni.com" />
   </>
 );
 

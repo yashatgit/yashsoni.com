@@ -57,7 +57,12 @@ Segmented content
 - [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)
 - Fight & Flight
 
-# Done & Dusted
+# SEO
+
+https://www.woorank.com/ for seo
+https://developers.google.com/speed/pagespeed/insights/ for pagespeed
+https://search.google.com/test/rich-results for schema (edited)
+WebmasterChecklist.pdf
 
 ## About page:
 

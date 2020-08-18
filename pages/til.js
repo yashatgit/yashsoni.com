@@ -5,7 +5,7 @@ import Footer from '../components/footer';
 import Main from '../components/main';
 import Nav from '../components/nav';
 import Page from '../components/page';
-import TILArticle from '../components/articles/til';
+import Article from '../components/article';
 import tils from '../data/til_data';
 import { spacing } from '../styles/vars';
 import { heading } from '../styles/mixins';
@@ -34,7 +34,7 @@ const Index = () => {
   return (
     <>
       <Page
-        description="Thoughts on the software industry, programming, tech, videography, music, and my personal life."
+        description="Collection of small bits and pieces of knowledge I picked up on my way."
         title="Yash Soni - Today I Learned"
       >
         <Nav />
@@ -48,7 +48,7 @@ const Index = () => {
             </StyledArticlesDesc>
             <ul>
               {tils.map(article => (
-                <TILArticle article={article} key={article.slug || article.url} />
+                <Article article={article} key={article.slug || article.url} buildUrl={slug => `/til/${slug}`} />
               ))}
             </ul>
           </StyledArticles>

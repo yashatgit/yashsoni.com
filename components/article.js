@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { spacing } from '../../styles/vars';
-import { H3, H5 } from '../elements/text';
-import Link from '../link';
+import { spacing } from '../styles/vars';
+import { H3, H5 } from './elements/text';
+import Link from './link';
 // import Date from '../date';
 
 const StyledArticle = styled.li`
@@ -32,17 +32,21 @@ const StyledLink = styled(Link)`
 
   :hover {
     color: ${props => props.theme.accent};
+    text-decoration: none !important;
   }
 `;
 
-const Article = ({ article }) => (
-  <StyledArticle>
-    <StyledLink href={`/blog/${article.slug}`}>
-      {/* <Date>{article.date}</Date> */}
-      <H3>{article.title}</H3>
-      {article.desc ? <H5>{article.desc}</H5> : ''}
-    </StyledLink>
-  </StyledArticle>
-);
+const Article = ({ article, buildUrl }) => {
+  const ttr = article.ttr ? ` • ⏱${article.ttr} read` : '';
+  return (
+    <StyledArticle>
+      <StyledLink href={buildUrl(article.slug)}>
+        {/* <Date>{article.date}</Date> */}
+        <H3>{article.title}</H3>
+        <H5>{`${article.description}${ttr}`}</H5>
+      </StyledLink>
+    </StyledArticle>
+  );
+};
 
 export default Article;
