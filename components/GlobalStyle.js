@@ -107,7 +107,7 @@ const GlobalStyle = createGlobalStyle`
         padding: ${spacing.normal};
         white-space: pre;
         background: ${props => props.theme.code};
-        border-radius: 8px;
+        border-radius: 2px;
         box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 
         code {
@@ -115,7 +115,8 @@ const GlobalStyle = createGlobalStyle`
             background: none;
             color: ${props => props.theme.codeBg};
         }
-        margin
+        margin-left: -20px;
+        margin-right: -20px;
     }
 
     ${mediaQuery.l} {

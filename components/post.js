@@ -38,12 +38,12 @@ const components = {
 };
 
 const Main = styled.main`
-    ${column}
-    padding: ${spacing.normal};
-    
-    @media (min-width: 768px) {
-        font-size: 18px;
-    }
+  ${column}
+  padding: 20px;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 /*
