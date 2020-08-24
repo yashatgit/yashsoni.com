@@ -12,7 +12,7 @@ import { heading } from '../styles/mixins';
 
 const StyledArticlesTitle = styled.h1`
   ${heading};
-  color: ${props => props.theme.text};
+  color: var(--text1);
   font-size: 2.5em;
   margin-bottom: ${spacing.large};
 `;

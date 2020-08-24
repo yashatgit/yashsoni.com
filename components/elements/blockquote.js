@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { spacing } from '../../styles/vars';
 
 const Blockquote = styled.blockquote`
-  color: ${props => props.theme.subText};
+  color: var(--text2);
   font-size: 1em;
   font-weight: 500;
   letter-spacing: -1px;
@@ -18,7 +18,7 @@ const Blockquote = styled.blockquote`
   }
 
   p {
-    color: ${props => props.theme.text};
+    color: var(--text1);
     margin: 0;
   }
 
@@ -26,7 +26,7 @@ const Blockquote = styled.blockquote`
     content: '';
     height: 100%;
     width: 2px;
-    background-color: ${props => props.theme.quoteHighlight};
+    background-color: var(--quoteHighlight);
     position: absolute;
     left: 0;
     top: 0;
@@ -36,7 +36,7 @@ const Blockquote = styled.blockquote`
 export const Citation = styled.cite`
   font-style: italic;
   font-size: 0.8em;
-  color: ${props => props.theme.subText};
+  color: var(--text2);
   font-weight: 400;
 `;
 

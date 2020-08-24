@@ -11,6 +11,7 @@ import '../styles/prism.css';
 const AppWithTheme = ({ children }) => {
   const darkMode = useDarkMode(false);
   const theme = darkMode.value ? darkTheme : lightTheme;
+  console.log({ theme, dvalue: darkMode.value, darkMode });
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

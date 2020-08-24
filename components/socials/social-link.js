@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { spacing } from '../../styles/vars';
 
 const StyledSocialLink = styled.a`
-  color: ${props => props.theme.primary};
+  color: var(--text1);
   display: inline-block;
   text-decoration: none;
 

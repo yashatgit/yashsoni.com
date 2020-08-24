@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const A = styled.a`
-  color: ${props => props.theme.accent};
+  color: var(--accent);
   cursor: pointer;
   text-decoration: none;
   transition: color 0.15s ease;
@@ -13,7 +13,7 @@ const A = styled.a`
   ${props =>
     props.underline &&
     css`
-      color: ${props.theme.primary};
+      color: var(--text1);
       background-image: linear-gradient(120deg, #2ec7c0 0%, #1a86e4 100%);
       background-repeat: no-repeat;
       background-size: 100% 0.2em;

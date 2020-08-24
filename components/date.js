@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { dateTime, full } from '../utils/date-format';
 
 const StyledDate = styled.time`
-  color: ${props => props.theme.accent};
+  color: var(--accent);
   display: block;
   font-size: 0.9em;
   margin: 0.5em 0 0;

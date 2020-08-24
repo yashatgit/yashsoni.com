@@ -22,16 +22,16 @@ const StyledArticle = styled.li`
   :hover {
     h3 {
       transition: all 0.15s ease;
-      color: ${props => props.theme.accent};
+      color: var(--accent);
     }
   }
 `;
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.text};
+  color: var(--text1);
 
   :hover {
-    color: ${props => props.theme.accent};
+    color: var(--accent);
     text-decoration: none !important;
   }
 `;

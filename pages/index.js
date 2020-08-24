@@ -25,7 +25,7 @@ const Content = styled.div`
 //     text-align: center;
 //     font-style: italic;
 //     margin: 0;
-//     color: ${props => props.theme.accent};
+//     color: var(--accent);
 //     letter-spacing: 0.03;
 // `;
 

@@ -28,14 +28,14 @@ const Logo = styled.img`
 `;
 
 const NavLink = styled(Link)`
-  color: ${props => props.theme.accent};
+  color: var(--accent);
   font-size: 0.8em;
   letter-spacing: 0.03em;
   text-decoration: none;
   transition: all 0.15s ease;
 
   :hover {
-    color: ${props => props.theme.primary};
+    color: var(--text1);
   }
 
   @media (min-width: 737px) {

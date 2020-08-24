@@ -15,7 +15,7 @@ const Article = styled.article`
     
     h3 {
         ${heading};
-        color: ${props => props.theme.text};
+        color: var(--text1);
         margin: 8px 0 12px;
         font-size: 32px;
     }
@@ -27,7 +27,7 @@ const Article = styled.article`
         width: 32px;
 
         path {
-            fill: ${props => props.theme.primary};
+            fill: var(--text1);
         }
     }
 `;

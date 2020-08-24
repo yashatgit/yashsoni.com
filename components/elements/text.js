@@ -8,7 +8,7 @@ const createId = text => text.toLowerCase().replace(/ /gu, '-');
 
 const StyledH1 = styled.h1`
   ${heading};
-  color: ${props => props.theme.text};
+  color: var(--text1);
   font-size: 32px;
   margin: 0;
   line-height: 1.35;
@@ -20,7 +20,7 @@ const StyledH1 = styled.h1`
 
 const StyledH2 = styled.h2`
   ${heading};
-  color: ${props => props.theme.text};
+  color: var(--text1);
   font-size: 1.4em;
   margin: ${spacing.large} 0 ${spacing.small};
   line-height: 1.25;
@@ -32,7 +32,7 @@ const StyledH2 = styled.h2`
 
 const StyledH3 = styled.h3`
   ${heading};
-  color: ${props => props.theme.text};
+  color: var(--text1);
   font-size: 20px;
   margin: ${spacing.normal} 0 ${spacing.small};
 
@@ -43,12 +43,12 @@ const StyledH3 = styled.h3`
 
 const StyledH4 = styled.h4`
   ${heading};
-  color: ${props => props.theme.text};
+  color: var(--text1);
   font-size: 18px;
 `;
 
 const StyledH5 = styled.h4`
-  color: ${props => props.theme.subText};
+  color: var(--text2);
   font-size: 16px;
   font-weight: 500;
 `;

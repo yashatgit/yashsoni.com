@@ -5,7 +5,7 @@ import { spacing } from '../styles/vars';
 
 const Main = styled.main`
   ${column};
-  color: ${props => props.theme.primary};
+  color: var(--text1);
   margin-bottom: ${spacing.normal};
   padding: ${spacing.normal};
 `;

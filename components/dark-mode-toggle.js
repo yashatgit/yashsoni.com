@@ -33,12 +33,12 @@ const iconStyles = `
 `;
 
 const SunIcon = styled(Sun)`
-  color: ${props => props.theme.accent};
+  color: var(--accent);
   ${iconStyles};
 `;
 
 const MoonIcon = styled(Moon)`
-  color: ${props => props.theme.accent};
+  color: var(--accent);
   ${iconStyles};
 `;
 

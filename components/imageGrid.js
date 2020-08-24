@@ -13,7 +13,7 @@ import useDarkMode from 'use-dark-mode';
 
 const StyledCaption = styled.div`
   font-size: 16px;
-  color: ${props => props.theme.darkGrey};
+  color: var(--text2);
   text-align: center;
 `;
 
