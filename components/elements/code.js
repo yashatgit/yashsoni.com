@@ -12,7 +12,7 @@ const StyledCodeBlock = styled.div`
       content: '${props.language || ''}';
       position: absolute;
       top: 0px;
-      right: 1rem;
+      right: 0px;
       font-size: 0.7rem;
       letter-spacing: 0.8px;
       text-transform: uppercase;

@@ -110,10 +110,9 @@ const GlobalStyle = createGlobalStyle`
         line-height: 1.4em;
         margin: 0 0 ${spacing.normal};
         overflow-x: auto;
-        padding: ${spacing.normal};
+        padding: ${spacing.extralarge} ${spacing.normal};
         white-space: pre;
         background: var(--code);
-        border-radius: 2px;
         box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
 
         code {
@@ -161,7 +160,8 @@ const GlobalStyle = createGlobalStyle`
 
     ${mediaQuery.l} {
         pre {
-            font-size: 12px            
+            font-size: 12px;
+            border-radius: 8px;            
         } 
     }
     
