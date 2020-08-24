@@ -2,14 +2,15 @@
 //https://www.chartjs.org/docs/latest/charts/line.html#line-styling
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { useTheme } from 'styled-components';
-import { chartColors } from '../../../styles/theme';
+
+import useCharts, { chartColors } from './useCharts';
 
 const tf = require('@tensorflow/tfjs');
 
 const getY = x => 3 * x - 2;
 const X = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const Y = X.map(getY);
+const TOTAL_EPOCHS = 200;
 
 const x = tf.tensor(X);
 const y = tf.tensor(Y);
@@ -35,11 +36,10 @@ const trainModel = ({ epochs, onEpochEnd = noop, onDone = noop, restart = true }
       verbose: 0,
       callbacks: {
         onEpochEnd: (epoch, logs) => {
-          const interimValue = predict(currentModel, 10);
           onEpochEnd({
             epoch: epoch + 1,
             loss: Number(logs.loss).toFixed(5),
-            prediction: Number(interimValue).toFixed(5),
+            prediction: Number(predict(currentModel, 10)).toFixed(5),
           });
         },
       },
@@ -50,38 +50,8 @@ const trainModel = ({ epochs, onEpochEnd = noop, onDone = noop, restart = true }
     });
 };
 
-const getLineChartData = theme => ({
+const rulePlotData = {
   labels: [...X, 10],
-  options: {
-    responsive: true,
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [
-        {
-          ticks: { fontColor: theme.chart.tickColor },
-          gridLines: {
-            color: theme.chart.gridLineColor,
-          },
-          scaleLabel: {
-            labelString: 'x',
-          },
-        },
-      ],
-      yAxes: [
-        {
-          ticks: { fontColor: theme.chart.tickColor },
-          gridLines: {
-            color: theme.chart.gridLineColor,
-          },
-          scaleLabel: {
-            labelString: 'y',
-          },
-        },
-      ],
-    },
-  },
   datasets: [
     {
       label: 'y = 3x -2',
@@ -89,40 +59,57 @@ const getLineChartData = theme => ({
       pointRadius: 5,
       pointHoverRadius: 8,
       pointBackgroundColor: [...Y.map(y => chartColors.red), chartColors.blue],
-      backgroundColor: 'red',
-      borderColor: theme.chart.lineColor,
+      //borderColor: theme.chart.lineColor,
       data: [...Y, 0],
     },
   ],
-});
+};
+
+const lossAndAccuracyData = {
+  labels: Array.from(Array(TOTAL_EPOCHS), (_, i) => i + 1),
+  datasets: [
+    {
+      label: 'Loss',
+      fill: false,
+      backgroundColor: chartColors.red,
+      data: [4],
+    },
+  ],
+};
 
 export default function App() {
-  const theme = useTheme();
+  const { lineChartOptions, lossChartOptions } = useCharts();
   const [isOn, setIsOn] = useState(false);
   const [summary, setSummary] = useState('');
 
-  const chartData = React.useMemo(() => getLineChartData(theme), [theme]);
   const chartRef = React.useRef();
+  const lossAndAccChartRef = React.useRef();
 
-  const updateChartPoint = newValue => {
-    if (chartRef.current) {
-      chartData.datasets[0].data[11] = newValue;
+  const updateChartPoints = ({ loss, epoch, prediction }) => {
+    if (chartRef.current && lossAndAccChartRef.current) {
+      rulePlotData.datasets[0].data[11] = prediction;
       chartRef.current.chartInstance.update();
+
+      lossAndAccuracyData.datasets[0].data[epoch] = loss;
+      lossAndAccChartRef.current.chartInstance.update();
     }
   };
 
   const reset = () => {
-    updateChartPoint(0);
+    rulePlotData.datasets[0].data[11] = 0;
+    lossAndAccuracyData.datasets[0].data[0] = 4;
+    chartRef.current.chartInstance.update();
+    lossAndAccChartRef.current.chartInstance.update();
   };
 
   const startTraining = () => {
     reset();
     setIsOn(true);
     trainModel({
-      epochs: 600,
+      epochs: TOTAL_EPOCHS,
       onEpochEnd: ({ loss, epoch, prediction }) => {
         if (epoch % 5 === 0 && chartRef.current) {
-          updateChartPoint(prediction);
+          updateChartPoints({ loss, epoch, prediction });
         }
         setSummary(`Loss after epoch ${epoch} is ${loss}. Current prediction for y when x=10 is: ${prediction}`);
       },
@@ -133,7 +120,14 @@ export default function App() {
   };
   return (
     <>
-      <Line ref={chartRef} data={chartData} options={chartData.options} />
+      <div>
+        <div>
+          <Line ref={chartRef} data={rulePlotData} options={lineChartOptions} />
+        </div>
+        <div>
+          <Line ref={lossAndAccChartRef} data={lossAndAccuracyData} options={lossChartOptions} />
+        </div>
+      </div>
       <button onClick={() => startTraining()} disabled={isOn}>
         {'Train Model'}
       </button>
