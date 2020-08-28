@@ -37,6 +37,12 @@ export default [
     title: '"Hello World" of Neural Networks in Tensorflow.js',
     description: 'Deep Learning in your Browser!',
   },
+  {
+    date: '2020-08-26',
+    slug: 'building-a-gaming-arcade-with-raspberrypi-DIY',
+    title: 'Building a Gaming Arcade with RaspberryPi - DIY 👾',
+    description: 'all aboard the nostalgia train',
+  },
   // {
   //     date: 'May 21, 2020',
   //     slug: 'form-follows-function',

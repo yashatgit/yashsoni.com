@@ -26,7 +26,8 @@
     "build": "next build",
     "export": "yarn build && next export",
     "dev": "next",
-    "imageoptim": "yarn imageoptim:gif && yarn imageoptim:jpg && yarn imageoptim:png",
+    "imageoptim": "",
+    "imageoptim-old": "yarn imageoptim:gif && yarn imageoptim:jpg && yarn imageoptim:png",
     "imageoptim:gif": "imageoptim \"public/**/*.gif\"",
     "imageoptim:jpg": "imageoptim \"public/**/*.jpg\"",
     "imageoptim:png": "imageoptim --no-imageoptim --imagealpha \"public/**/*.png\"",
@@ -43,18 +44,6 @@
   "lint-staged": {
     "*.{html,js,json,md,mdx,mjs,yml}": [
       "prettier --write",
-      "git add"
-    ],
-    "*.gif": [
-      "imageoptim",
-      "git add"
-    ],
-    "*.jpg": [
-      "imageoptim",
-      "git add"
-    ],
-    "*.png": [
-      "imageoptim --no-imageoptim --imagealpha",
       "git add"
     ]
   },

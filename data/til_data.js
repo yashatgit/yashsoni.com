@@ -62,11 +62,11 @@ export default [
     description: 'and general mistakes to avoid',
     ttr: '5 mins',
   },
-  {
-    date: 'Aug 14, 2020',
-    slug: 'css-font-variant-numeric',
-    title: 'Beautiful font alignment',
-    description: 'and general mistakes to avoid',
-    ttr: '5 mins',
-  },
+  // {
+  //   date: 'Aug 14, 2020',
+  //   slug: 'css-font-variant-numeric',
+  //   title: 'Beautiful font alignment',
+  //   description: 'and general mistakes to avoid',
+  //   ttr: '5 mins',
+  // },
 ];
