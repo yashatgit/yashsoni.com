@@ -28,8 +28,6 @@ const StyledArticle = styled.li`
 `;
 
 const StyledLink = styled(Link)`
-  color: var(--text1);
-
   :hover {
     color: var(--accent);
     text-decoration: none !important;

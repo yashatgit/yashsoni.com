@@ -37,7 +37,8 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
         line-height: 1.65;
-        text-rendering: optimizeLegibility;        
+        text-rendering: optimizeLegibility;  
+        transition: background-color 0.4s
     }    
 
     table {  
