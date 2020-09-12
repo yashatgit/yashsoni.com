@@ -69,9 +69,9 @@ const EditAndDiscuss = ({meta}) => {
 };
 */
 
-const Post = ({ children, meta }) => (
+const Post = ({ children, meta, hideProgressBar = false }) => (
   <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
-    <PageProgress />
+    {!hideProgressBar && <PageProgress />}
     <Nav />
     <Main>
       <MDXProvider components={components}>
