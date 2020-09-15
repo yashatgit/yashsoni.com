@@ -12,7 +12,7 @@ export const chartColors = {
 
 export const lightTheme = {
   ui1: '#fff',
-  text1: '#435466',
+  text1: '#0a2540',
   titleText: '#0a2540',
   //text1: '#2e2e2e',
   text2: colors.grey[700],
