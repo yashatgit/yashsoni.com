@@ -1,0 +1,30 @@
+import Post from '../../components/post'
+import til from '../../data/til_data'
+
+export const meta = til[7]
+
+export default ({children}) => <Post meta={meta}>{children}</Post>
+
+# Why Regex and HTML parsing is a bad idea.
+
+Remembering regex rules have been a difficult task for me. Whenever my Short term memory.
+
+One of the best course to learn Regex has been from [Execute Program](https://www.executeprogram.com/courses/regexes).
+
+At work, I stumbled upon a task to parse the `viewbox` property from an `svg` file. As usual, unable to recall the correct REGEX rules landed me on **stack-overflow**.
+Almost all the Regex + HTML answers point to [this question](https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags) on stack overflow and the [famous answer](https://stackoverflow.com/a/1732454/1766033)!
+
+Although REGEX can be used to parse limited set of HTML, a better alternative is to use the [DOMParser](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser).
+The DOMParser interface provides the ability to parse XML or HTML source code from a string into a DOM Document.
+
+```typescript
+const svgFileContents =
+  '<svg viewBox="0 0 2 2" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" /></svg>';
+
+const parser = new DOMParser();
+const document = parser.parseFromString(svgFileContents, 'text/html');
+
+const svgElement = document.querySelector('svg') as SVGSVGElement;
+const viewBox = svgElement.getAttribute('viewBox');
+const svgContent: svgElement.innerHTML;
+```

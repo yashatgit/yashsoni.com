@@ -7,6 +7,7 @@ import useDarkMode from 'use-dark-mode';
 import { lightTheme, darkTheme } from '../styles/theme';
 
 import '../styles/prism.css';
+import '../styles/libraryOverrides.css';
 
 const AppWithTheme = ({ children }) => {
   const darkMode = useDarkMode(false);

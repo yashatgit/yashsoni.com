@@ -1,0 +1,4 @@
+.react-images__view-image {
+  max-height: 100vh !important;
+  /* https://github.com/jossmac/react-images/issues/373 */
+}
