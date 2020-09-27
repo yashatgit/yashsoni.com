@@ -109,8 +109,8 @@ model.predict(tf.tensor([10])).print();
 // outputs: 27.9856529
 ```
 
-By the formula, the correct answer should have been 28. But, the answer is a little less.
-The reason is that neural networks deal with probabilities. So, once we feed the NN with the data, it calculated that there is a very high
+According to the formula, the correct answer should have been 28 `(3*10 - 2)`. But, the answer is a little less.
+This is because neural networks deal with probabilities. So, once we feed the NN with the data, it calculated that there is a very high
 probability that the relationship between `x` and `y` is `Y=3X-2`, but with only 10 data points we can't know for sure.
 Hence, the result for 10 is very close to 28, but not necessarily 28.
 
@@ -126,12 +126,11 @@ const model = tf.sequential({
 model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' });
 
 const x = tf.tensor([-1, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
-const y = tf.tensor([-5, -2, 1, 4, 7, 10, 13, 16, 19, 22]);
+const y = tf.tensor([-5, -2, 1, 4, 7, 10, 13, 16, 19, 22]); //y=3x-2
 
 model
   .fit(x, y, {epochs: 600}})
   .then(history => {
-    console.log('training done!');
     model.predict(tf.tensor([10])).print();
   });
 ```
