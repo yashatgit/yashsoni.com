@@ -49,7 +49,7 @@ The original use case for base64 was simply as a safe way to transmit data acros
 
 - **Data transmission**: Base64 can simply be used as a way to transfer and store data without the risk of data corruption. It is often used to transmit JSON data and cookie information for a user.
 - **File embedding**: Base64 can be used to embed files and rich media in webpages. This helps avoid depending on external mediums. Email attachments are also often sent this way.
-  In HTML, this is achieved with the [DataURL scheme](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
+  In HTML, this is achieved with the [DataURL scheme.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
 - **Data obfuscation**: Base64 can be used to obfuscate data since the resulting text is not human readable. But since this is easily reversible, it should not be used for encryption.
 - **Data hashing**: Data hashing schemes such as SHA and MD5 often produce results that are not readable or transmittable. Therefore, hashes are almost always base64 encoded so that they could be easily displayed and used for file integrity checks.
 - **Cryptography**: Similarly, encrypted data often contain sequences of bytes that are not easily transmitted or stored. When encrypted data needs to be stored in a database or sent over the Internet, base64 is often used. In addition, public key certificates and other encryption keys are also commonly stored in base64 format.
