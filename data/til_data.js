@@ -62,6 +62,13 @@ export default [
     description: 'and general mistakes to avoid',
     ttr: '5 mins',
   },
+  {
+    date: 'September 30, 2020',
+    slug: 'base64-encoding',
+    title: 'Base64',
+    description: 'one encoding to rule them all',
+    ttr: '4 mins',
+  },
   // {
   //   date: 'Aug 14, 2020',
   //   slug: 'css-font-variant-numeric',
