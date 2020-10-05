@@ -39,8 +39,9 @@ Segmented content
 - AWS world - clearing the exam
 - Smart Mirror IOT
 - [How to build a smart speaker](https://www.coursera.org/learn/ai-for-everyone/lecture/ahvm7/case-study-smart-speaker)
-- NN hello world
 - State Machines
+- Aeropress!!!! - coffee brewing
+- Scuba
 
 #### P2
 
@@ -49,9 +50,6 @@ Segmented content
 - Cap theorem
 - DX and importance
 - getting started with logging - can't put debugger in your life
-- coffee brewing
-- Raspberry retropi
-- Scuba
 - [First principles](https://fs.blog/2018/04/first-principles/)
 - Feynmann technique
 - [AST](https://dev.to/khaosdoctor/node-js-under-the-hood-4-let-s-talk-about-v8-1eol)

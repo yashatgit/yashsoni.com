@@ -70,7 +70,13 @@ const EditAndDiscuss = ({meta}) => {
 */
 
 const Post = ({ children, meta, hideProgressBar = false }) => (
-  <Page date={meta.date} description={meta.description} image={meta.image} title={`${meta.title} - Yash Soni`}>
+  <Page
+    date={meta.date}
+    keywords={meta.keywords}
+    description={meta.description}
+    image={meta.image}
+    title={`${meta.title} - Yash Soni`}
+  >
     {!hideProgressBar && <PageProgress />}
     <Nav />
     <Main>
