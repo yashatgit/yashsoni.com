@@ -4,7 +4,7 @@ import ImageGrid from '../../components/imageGrid'
 
 export const meta = articles[2]
 
-export default ({children}) => <Post meta={meta}>{children}</Post>
+export default ({children}) => <Post meta={meta} type="BLOG">{children}</Post>
 
 # Intercepting network data transmitted by apps
 
@@ -41,9 +41,9 @@ In order to make the web safe from such attacks, HTTP needs to be more secure an
 
 Servers and clients still speak exactly with the same protocol (HTTP), but over a secure TLS connection that encrypts and decrypts their requests and responses. The TLS layer has the following main purposes:
 
--   **Authentication** - verifying that you are talking directly to the server that you think you are talking to
--   **Encryption** - encrypting the exchanged data to keep it secure from eavesdroppers. Ensuring that only the server can read what you send it and only you can read what it sends back
--   **Data Integrity** - data cannot be modified or corrupted during transfer, intentionally or otherwise, without being detected
+- **Authentication** - verifying that you are talking directly to the server that you think you are talking to
+- **Encryption** - encrypting the exchanged data to keep it secure from eavesdroppers. Ensuring that only the server can read what you send it and only you can read what it sends back
+- **Data Integrity** - data cannot be modified or corrupted during transfer, intentionally or otherwise, without being detected
 
 Every request and response between client and server is now encrypted with a shared secret between the original client and server. Although anyone can still see who the client is talking to, they will not be able to make out what they are talking about i.e to read any of the actual data that is sent.
 
@@ -59,14 +59,14 @@ In order for websites to move from HTTP to HTTPS, they need a way to convince th
 
 These details about the servers are stored in the form of **SSL certificates**. These certificates are publicly visible and contain the following things:
 
--   The domain name that the certificate was issued for
--   Which person, organization, or device it was issued to
--   Which certificate authority issued it
--   The certificate authority's digital signature
--   Associated subdomains
--   Issue date of the certificate
--   Expiration date of the certificate
--   The public key (the private key is kept secret)
+- The domain name that the certificate was issued for
+- Which person, organization, or device it was issued to
+- Which certificate authority issued it
+- The certificate authority's digital signature
+- Associated subdomains
+- Issue date of the certificate
+- Expiration date of the certificate
+- The public key (the private key is kept secret)
 
 Technically, anyone can create their own SSL certificate by generating a public-private key pairing and including all the information mentioned above.
 To maintain the integrity of these digital certificates, they are cryptographically signed by a **[Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)** to verify that they are legit. There are only a handful of such authorities who can sign these certificates.
@@ -92,19 +92,19 @@ caption={<a href="https://transparencyreport.google.com/https/overview?hl=en">Go
 
 By now we know what we need to do to bypass the **HTTPS** security layer.
 
--   Build a man-in-middle proxy server to relay information across the actual client and server
--   Become a certificate authority to self-sign the certificates
+- Build a man-in-middle proxy server to relay information across the actual client and server
+- Become a certificate authority to self-sign the certificates
 
 This is where **[mitmproxy](https://mitmproxy.org/)** comes into play. mitmproxy is a **free** and **open source** interactive HTTPS proxy. The MITM in its name stands for _Man-In-The-Middle_ 🤷🏽‍♂️.
 ![mitmproxy](/static/images/mitmproxy/mitmproxy.png)
 
 The website lists the following features for mitmproxy
 
--   Intercept HTTP & HTTPS requests and responses and modify them on the fly
--   Replay the client-side of an HTTP conversations
--   Reverse proxy mode to forward traffic to a specified server
--   Transparent proxy mode on macOS and Linux
--   SSL/TLS certificates for interception are generated on the fly
+- Intercept HTTP & HTTPS requests and responses and modify them on the fly
+- Replay the client-side of an HTTP conversations
+- Reverse proxy mode to forward traffic to a specified server
+- Transparent proxy mode on macOS and Linux
+- SSL/TLS certificates for interception are generated on the fly
 
 ### mitmproxy installation and setup
 
@@ -152,5 +152,5 @@ And there you go, the data being sent over to the mi servers by the app in plain
 
 ## Resources
 
--   [How does HTTPS actually work?](https://robertheaton.com/2014/03/27/how-does-https-actually-work/)
--   [What is an SSL certificate](https://www.cloudflare.com/learning/ssl/what-is-an-ssl-certificate/)
+- [How does HTTPS actually work?](https://robertheaton.com/2014/03/27/how-does-https-actually-work/)
+- [What is an SSL certificate](https://www.cloudflare.com/learning/ssl/what-is-an-ssl-certificate/)

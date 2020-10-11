@@ -19,6 +19,7 @@ import Ol from './elements/ol';
 import Page from './page';
 import Strong from './elements/strong';
 import Ul from './elements/ul';
+import Utterance from './Utterances';
 //import Subscribe from './subscribe';
 
 const components = {
@@ -69,24 +70,33 @@ const EditAndDiscuss = ({meta}) => {
 };
 */
 
-const Post = ({ children, meta, hideProgressBar = false }) => (
-  <Page
-    date={meta.date}
-    keywords={meta.keywords}
-    description={meta.description}
-    image={meta.image}
-    title={`${meta.title} - Yash Soni`}
-  >
-    {!hideProgressBar && <PageProgress />}
-    <Nav />
-    <Main>
-      <MDXProvider components={components}>
-        <article>{children}</article>
-      </MDXProvider>
-      <hr />
-    </Main>
-    <Footer />
-  </Page>
-);
+const Post = ({ children, meta, hideProgressBar = false, type }) => {
+  const enableDiscussions = type === 'BLOG';
+  return (
+    <Page
+      date={meta.date}
+      keywords={meta.keywords}
+      description={meta.description}
+      image={meta.image}
+      title={`${meta.title} - Yash Soni`}
+    >
+      {!hideProgressBar && <PageProgress />}
+      <Nav />
+      <Main>
+        <MDXProvider components={components}>
+          <article>{children}</article>
+        </MDXProvider>
+        <hr />
+        {enableDiscussions ? (
+          <>
+            <Utterance repo={'https://github.com/yashatgit/yashsoni.com'} type={'pathname'} />
+            <hr />
+          </>
+        ) : null}
+      </Main>
+      <Footer />
+    </Page>
+  );
+};
 
 export default Post;
