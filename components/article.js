@@ -35,7 +35,7 @@ const StyledLink = styled(Link)`
 `;
 
 const Article = ({ article, buildUrl }) => {
-  const ttr = article.ttr ? ` • ⏱${article.ttr} read` : '';
+  const ttr = article.ttr ? ` • ⏱ ${article.ttr}` : '';
   return (
     <StyledArticle>
       <StyledLink href={buildUrl(article.slug)}>

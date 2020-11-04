@@ -9,6 +9,10 @@ const Ul = styled.ul`
   p {
     margin-bottom: 0;
   }
+
+  ul {
+    margin-bottom: 0;
+  }
 `;
 
 export default Ul;

@@ -79,6 +79,14 @@ export default [
     ttr: '4 mins',
     keywords: 'base64,encoding,binary to ascii,binary to text',
   },
+  {
+    date: 'November 4, 2020',
+    slug: 'how-to-docker',
+    title: 'How to Docker 🐋',
+    description: 'the word of images and containers',
+    ttr: '6 mins',
+    keywords: 'docker,dockerfile,docker image,docker container,how to docker',
+  },
   // {
   //   date: 'Aug 14, 2020',
   //   slug: 'css-font-variant-numeric',

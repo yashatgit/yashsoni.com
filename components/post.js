@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { column } from '../styles/mixins';
 import { spacing } from '../styles/vars';
 import PageProgress from '../components/pageProgress';
+import ImageGrid from '../components/imageGrid';
 
 import Blockquote, { Citation } from './elements/blockquote';
 import Code from './elements/code';
@@ -36,6 +37,7 @@ const components = {
   pre: Code,
   strong: Strong,
   ul: Ul,
+  ImageGrid,
 };
 
 const Main = styled.main`

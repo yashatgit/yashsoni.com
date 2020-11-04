@@ -10,11 +10,20 @@ const StyledImage = styled.img`
   max-width: 100%;
 `;
 
-const Image = ({ src, darkMode, className = '', ...rest }) => {
+const StyledCaption = styled.div`
+  font-size: 16px;
+  color: var(--text2);
+  text-align: center;
+`;
+
+const Image = ({ src, darkMode, caption, className = '', ...rest }) => {
   const darkModeSettings = useDarkMode();
   const classNames = `${className}${darkMode && darkModeSettings.value ? ' dark-image' : ''}`;
   return (
-    <StyledImage async className={classNames} decoding="async" importance="low" loading="lazy" src={src} {...rest} />
+    <div>
+      <StyledImage async className={classNames} decoding="async" importance="low" loading="lazy" src={src} {...rest} />
+      {caption && <StyledCaption>{caption}</StyledCaption>}
+    </div>
   );
 };
 
