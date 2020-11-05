@@ -51,7 +51,7 @@ export default [
     date: 'May 10, 2020',
     slug: 'tale-of-alice-and-bob',
     title: 'Alice and Bob',
-    description: 'and eve, grace and mallory',
+    description: 'the famous crypto couple',
     ttr: '3 mins',
     keywords: 'alice,bob,grace,eve,mallory',
   },
