@@ -49,29 +49,6 @@ const Main = styled.main`
   }
 `;
 
-/*
-const EditAndDiscuss = ({meta}) => {
-    const editUrl = (slug) => `https://github.com/yashatgit/yashsoni.com/edit/master/pages/blog/${slug}.mdx`;
-    const discussUrl = (slug) =>
-        `https://mobile.twitter.com/search?q=${encodeURIComponent(`https://yashsoni.com/blog/${slug}`)}`;
-
-    return (
-        <>
-            <p>
-                <Link href={discussUrl(meta.slug)} rel="noopener noreferrer" target="_blank">
-                    {'Discuss on Twitter'}
-                </Link>
-                {` • `}
-                <Link href={editUrl(meta.slug)} rel="noopener noreferrer" target="_blank">
-                    {'Edit on GitHub'}
-                </Link>
-            </p>
-            <Subscribe />
-        </>
-    );
-};
-*/
-
 const Post = ({ children, meta, enableComments, hideProgressBar = false, type }) => {
   const enableDiscussions = type === 'BLOG';
   return (

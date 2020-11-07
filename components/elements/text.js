@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { heading } from '../../styles/mixins';
 import { spacing } from '../../styles/vars';
 
-const createId = text => text.toLowerCase().replace(/ /gu, '-');
-
 const StyledH1 = styled.h1`
   ${heading};
   color: var(--titleText);
@@ -54,7 +52,7 @@ const StyledH5 = styled.h4`
 `;
 
 export const H1 = ({ children }) => <StyledH1>{children}</StyledH1>;
-export const H2 = ({ children }) => <StyledH2 id={createId(children)}>{children}</StyledH2>;
-export const H3 = ({ children }) => <StyledH3 id={createId(children)}>{children}</StyledH3>;
+export const H2 = ({ props, children }) => <StyledH2 {...props}>{children}</StyledH2>;
+export const H3 = ({ children }) => <StyledH3>{children}</StyledH3>;
 export const H4 = ({ children }) => <StyledH4>{children}</StyledH4>;
 export const H5 = ({ children }) => <StyledH5>{children}</StyledH5>;

@@ -4,6 +4,7 @@ const withMDX = require('@next/mdx')({
   extension: /\.(mdx)?$/u,
   options: {
     rehypePlugins: [rehypePrism],
+    remarkPlugins: [require('remark-autolink-headings'), require('remark-slug'), require('remark-code-titles')],
   },
 });
 //const withPWA = require('next-pwa');
