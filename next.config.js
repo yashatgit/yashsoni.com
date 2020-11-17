@@ -1,32 +1,40 @@
+const withPlugins = require('next-compose-plugins');
 const rehypePrism = require('@mapbox/rehype-prism');
 const withImages = require('next-images');
-const withMDX = require('@next/mdx')({
-  extension: /\.(mdx)?$/u,
-  options: {
-    rehypePlugins: [rehypePrism],
-    remarkPlugins: [require('remark-autolink-headings'), require('remark-slug'), require('remark-code-titles')],
+const withMdxEnhanced = require('next-mdx-enhanced');
+
+const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require('./scripts/generate-sitemap');
+    }
+    return config;
   },
-});
-//const withPWA = require('next-pwa');
+  experimental: {
+    modern: true,
+  },
+  pageExtensions: ['js', 'mdx'],
+};
 
-module.exports = withImages(
-  //withPWA(
-  withMDX({
-    experimental: {
-      modern: true,
-    },
-    pageExtensions: ['js', 'mdx'],
-    webpack: (config, { isServer }) => {
-      if (isServer) {
-        require('./scripts/generate-sitemap');
-      }
+const remarkPlugins = [require('remark-autolink-headings'), require('remark-slug')];
 
-      return config;
-    },
-    pwa: {
-      disable: process.env.NODE_ENV === 'development',
-      dest: 'public',
-    },
-  })
-  // )
+module.exports = withPlugins(
+  [
+    withMdxEnhanced({
+      remarkPlugins,
+      rehypePlugins: [rehypePrism],
+      // layoutPath: 'layouts',
+      // defaultLayout: true,
+      // extendFrontMatter: {
+      //   process: mdxContent => ({
+      //     wordCount: mdxContent.split(/\s+/gu).length,
+      //     readingTime: readingTime(mdxContent),
+      //   }),
+      // },
+    })({
+      pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    }),
+    withImages,
+  ],
+  nextConfig
 );
