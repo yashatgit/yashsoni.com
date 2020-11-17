@@ -45,7 +45,7 @@ const GlobalStyle = createGlobalStyle`
         color: #333;
         width: 100%; 
         border-collapse: 
-        collapse; border-spacing: 0; 
+        collapse; border-spacing: 0;
     }
     
     td, th {  
@@ -54,8 +54,7 @@ const GlobalStyle = createGlobalStyle`
     
     thead {
         background: var(--inlineCodeBg);
-        border-radius: 5px;
-        text-transform: uppercase;
+        border-radius: 5px;        
         font-size: 0.9rem;
     }
 

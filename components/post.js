@@ -72,7 +72,7 @@ const EditAndDiscuss = ({meta}) => {
 };
 */
 
-const Post = ({ children, meta, hideProgressBar = false, type }) => {
+const Post = ({ children, meta, enableComments, hideProgressBar = false, type }) => {
   const enableDiscussions = type === 'BLOG';
   return (
     <Page
@@ -89,7 +89,7 @@ const Post = ({ children, meta, hideProgressBar = false, type }) => {
           <article>{children}</article>
         </MDXProvider>
         <hr />
-        {enableDiscussions ? (
+        {enableDiscussions || enableComments ? (
           <>
             <Utterance repo={'https://github.com/yashatgit/yashsoni.com'} type={'pathname'} />
             <hr />

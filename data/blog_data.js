@@ -50,6 +50,14 @@ export default [
     description: 'all aboard the nostalgia train',
     keywords: 'raspberrypi,retropi,NES,arcade gaming',
   },
+  {
+    date: '2020-11-16',
+    slug: 'handwriting-recognition-using-CNN',
+    title: 'Teaching a Neural Network to recognise Handwriting',
+    description:
+      'training a model using Tensorflow in Google Colab, and running the inference in browser with TensorFlow.js',
+    keywords: 'google colab,tensorflow,tensorflow js,CNN,MNIST,deep learning in browser,ML,AI,handwriting recognition',
+  },
   // {
   //     date: 'May 21, 2020',
   //     slug: 'form-follows-function',
