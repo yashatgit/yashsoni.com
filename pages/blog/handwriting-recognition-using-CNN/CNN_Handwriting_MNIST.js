@@ -3,8 +3,9 @@
 // https://yanming.me/2018/08/04/machine-learning-in-javascript-powered-by-tensorflow-js/
 // https://colab.research.google.com/github/tensorflow/docs/blob/master/site/en/tutorials/keras/save_and_load.ipynb
 // https://observablehq.com/@rootbabu/doodle-recognition-with-tensorflow-js
-// https://towardsdatascience.com/deploying-a-simple-machine-learning-model-into-a-webapp-using-tensorflow-js-3609c297fb04
 // https://medium.com/tensorflow/train-on-google-colab-and-run-on-the-browser-a-case-study-8a45f9b1474e
+// https://towardsdatascience.com/deploying-a-simple-machine-learning-model-into-a-webapp-using-tensorflow-js-3609c297fb04
+// https://github.com/carlos-aguayo/carlos-aguayo.github.io/blob/master/tfjs.html
 
 import React, { useState } from 'react';
 import FreehandDrawingCanvas from './FreehandDrawingCanvas';
