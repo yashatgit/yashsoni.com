@@ -14,6 +14,7 @@ const StyledCaption = styled.div`
   font-size: 16px;
   color: var(--text2);
   text-align: center;
+  margin-top: -${spacing.normal};
 `;
 
 const Image = ({ src, darkMode, caption, className = '', ...rest }) => {

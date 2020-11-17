@@ -10,6 +10,7 @@ import Gallery from 'react-photo-gallery';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import styled from 'styled-components';
 import useDarkMode from 'use-dark-mode';
+import Img from '../elements/img';
 
 const StyledCaption = styled.div`
   font-size: 16px;
@@ -21,12 +22,17 @@ const StyledGallery = styled.div`
   margin: 40px 0;
 `;
 
+const StyledImage = styled(Img)`
+  margin: 60px 0;
+  cursor: zoom-in;
+`;
+
 /*
 photos: [
     {src: '', width: '', height: ''} //use aspect ratio for w/h
 ]
 */
-function ImageGrid({ rowHeight, photos, caption = '', darkMode }) {
+function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
   const darkModeSettings = useDarkMode();
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
@@ -42,9 +48,21 @@ function ImageGrid({ rowHeight, photos, caption = '', darkMode }) {
   };
 
   return (
-    // convert to dark mode if props and global dark mode is set to true
-    <StyledGallery className={darkMode && darkModeSettings.value ? 'dark-gallery' : ''}>
-      <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
+    <>
+      {photos.length === 1 ? (
+        <StyledImage
+          caption={caption}
+          src={photos[0].src}
+          darkMode={darkMode}
+          className={className}
+          onClick={e => openLightbox(e, { index: 0 })}
+        />
+      ) : (
+        <StyledGallery className={darkMode && darkModeSettings.value ? 'dark-gallery' : ''}>
+          <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
+          {caption && <StyledCaption>{caption}</StyledCaption>}
+        </StyledGallery>
+      )}
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>
@@ -59,8 +77,7 @@ function ImageGrid({ rowHeight, photos, caption = '', darkMode }) {
           </Modal>
         ) : null}
       </ModalGateway>
-      {caption && <StyledCaption>{caption}</StyledCaption>}
-    </StyledGallery>
+    </>
   );
 }
 
