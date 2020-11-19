@@ -6,9 +6,10 @@ import Main from '../components/main';
 import Nav from '../components/nav';
 import Page from '../components/page';
 import Article from '../components/article';
-import tils from '../data/til_data';
 import { spacing } from '../styles/vars';
 import { heading } from '../styles/mixins';
+
+import { frontMatter as posts } from './til/**/*.mdx';
 
 const StyledArticlesTitle = styled.h1`
   ${heading};
@@ -31,6 +32,11 @@ const StyledArticles = styled.section`
 `;
 
 const Index = () => {
+  const filteredPosts = posts
+    .filter(blogPost => !!blogPost.title)
+    .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
+    .map(blogPost => ({ ...blogPost, slug: `/${blogPost.__resourcePath.replace('.mdx', '').replace('/index', '')}` }));
+
   return (
     <>
       <Page
@@ -47,8 +53,8 @@ const Index = () => {
               easier. Most of it is just random thoughts and code snippets, with links to further resources.
             </StyledArticlesDesc>
             <ul>
-              {tils.map(article => (
-                <Article article={article} key={article.slug || article.url} buildUrl={slug => `/til/${slug}`} />
+              {filteredPosts.map(article => (
+                <Article article={article} key={article.slug} />
               ))}
             </ul>
           </StyledArticles>

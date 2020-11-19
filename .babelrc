@@ -2,6 +2,7 @@
   "presets": ["next/babel"],
   "plugins": [
     "inline-react-svg",
+    "import-glob-array",
     [
       "styled-components",
       {

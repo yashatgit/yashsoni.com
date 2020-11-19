@@ -7,6 +7,7 @@ import MDXProvider from '../components/MDXProvider';
 import Footer from '../components/footer';
 import Nav from '../components/nav';
 import Page from '../components/page';
+import Date from '../components/date';
 import Utterance from '../components/Utterances';
 
 const Main = styled.main`
