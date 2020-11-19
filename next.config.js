@@ -1,3 +1,4 @@
+const readingTime = require('reading-time');
 const withPlugins = require('next-compose-plugins');
 const rehypePrism = require('@mapbox/rehype-prism');
 const withImages = require('next-images');
@@ -16,21 +17,19 @@ const nextConfig = {
   pageExtensions: ['js', 'mdx'],
 };
 
-const remarkPlugins = [require('remark-autolink-headings'), require('remark-slug')];
-
 module.exports = withPlugins(
   [
     withMdxEnhanced({
-      remarkPlugins,
+      remarkPlugins: [require('remark-autolink-headings'), require('remark-slug')],
       rehypePlugins: [rehypePrism],
-      // layoutPath: 'layouts',
-      // defaultLayout: true,
-      // extendFrontMatter: {
-      //   process: mdxContent => ({
-      //     wordCount: mdxContent.split(/\s+/gu).length,
-      //     readingTime: readingTime(mdxContent),
-      //   }),
-      // },
+      layoutPath: 'layouts',
+      defaultLayout: true,
+      extendFrontMatter: {
+        process: mdxContent => ({
+          wordCount: mdxContent.split(/\s+/gu).length,
+          readingTime: readingTime(mdxContent),
+        }),
+      },
     })({
       pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     }),

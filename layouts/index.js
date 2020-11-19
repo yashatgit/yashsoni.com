@@ -1,15 +1,13 @@
-import { MDXProvider } from '@mdx-js/react';
 import React from 'react';
 import styled from 'styled-components';
 
 import { column } from '../styles/mixins';
 import PageProgress from '../components/pageProgress';
-import MDXProvider from './MDXProvider';
-
-import Footer from './footer';
-import Nav from './nav';
-import Page from './page';
-import Utterance from './Utterances';
+import MDXProvider from '../components/MDXProvider';
+import Footer from '../components/footer';
+import Nav from '../components/nav';
+import Page from '../components/page';
+import Utterance from '../components/Utterances';
 
 const Main = styled.main`
   ${column}
@@ -20,16 +18,12 @@ const Main = styled.main`
   }
 `;
 
-const Post = ({ children, meta, enableComments, hideProgressBar = false, type }) => {
-  const enableDiscussions = type === 'BLOG';
+const BlogLayout = ({ children, frontMatter }) => {
+  const slug = frontMatter.__resourcePath.replace('.mdx', '');
+  const { hideProgressBar, enableComments } = frontMatter;
+
   return (
-    <Page
-      date={meta.date}
-      keywords={meta.keywords}
-      description={meta.description}
-      image={meta.image}
-      title={`${meta.title} - Yash Soni`}
-    >
+    <Page {...frontMatter}>
       {!hideProgressBar && <PageProgress />}
       <Nav />
       <Main>
@@ -37,7 +31,7 @@ const Post = ({ children, meta, enableComments, hideProgressBar = false, type })
           <article>{children}</article>
         </MDXProvider>
         <hr />
-        {enableDiscussions || enableComments ? (
+        {enableComments ? (
           <>
             <Utterance repo={'https://github.com/yashatgit/yashsoni.com'} type={'pathname'} />
             <hr />
@@ -49,4 +43,4 @@ const Post = ({ children, meta, enableComments, hideProgressBar = false, type })
   );
 };
 
-export default Post;
+export default BlogLayout;
