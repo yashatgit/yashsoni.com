@@ -59,7 +59,7 @@ const description = 'Yash Soni is a developer and a UI/UX enthusiast.';
 
 const Index = () => (
   <>
-    <Page description={description} image="/static/images/speaking/speaking.jpg" title="Yash Soni">
+    <Page description={description} title="Yash Soni">
       <Nav />
       <Main>
         <Content>
