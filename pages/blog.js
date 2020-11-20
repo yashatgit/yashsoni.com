@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Footer from '../components/footer';
-import Main from '../components/main';
+import Container from '../components/Container';
 import Nav from '../components/nav';
 import Article from '../components/article';
 import DefaultSEO from '../components/DefaultSEO';
@@ -42,7 +42,7 @@ const Index = () => {
         title="Yash Soni - Blog"
       />
       <Nav />
-      <Main>
+      <Container>
         <StyledArticles>
           <StyledArticlesTitle>Writing</StyledArticlesTitle>
           <ul>
@@ -51,7 +51,7 @@ const Index = () => {
             ))}
           </ul>
         </StyledArticles>
-      </Main>
+      </Container>
       <Footer />
     </>
   );

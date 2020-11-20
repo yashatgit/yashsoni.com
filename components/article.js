@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { spacing } from '../styles/vars';
 import { H3, H5 } from './elements/text';
-import Link from './link';
+import Link from './elements/link';
 // import Date from '../date';
 
 const StyledArticle = styled.li`

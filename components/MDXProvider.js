@@ -8,7 +8,7 @@ import Em from './elements/em';
 import { H1, H2, H3 } from './elements/text';
 import Img from './elements/img';
 import Li from './elements/li';
-import Link from './link';
+import Link from './elements/link';
 import Ol from './elements/ol';
 import Strong from './elements/strong';
 import Ul from './elements/ul';
