@@ -4,11 +4,12 @@ import Container from '../components/Container';
 import MDXProvider from '../components/MDXProvider';
 import Footer from '../components/footer';
 import Nav from '../components/nav';
-import Page from '../components/page';
+import DefaultSEO from '../components/DefaultSEO';
 
-const BlogLayout = ({ children, frontMatter }) => {
+const AboutPageLayout = ({ children }) => {
   return (
-    <Page {...frontMatter}>
+    <>
+      <DefaultSEO url="https://yashsoni.com/about" title="About Me – Yash Soni" />
       <Nav />
       <Container>
         <MDXProvider>
@@ -16,8 +17,8 @@ const BlogLayout = ({ children, frontMatter }) => {
         </MDXProvider>
       </Container>
       <Footer />
-    </Page>
+    </>
   );
 };
 
-export default BlogLayout;
+export default AboutPageLayout;

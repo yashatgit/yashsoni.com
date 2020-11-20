@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import Footer from '../components/footer';
 import Main from '../components/main';
 import Nav from '../components/nav';
-import Page from '../components/page';
 import Article from '../components/article';
+import DefaultSEO from '../components/DefaultSEO';
+
 import { spacing } from '../styles/vars';
 import { heading } from '../styles/mixins';
 
@@ -34,7 +35,12 @@ const Index = () => {
     .map(blogPost => ({ ...blogPost, slug: `/${blogPost.__resourcePath.replace('.mdx', '').replace('/index', '')}` }));
 
   return (
-    <Page description="Experiments on programming, tech, ML/AI and life in general." title="Yash Soni - Blog">
+    <>
+      <DefaultSEO
+        url="https://yashsoni.com/blog"
+        description="Experiments on programming, tech, ML/AI and life in general."
+        title="Yash Soni - Blog"
+      />
       <Nav />
       <Main>
         <StyledArticles>
@@ -47,7 +53,7 @@ const Index = () => {
         </StyledArticles>
       </Main>
       <Footer />
-    </Page>
+    </>
   );
 };
 

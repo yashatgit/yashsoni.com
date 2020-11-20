@@ -6,9 +6,7 @@ import { ArticleJsonLd } from 'next-seo';
 import { dateTime } from '../utils/date-format';
 import titleStyle from '../utils/title-style';
 
-import GlobalStyle from './GlobalStyle';
-
-const Page = ({ children, date, description, image, title = 'Yash Soni', keywords, router }) => {
+const Page = ({ children, date, description, image, title = 'Yash Soni', keywords, router, frontMatter }) => {
   const domain = 'https://yashsoni.com';
   const formattedTitle = titleStyle(title);
   const url = router && router.asPath ? router.asPath : undefined;
@@ -39,7 +37,7 @@ const Page = ({ children, date, description, image, title = 'Yash Soni', keyword
           </>
         )}
       </Head>
-      <GlobalStyle />
+
       {children}
       {date && (
         <ArticleJsonLd

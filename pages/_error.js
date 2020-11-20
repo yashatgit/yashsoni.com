@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Footer from '../components/footer';
-import Page from '../components/page';
+import DefaultSEO from '../components/DefaultSEO';
 import BoltIcon from '../icons/bolt.svg';
 import { column, heading } from '../styles/mixins';
 import { spacing } from '../styles/vars';
@@ -33,7 +33,8 @@ const Article = styled.article`
 `;
 
 const Error = () => (
-  <Page description="Not found." title="Not Found - Yash Soni">
+  <>
+    <DefaultSEO description="Not found." title="Not Found - Yash Soni" />
     <Nav />
     <Article>
       <h3>
@@ -44,7 +45,7 @@ const Error = () => (
       <p>Sorry about that!</p>
     </Article>
     <Footer />
-  </Page>
+  </>
 );
 
 export default Error;

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { LogoJsonLd } from 'next-seo';
 
-import Page from '../components/page';
 import { column } from '../styles/mixins';
 import { spacing } from '../styles/vars';
 import Nav from '../components/nav';
@@ -59,17 +58,15 @@ const description = 'Yash Soni is a developer and a UI/UX enthusiast.';
 
 const Index = () => (
   <>
-    <Page description={description} title="Yash Soni">
-      <Nav />
-      <Main>
-        <Content>
-          <Container>
-            <Title>Hello!</Title>
-          </Container>
-          <Details>Welcome to my personal slice of the internet 👋🏼</Details>
-        </Content>
-      </Main>
-    </Page>
+    <Nav />
+    <Main>
+      <Content>
+        <Container>
+          <Title>Hello!</Title>
+        </Container>
+        <Details>Welcome to my personal slice of the internet 👋🏼</Details>
+      </Content>
+    </Main>
     <LogoJsonLd logo="https://yashsoni.com/static/images/logo.png" url="https://yashsoni.com" />
   </>
 );
