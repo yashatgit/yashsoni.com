@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import A from './elements/a';
+import A from './a';
 
 const CustomLink = props => {
   const { href } = props;

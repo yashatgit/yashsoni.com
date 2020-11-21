@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { spacing } from '../styles/vars';
 import { H3, H5 } from './elements/text';
-import Link from './link';
+import Link from './elements/link';
 // import Date from '../date';
 
 const StyledArticle = styled.li`
@@ -34,14 +34,14 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Article = ({ article, buildUrl }) => {
-  const ttr = article.ttr ? ` • ⏱ ${article.ttr}` : '';
+const Article = ({ article }) => {
+  const readTime = article.readingTime ? ` • ⏱ ${article.readingTime.text}` : '';
   return (
     <StyledArticle>
-      <StyledLink href={buildUrl(article.slug)}>
+      <StyledLink href={article.slug}>
         {/* <Date>{article.date}</Date> */}
         <H3>{article.title}</H3>
-        <H5>{`${article.description}${ttr}`}</H5>
+        <H5>{`${article.description}${readTime}`}</H5>
       </StyledLink>
     </StyledArticle>
   );

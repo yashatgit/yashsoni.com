@@ -1,9 +1,9 @@
-import Post from '../../components/post'
-import til from '../../data/til_data'
-
-export const meta = til[1]
-
-export default ({children}) => <Post meta={meta}>{children}</Post>
+---
+date: 'March 24, 2020'
+title: 'Javascript Module System'
+description: 'Javascript Module System'
+keywords: 'javascript,module system,javascript modules,commonjs,amd,es modules,iffe'
+---
 
 # JS module system
 
@@ -13,10 +13,10 @@ However, unlike other traditional programming languages, for a long time, JavaSc
 
 But, this didn't stop the community and they created impressive work-arounds. Following are the most used module loading patterns used by the developers:
 
--   `Scripts` are code fragments that browsers run in global scope. They are precursors of modules.
--   `CommonJS` modules are a module format that is mainly used on servers (e.g., via Node.js).
--   `AMD` is a module format that is mainly used in browsers.
--   `ECMAScript modules` are JavaScript’s built-in module format. It supersedes all previous formats.
+- `Scripts` are code fragments that browsers run in global scope. They are precursors of modules.
+- `CommonJS` modules are a module format that is mainly used on servers (e.g., via Node.js).
+- `AMD` is a module format that is mainly used in browsers.
+- `ECMAScript modules` are JavaScript’s built-in module format. It supersedes all previous formats.
 
 ## CommonJS modules
 
@@ -25,8 +25,8 @@ The CommonJS module proposal specifies a simple API for declaring modules server
 
 There are essentially two elements to interact with the module system: `require` and `exports`
 
--   `require` is a function that can be used to import symbols from another module to the current scope
--   `exports` is a special object: anything put in it will get exported
+- `require` is a function that can be used to import symbols from another module to the current scope
+- `exports` is a special object: anything put in it will get exported
 
 ```JavaScript
 var lib = require('package/lib');
@@ -75,10 +75,10 @@ Currently the most popular implementations of AMD are [require.js](http://requir
 Fortunately, the ECMA team behind the standardization of JavaScript decided to standardize modules. We finally have a standard to define modules in Javascript
 which compatible with both synchronous and asynchronous modes of operation.
 
--   On lines of `require` and `define`, ES6 modules have an `import` directive which can be used to bring in modules into namespace.
--   `export` helps to explicitly make elements public. A module can have 2 types of exports
-    -   `named exports` which can be several per module
-    -   `default export` primary export of module
+- On lines of `require` and `define`, ES6 modules have an `import` directive which can be used to bring in modules into namespace.
+- `export` helps to explicitly make elements public. A module can have 2 types of exports
+  - `named exports` which can be several per module
+  - `default export` primary export of module
 
 **Importing examples**
 
@@ -146,8 +146,8 @@ The above exampled are taken from the [wonderful 2ality post](https://2ality.com
 
 ## Further References
 
--   [ECMAScript 6 modules: the final syntax](https://2ality.com/2014/09/es6-modules-final.html#fn1)
--   [Writing modular JS](https://addyosmani.com/writing-modular-js/)
--   [JavaScript for impatient programmers](https://exploringjs.com/impatient-js/toc.html)
--   [ES modules - A cartoon Deep Dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
--   [Loading ES modules in Browsers](https://www.sitepoint.com/using-es-modules/)
+- [ECMAScript 6 modules: the final syntax](https://2ality.com/2014/09/es6-modules-final.html#fn1)
+- [Writing modular JS](https://addyosmani.com/writing-modular-js/)
+- [JavaScript for impatient programmers](https://exploringjs.com/impatient-js/toc.html)
+- [ES modules - A cartoon Deep Dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
+- [Loading ES modules in Browsers](https://www.sitepoint.com/using-es-modules/)

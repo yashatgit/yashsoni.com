@@ -4,8 +4,14 @@ import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import useDarkMode from 'use-dark-mode';
 
-import { lightTheme, darkTheme } from '../styles/theme';
+//https://github.com/garmeeh/next-seo#default-seo-configuration
+import { DefaultSeo } from 'next-seo';
+import SEO from '../next-seo.config';
 
+import MDXProvider from '../components/MDXProvider';
+
+import { lightTheme, darkTheme } from '../styles/theme';
+import GlobalStyle from '../components/GlobalStyle';
 import '../styles/prism.css';
 import '../styles/libraryOverrides.css';
 
@@ -25,7 +31,11 @@ class CustomApp extends App {
         <Head>
           <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5" />
         </Head>
-        <Component {...pageProps} />
+        <MDXProvider>
+          <GlobalStyle />
+          <DefaultSeo {...SEO} />
+          <Component {...pageProps} />
+        </MDXProvider>
       </AppWithTheme>
     );
   }

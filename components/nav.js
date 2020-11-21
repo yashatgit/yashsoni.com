@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import ThemeSwitcher from './dark-mode-toggle';
-import Link from './link';
+import Link from './elements/link';
 
 const StyledNav = styled.nav`
   padding: 25px;
@@ -70,8 +70,8 @@ const Nav = () => (
       <Logo alt="Yash Soni" src="/static/images/logo.png" />
     </Link>
     <Centered>
-      <NavLink href="/til">TIL</NavLink>
       <NavLink href="/blog">Writing</NavLink>
+      <NavLink href="/til">TIL</NavLink>
       <NavLink href="/about">About</NavLink>
       {/* <ProjectsLink href="/projects">{'Projects'}</ProjectsLink> */}
       <ThemeSwitcher />

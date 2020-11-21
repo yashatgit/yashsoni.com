@@ -1,9 +1,9 @@
-import Post from '../../components/post'
-import til from '../../data/til_data'
-
-export const meta = til[5]
-
-export default ({children}) => <Post meta={meta}>{children}</Post>
+---
+date: 'May 5, 2020'
+title: 'Getting started with PM2 - the Node.js process management'
+description: 'how to manage your production node processes efficiently'
+keywords: 'node,pm2,process management'
+---
 
 # PM2 - Node.js process management
 
@@ -14,10 +14,10 @@ When the app runs in a cloud server hosted in a remote location, the ease of deb
 
 `PM2` or `Process Manager 2` is an incredibly versatile production-level process manager for NodeJs apps. It provides the following benefits out of the box:
 
--   **Restart after Crashes**: Restart your apps after it crashes due to any reason.
--   **Alive forever**: You can make your apps auto-start at system boot. Thus allowing for **High Availability (HA)** configurations.
--   **Real time Monitoring**: Provides real good developer experience to manage and monitor the running processes.
--   **Load balancing and clustering**: PM2 has a built in Load Balancer and even allows you to run your apps in **cluster mode**.
+- **Restart after Crashes**: Restart your apps after it crashes due to any reason.
+- **Alive forever**: You can make your apps auto-start at system boot. Thus allowing for **High Availability (HA)** configurations.
+- **Real time Monitoring**: Provides real good developer experience to manage and monitor the running processes.
+- **Load balancing and clustering**: PM2 has a built in Load Balancer and even allows you to run your apps in **cluster mode**.
 
 ## Getting started
 
@@ -109,4 +109,4 @@ pm2 monit
 
 ## Further Resources
 
--   [PM2 Cheatsheet](https://devhints.io/pm2)
+- [PM2 Cheatsheet](https://devhints.io/pm2)

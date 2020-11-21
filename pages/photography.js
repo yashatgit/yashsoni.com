@@ -1,9 +1,8 @@
 import React from 'react';
 
 import Footer from '../components/footer';
-import Main from '../components/main';
+import Container from '../components/Container';
 import Nav from '../components/nav';
-import Page from '../components/page';
 // import styled from 'styled-components';
 // import { spacing } from '../styles/vars';
 // import { heading } from '../styles/mixins';
@@ -158,12 +157,9 @@ const im = [
   },
 ];
 const Index = () => (
-  <Page
-    description="Thoughts on the software industry, programming, tech, videography, music, and my personal life."
-    title="Yash Soni - Photography"
-  >
+  <>
     <Nav />
-    <Main style={{ maxWidth: 1200 }}>
+    <Container style={{ maxWidth: 1200 }}>
       <ImageGrid
         photos={[
           { src: '/static/images/photography/places_8.jpg', width: 4898, height: 3265 },
@@ -197,9 +193,9 @@ const Index = () => (
         ]}
         rowHeight="300"
       />
-    </Main>
+    </Container>
     <Footer />
-  </Page>
+  </>
 );
 
 export default Index;

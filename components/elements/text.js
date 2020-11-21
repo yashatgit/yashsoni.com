@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import A from './a';
 import { heading } from '../../styles/mixins';
 import { spacing } from '../../styles/vars';
-
-const createId = text => text.toLowerCase().replace(/ /gu, '-');
 
 const StyledH1 = styled.h1`
   ${heading};
@@ -53,8 +52,36 @@ const StyledH5 = styled.h4`
   font-weight: 500;
 `;
 
-export const H1 = ({ children }) => <StyledH1>{children}</StyledH1>;
-export const H2 = ({ children }) => <StyledH2 id={createId(children)}>{children}</StyledH2>;
-export const H3 = ({ children }) => <StyledH3 id={createId(children)}>{children}</StyledH3>;
-export const H4 = ({ children }) => <StyledH4>{children}</StyledH4>;
-export const H5 = ({ children }) => <StyledH5>{children}</StyledH5>;
+const StyledAnchor = styled(A)`
+  margin-left: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-decoration: none;
+  font-weight: normal;
+
+  ${StyledH2}:hover & {
+    opacity: 100;
+  }
+  ${StyledH3}:hover & {
+    opacity: 100;
+  }
+  ${StyledH4}:hover & {
+    opacity: 100;
+  }
+  ${StyledH5}:hover & {
+    opacity: 100;
+  }
+`;
+
+const HeadingWithAnchor = Component => ({ children, ...restProps }) => (
+  <Component {...restProps}>
+    {children}
+    {restProps.id && <StyledAnchor href={`#${restProps.id}`}>#</StyledAnchor>}
+  </Component>
+);
+
+export const H1 = StyledH1;
+export const H2 = HeadingWithAnchor(StyledH2);
+export const H3 = HeadingWithAnchor(StyledH3);
+export const H4 = HeadingWithAnchor(StyledH4);
+export const H5 = HeadingWithAnchor(StyledH5);

@@ -1,5 +1,10 @@
-import Post from '../../../components/post'
-import articles from '../../../data/blog_data'
+---
+date: '2020-11-16'
+title: 'Teaching a Neural Network to recognise Handwriting'
+description: 'training a model using Tensorflow in Google Colab, and running the inference in browser with TensorFlow.js'
+keywords: 'google colab,tensorflow,tensorflow js,CNN,MNIST,deep learning in browser,ML,AI,handwriting recognition'
+---
+
 import ImageGrid from '../../../components/imageGrid'
 import HandwritingRecogniser from './CNN_Handwriting_MNIST.js';
 
@@ -10,10 +15,6 @@ import model_CNN_1 from './images/model_CNN_1.jpg'
 import model_CNN_2 from './images/model_CNN_2.jpg'
 import model_download from './images/model_download.jpg'
 import model_CNN_2_summary from './images/model_CNN_2_summary.jpg'
-
-export const meta = articles[2]
-
-export default ({children}) => <Post meta={meta} enableComments>{children}</Post>
 
 # Teaching a Neural Network to recognise Handwriting
 
