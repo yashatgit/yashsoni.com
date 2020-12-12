@@ -30,7 +30,7 @@ const StyledArticles = styled.section`
 
 const Index = () => {
   const filteredBlogPosts = blogPosts
-    .filter(blogPost => !!blogPost.title)
+    .filter(blogPost => !!blogPost?.title?.indexOf('wip-') > -1)
     .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
     .map(blogPost => ({ ...blogPost, slug: `/${blogPost.__resourcePath.replace('.mdx', '').replace('/index', '')}` }));
 
