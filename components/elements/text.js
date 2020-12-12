@@ -8,9 +8,11 @@ import { spacing } from '../../styles/vars';
 const StyledH1 = styled.h1`
   ${heading};
   color: var(--titleText);
-  font-size: 32px;
+  font-size: 48px;
   margin: 0;
-  line-height: 1.35;
+  line-height: 1;
+  letter-spacing: -1.2px;
+  font-weight: 700;
 
   @media (min-width: 768px) {
     font-size: 2.5em;
@@ -44,6 +46,10 @@ const StyledH4 = styled.h4`
   ${heading};
   color: var(--titleText);
   font-size: 18px;
+
+  + p {
+    margin-top: 5px;
+  }
 `;
 
 const StyledH5 = styled.h4`

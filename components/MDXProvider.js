@@ -5,7 +5,7 @@ import ImageGrid from '../components/imageGrid';
 import Blockquote, { Citation } from './elements/blockquote';
 import Code from './elements/code';
 import Em from './elements/em';
-import { H1, H2, H3 } from './elements/text';
+import { H1, H2, H3, H4 } from './elements/text';
 import Img from './elements/img';
 import Li from './elements/li';
 import Link from './elements/link';
@@ -21,6 +21,7 @@ const components = {
   h1: H1,
   h2: H2,
   h3: H3,
+  h4: H4,
   img: Img,
   li: Li,
   ol: Ol,
