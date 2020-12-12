@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled, { css } from 'styled-components';
+import useDarkMode from 'use-dark-mode';
 
 const StyledBookContainer = styled.div`
   display: flex;
@@ -43,7 +44,7 @@ const StyledBook = styled.div`
       height: 303px;
       transform: translateZ(25px);
       border-radius: 0 ${props.borderRadius} ${props.borderRadius} 0;
-      box-shadow: 5px 5px 20px #aaaaaa;
+      box-shadow: 5px 5px 20px ${props.isDarkMode ? '#3c3b3b' : '#aaaaaa'};
       background-color: #01060f;
     }
 
@@ -91,15 +92,17 @@ const StyledBook = styled.div`
       transform: translateZ(-25px);
       background-color: #01060f;
       border-radius: 0 ${props.borderRadius} ${props.borderRadius} 0;
-      box-shadow: -10px 0 50px 10px #aaaaaa;
+      box-shadow: -10px 0 50px 10px ${props.isDarkMode ? '#3c3b3b' : '#aaaaaa'};
     }
   `}
 `;
 
 const Book = ({ coverImage, bookTitle, borderRadius = '4px', rotate = '20' }) => {
+  const darkModeSettings = useDarkMode();
+  const isDarkMode = !!darkModeSettings.value;
   return (
-    <StyledBookContainer borderRadius={borderRadius} rotate={rotate}>
-      <StyledBook borderRadius={borderRadius} rotate={rotate}>
+    <StyledBookContainer isDarkMode={isDarkMode} borderRadius={borderRadius} rotate={rotate}>
+      <StyledBook isDarkMode={isDarkMode} borderRadius={borderRadius} rotate={rotate}>
         <img alt={bookTitle} src={coverImage} />
       </StyledBook>
     </StyledBookContainer>
