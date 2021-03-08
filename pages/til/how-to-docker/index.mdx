@@ -159,12 +159,19 @@ photos={[{src:docker_history, width: 1780 , height: 732}, {src:docker_dive, wi
 caption="Inspecting Docker Image layers"
 />
 
+If the image build process fails, we can still run a container with any of the successful layer id using the following command.
+
+```bash
+docker run --rm -it <DOCKER_LAYER_ID> bash -il
+```
+
 ## References
 
 - Docker Summaries
   - [Docker in 10 minutes](https://www.youtube.com/watch?v=gAkwW2tuIqE&&)
   - [An introduction to Docker](https://lettieri.iet.unipi.it/virtualization/2018/20181220-Docker-seminar.pdf)
 - [Digging into Docker Layers](https://medium.com/@jessgreb01/digging-into-docker-layers-c22f948ed612)
+- [Docker Cheatsheet](https://groupe-sii.github.io/cheat-sheets/docker/index.html)
 
 - Docker for monorepo
 
