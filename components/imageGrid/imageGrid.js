@@ -10,7 +10,8 @@ import Gallery from 'react-photo-gallery';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import styled from 'styled-components';
 import useDarkMode from 'use-dark-mode';
-import Img from '../elements/img';
+import Image from 'next/image';
+import ImageWithCaption from '../elements/img';
 
 const StyledCaption = styled.div`
   font-size: 16px;
@@ -19,20 +20,26 @@ const StyledCaption = styled.div`
   margin-top: -16px;
 `;
 
-const StyledGallery = styled.div`
-  margin: 16px 0;
-`;
-
-const StyledImage = styled(Img)`
+const StyledImageContainer = styled.div`
   margin: 16px 0;
   cursor: zoom-in;
 `;
 
-/*
-photos: [
-    {src: '', width: '', height: ''} //use aspect ratio for w/h
-]
-*/
+// https://github.com/neptunian/react-photo-gallery/blob/master/src/Photo.js
+const CustomRenderComponent = props => {
+  const { index, onClick, photo, margin, direction, top, left, key } = props;
+  const imgStyle = { margin: margin, display: 'block', cursor: 'zoom-in' };
+
+  const handleClick = event => {
+    onClick(event, { photo, index });
+  };
+  return (
+    <div style={imgStyle}>
+      <Image {...photo} key={key} onClick={onClick ? handleClick : null} />
+    </div>
+  );
+};
+
 function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
   const darkModeSettings = useDarkMode();
   const [currentImage, setCurrentImage] = useState(0);
@@ -51,19 +58,29 @@ function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
   return (
     <>
       {photos.length === 1 ? (
-        <StyledImage
-          caption={caption}
-          src={photos[0].src}
-          darkMode={darkMode}
-          className={className}
-          onClick={e => openLightbox(e, { index: 0 })}
-        />
+        <StyledImageContainer>
+          <ImageWithCaption
+            caption={caption}
+            src={photos[0].src}
+            height={photos[0].height}
+            width={photos[0].width}
+            darkMode={darkMode}
+            className={className}
+            onClick={e => openLightbox(e, { index: 0 })}
+          />
+        </StyledImageContainer>
       ) : (
-        <StyledGallery className={darkMode && darkModeSettings.value ? 'dark-gallery' : ''}>
-          <Gallery targetRowHeight={rowHeight} photos={photos} onClick={openLightbox} />
+        <StyledImageContainer className={darkMode && darkModeSettings.value ? 'dark-gallery' : ''}>
+          <Gallery
+            targetRowHeight={rowHeight}
+            photos={photos}
+            onClick={openLightbox}
+            renderImage={CustomRenderComponent}
+          />
           {caption && <StyledCaption>{caption}</StyledCaption>}
-        </StyledGallery>
+        </StyledImageContainer>
       )}
+
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>

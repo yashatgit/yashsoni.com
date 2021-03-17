@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import useDarkMode from 'use-dark-mode';
+import Image from 'next/image';
 
 import { spacing } from '../../styles/vars';
 
@@ -14,18 +15,31 @@ const StyledCaption = styled.div`
   font-size: 16px;
   color: var(--text2);
   text-align: center;
-  margin-top: -16px;
 `;
 
-const Image = ({ src, darkMode, caption, className = '', ...rest }) => {
+const ImageWithCaption = ({ src, darkMode, caption, className = '', ...rest }) => {
   const darkModeSettings = useDarkMode();
+  const { height, width } = rest;
   const classNames = `${className}${darkMode && darkModeSettings.value ? ' dark-image' : ''}`;
   return (
     <div>
-      <StyledImage async className={classNames} decoding="async" importance="low" loading="lazy" src={src} {...rest} />
+      {height && width ? (
+        <Image className={classNames} src={src} {...rest} />
+      ) : (
+        <StyledImage
+          async
+          className={classNames}
+          decoding="async"
+          importance="low"
+          loading="lazy"
+          src={src}
+          {...rest}
+        />
+      )}
+
       {caption && <StyledCaption>{caption}</StyledCaption>}
     </div>
   );
 };
 
-export default Image;
+export default ImageWithCaption;
