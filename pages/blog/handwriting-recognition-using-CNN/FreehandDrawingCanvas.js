@@ -1,4 +1,5 @@
 import React, { useEffect, forwardRef, useImperativeHandle } from 'react';
+import { fabric } from 'fabric';
 
 const setupCanvas = (canvas, onDrawEnd) => {
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -134,4 +135,87 @@ const FreehandDrawingCanvas = forwardRef(({ size, onDrawEnd }, ref) => {
   );
 });
 
-export default React.memo(FreehandDrawingCanvas);
+function extractPixelData(canvas, onDrawEnd) {
+  const context = canvas.getContext('2d');
+  // EXTRACT: convert the drawn canvas to a image's Data URL representation
+  const img = new Image();
+  img.src = canvas.toDataURL('image/png');
+  img.onload = function() {
+    // RESIZE: re-draw this image again on the same canvas in a 28x28 size
+    context.drawImage(img, 0, 0, 28, 28);
+
+    // NORMALIZE: Extract information from one channel (blue in our case)
+    // and divide it with 255 to normalize it
+    const data = context.getImageData(0, 0, 28, 28).data;
+    console.log('ImageData from canvas', data);
+
+    const input = [];
+    for (var i = 0; i < data.length; i += 4) {
+      input.push(data[i + 2] / 255);
+    }
+    onDrawEnd(input);
+  };
+}
+
+const FabricCanvas = ({ size, onDrawEnd }) => {
+  const canvasRef = React.useRef();
+  useEffect(() => {
+    // if (canvasRef.current) {
+    //   const context = canvasRef.current.getContext('2d');
+    //   context.lineWidth = 25;
+    //   context.lineJoin = 'round';
+    //   context.lineCap = 'round';
+    //   context.strokeStyle = '#0000FF';
+    // }
+    const canvas = new fabric.Canvas(canvasRef.current, {
+      isDrawingMode: true,
+      stroke: 25,
+    });
+    canvas.freeDrawingBrush.width = 25;
+    canvas.freeDrawingBrush.color = '#0000FF';
+
+    canvas.on('mouse:up', function(options) {
+      extractPixelData(canvasRef.current, onDrawEnd);
+    });
+  });
+
+  const onCanvasDrawEnd = () => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+    const context = canvas.getContext('2d');
+
+    // EXTRACT: convert the drawn canvas to a image's Data URL representation
+    const img = new Image();
+    img.src = canvas.toDataURL('image/png');
+    img.onload = function() {
+      // RESIZE: re-draw this image again on the same canvas in a 28x28 size
+      context.drawImage(img, 0, 0, 28, 28);
+
+      // NORMALIZE: Extract information from one channel (blue in our case)
+      // and divide it with 255 to normalize it
+      const data = context.getImageData(0, 0, 28, 28).data;
+      console.log('ImageData from canvas', data);
+
+      const input = [];
+      for (var i = 0; i < data.length; i += 4) {
+        input.push(data[i + 2] / 255);
+      }
+      onDrawEnd(input);
+    };
+  };
+
+  return (
+    <canvas
+      id="freehand_canvas"
+      width={size}
+      height={size}
+      style={{ border: '1px solid black', cursor: 'crosshair' }}
+      ref={canvasRef}
+      onMouseUp={onCanvasDrawEnd}
+    ></canvas>
+  );
+};
+
+export default React.memo(FabricCanvas);
+//export default React.memo(FreehandDrawingCanvas);

@@ -16,14 +16,15 @@ const StyledCaption = styled.div`
   font-size: 16px;
   color: var(--text2);
   text-align: center;
+  margin-top: -16px;
 `;
 
 const StyledGallery = styled.div`
-  margin: 40px 0;
+  margin: 16px 0;
 `;
 
 const StyledImage = styled(Img)`
-  margin: 60px 0;
+  margin: 16px 0;
   cursor: zoom-in;
 `;
 
