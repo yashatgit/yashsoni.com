@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { LogoJsonLd } from 'next-seo';
 
 import { column } from '../styles/mixins';
@@ -9,6 +9,26 @@ import Nav from '../components/nav';
 const Main = styled.main`
   display: flex;
   flex: 1;
+`;
+
+// https://jarv.is/notes/css-waving-hand-emoji/
+const waveAnimation = keyframes`
+0% { transform: rotate( 0.0deg) }
+10% { transform: rotate(14.0deg) }  
+20% { transform: rotate(-8.0deg) }
+30% { transform: rotate(14.0deg) }
+40% { transform: rotate(-4.0deg) }
+50% { transform: rotate(10.0deg) }
+60% { transform: rotate( 0.0deg) } 
+100% { transform: rotate( 0.0deg) }
+`;
+
+const WavingHand = styled.span`
+  animation-name: ${waveAnimation};
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
 `;
 
 const Content = styled.div`
@@ -64,7 +84,9 @@ const Index = () => (
         <Container>
           <Title>Hello!</Title>
         </Container>
-        <Details>Welcome to my personal slice of the internet 👋🏼</Details>
+        <Details>
+          Welcome to my personal slice of the internet <WavingHand>👋🏼</WavingHand>
+        </Details>
       </Content>
     </Main>
     <LogoJsonLd logo="https://yashsoni.com/static/images/logo.png" url="https://yashsoni.com" />
