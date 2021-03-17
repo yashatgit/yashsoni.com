@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
+import { useInView } from 'react-intersection-observer';
 
 import Container from '../components/Container';
 import PageProgress from '../components/pageProgress';
@@ -9,7 +11,8 @@ import { full } from '../utils/date-format';
 import Footer from '../components/footer';
 import Nav from '../components/nav';
 import BlogSeo from '../components/BlogSeo';
-import Utterance from '../components/Utterances';
+
+const LazyUtterances = dynamic(() => import('../components/Utterances'));
 
 const StyledBlogDetails = styled(H5)`
   margin: 10px 0 40px 0;
@@ -37,6 +40,10 @@ const StyledAvatar = styled.div`
 `;
 
 const BlogLayout = ({ children, frontMatter }) => {
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
   return (
     <>
       <BlogSeo frontMatter={frontMatter} />
@@ -54,8 +61,8 @@ const BlogLayout = ({ children, frontMatter }) => {
           <div>{frontMatter.readingTime.text}</div>
         </StyledBlogDetails>
         <article>{children}</article>
-        <hr />
-        <Utterance repo={'https://github.com/yashatgit/yashsoni.com'} type={'pathname'} />
+        <hr ref={ref} />
+        {inView && <LazyUtterances repo={'https://github.com/yashatgit/yashsoni.com'} type={'pathname'} />}
         <hr />
       </Container>
       <Footer />
