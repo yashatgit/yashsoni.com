@@ -2,6 +2,7 @@ const readingTime = require('reading-time');
 const withPlugins = require('next-compose-plugins');
 const rehypePrism = require('@mapbox/rehype-prism');
 const withImages = require('next-images');
+const withVideos = require('next-videos');
 const withMdxEnhanced = require('next-mdx-enhanced');
 
 const nextConfig = {
@@ -34,6 +35,7 @@ module.exports = withPlugins(
       pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     }),
     withImages,
+    withVideos,
   ],
   nextConfig
 );

@@ -29,6 +29,7 @@ const StyledArticles = styled.section`
 `;
 
 const Index = () => {
+  // console.log({ blogPosts });
   const filteredBlogPosts = blogPosts
     .filter(blogPost => blogPost.title)
     .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
