@@ -82,11 +82,11 @@ const Index = () => (
     <Main>
       <Content>
         <Container>
-          <Title>Hello!</Title>
+          <Title>
+            Hello! <WavingHand>👋🏼</WavingHand>
+          </Title>
         </Container>
-        <Details>
-          Welcome to my personal slice of the internet <WavingHand>👋🏼</WavingHand>
-        </Details>
+        <Details>Welcome to my personal slice of the internet.</Details>
       </Content>
     </Main>
     <LogoJsonLd logo="https://yashsoni.com/static/images/logo.png" url="https://yashsoni.com" />
