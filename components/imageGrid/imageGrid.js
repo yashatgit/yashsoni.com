@@ -10,8 +10,7 @@ import Gallery from 'react-photo-gallery';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 import styled from 'styled-components';
 import useDarkMode from 'use-dark-mode';
-import Image from 'next/image';
-import ImageWithCaption from '../elements/img';
+import MediaWithCaption from '../elements/media';
 
 const StyledCaption = styled.div`
   font-size: 16px;
@@ -28,14 +27,30 @@ const StyledImageContainer = styled.div`
 // https://github.com/neptunian/react-photo-gallery/blob/master/src/Photo.js
 const CustomRenderComponent = props => {
   const { index, onClick, photo, margin, direction, top, left, key } = props;
-  const imgStyle = { margin: margin, display: 'block', cursor: 'zoom-in' };
 
   const handleClick = event => {
     onClick(event, { photo, index });
   };
   return (
-    <div style={imgStyle}>
-      <Image {...photo} key={key} onClick={onClick ? handleClick : null} />
+    <div key={key} style={{ margin: margin, display: 'block', cursor: 'zoom-in' }}>
+      <MediaWithCaption {...photo} onClick={onClick ? handleClick : null} />
+    </div>
+  );
+};
+
+// https://jossmac.github.io/react-images/#/components
+// https://github.com/jossmac/react-images/blob/master/docs/pages/CustomComponents/AlternativeMedia/index.js
+const CustomGalleryViewComponent = props => {
+  const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
+
+  return (
+    <div style={{ lineHeight: 0, position: 'relative', textAlign: 'center', boxSizing: 'border-box' }}>
+      <MediaWithCaption
+        className="react-images__view-image react-images__view-image--isModal"
+        src={data.src}
+        asGif={data.asGif}
+        style={{ maxHeight: '100vh !important', height: 'auto' }}
+      />
     </div>
   );
 };
@@ -59,11 +74,9 @@ function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
     <>
       {photos.length === 1 ? (
         <StyledImageContainer>
-          <ImageWithCaption
-            caption={caption}
-            src={photos[0].src}
-            height={photos[0].height}
-            width={photos[0].width}
+          <MediaWithCaption
+            style={{ maxWidth: '100%', height: 'auto' }}
+            {...photos[0]}
             darkMode={darkMode}
             className={className}
             onClick={e => openLightbox(e, { index: 0 })}
@@ -86,11 +99,12 @@ function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
           <Modal onClose={closeLightbox}>
             <Carousel
               currentIndex={currentImage}
-              views={photos.map(x => ({
-                ...x,
-                caption: x.title,
-                srcset: x.srcSet,
+              views={photos.map(media => ({
+                ...media,
+                caption: media.title,
+                srcset: media.srcSet,
               }))}
+              components={{ View: CustomGalleryViewComponent }}
             />
           </Modal>
         ) : null}
