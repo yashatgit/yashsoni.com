@@ -5,6 +5,10 @@ const withImages = require('next-images');
 const withVideos = require('next-videos');
 const withMdxEnhanced = require('next-mdx-enhanced');
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig = {
   webpack: (config, { isServer }) => {
     if (isServer) {
@@ -36,6 +40,7 @@ module.exports = withPlugins(
     }),
     withImages,
     withVideos,
+    withBundleAnalyzer,
   ],
   nextConfig
 );
