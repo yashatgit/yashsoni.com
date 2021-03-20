@@ -16,9 +16,10 @@ const StyledImage = styled.img`
 
 const StyledCaption = styled.div`
   font-size: 14px;
-  line-height: 12px;
+  line-height: 14px;
   color: var(--text2);
   text-align: center;
+  margin-top: 4px;
 `;
 
 const videoExtensions = new Set(['mov', 'mp4']);

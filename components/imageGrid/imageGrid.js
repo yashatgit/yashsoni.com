@@ -55,7 +55,7 @@ const CustomGalleryViewComponent = props => {
   );
 };
 
-function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
+function MediaGrid({ rowHeight, photos, className, caption = '', darkMode }) {
   const darkModeSettings = useDarkMode();
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
@@ -79,6 +79,7 @@ function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
             {...photos[0]}
             darkMode={darkMode}
             className={className}
+            caption={caption}
             onClick={e => openLightbox(e, { index: 0 })}
           />
         </StyledImageContainer>
@@ -113,4 +114,4 @@ function ImageGrid({ rowHeight, photos, className, caption = '', darkMode }) {
   );
 }
 
-export default ImageGrid;
+export default MediaGrid;
