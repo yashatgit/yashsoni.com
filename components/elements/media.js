@@ -20,6 +20,7 @@ const StyledCaption = styled.div`
   color: var(--text2);
   text-align: center;
   margin-top: 4px;
+  max-width: 100%;
 `;
 
 const videoExtensions = new Set(['mov', 'mp4']);
@@ -56,7 +57,7 @@ const MediaWithCaption = ({ darkMode, onClick = noop, asGif, caption, className 
   return (
     <div>
       {mediaComponent}
-      {caption && <StyledCaption>{caption}</StyledCaption>}
+      {caption && <StyledCaption style={{ width }}>{caption}</StyledCaption>}
     </div>
   );
 };

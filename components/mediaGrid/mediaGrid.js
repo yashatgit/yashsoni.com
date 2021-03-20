@@ -16,7 +16,6 @@ const StyledCaption = styled.div`
   font-size: 16px;
   color: var(--text2);
   text-align: center;
-  margin-top: -16px;
 `;
 
 const StyledImageContainer = styled.div`
@@ -50,6 +49,7 @@ const CustomGalleryViewComponent = props => {
         src={data.src}
         asGif={data.asGif}
         style={{ maxHeight: '100vh !important', height: 'auto' }}
+        caption={data.caption}
       />
     </div>
   );
@@ -102,7 +102,7 @@ function MediaGrid({ rowHeight, photos, className, caption = '', darkMode }) {
               currentIndex={currentImage}
               views={photos.map(media => ({
                 ...media,
-                caption: media.title,
+                caption: media.title || media.caption,
                 srcset: media.srcSet,
               }))}
               components={{ View: CustomGalleryViewComponent }}
