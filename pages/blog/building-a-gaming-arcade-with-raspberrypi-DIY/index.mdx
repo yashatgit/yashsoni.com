@@ -5,7 +5,7 @@ description: 'all aboard the nostalgia train'
 keywords: 'raspberrypi,retropi,NES,arcade gaming'
 ---
 
-import ImageGrid from '../../../components/imageGrid'
+import MediaGrid from '../../../components/mediaGrid'
 import image_flashing1 from './images/flashing-1.jpg'
 import image_flashing2 from './images/flashing-2.jpg'
 import image_ipScan from './images/rpi-ip-scan.jpg'
@@ -54,7 +54,7 @@ Head over to the [retropi downloads page](https://retropie.org.uk/download/) to 
 Once the image is downloaded, we need to write this image onto the SD Card.
 There are [many ways](https://retropie.org.uk/docs/First-Installation/#installation) to do this. My personal favorite is via software called [Etcher](https://www.balena.io/etcher/) which works both on Windows and Mac.
 
-<ImageGrid
+<MediaGrid
 photos={[{src:image_flashing1, width: 1600, height: 965}, {src:image_flashing2,width: 1600, height: 965}]}  
 caption="Writing RetroPi image onto RaspberryPi"
 />
@@ -118,7 +118,7 @@ ping retropie
 If this doesn't work, you can take the help of a **Network Scanner** to find out which IP was allocated to the PI.
 I personally use [Angry IP Scanner](https://angryip.org/) which is best suited for this.
 
-<ImageGrid
+<MediaGrid
 photos={[{src:image_ipScan, width: 1837, height: 1295},{src:image_rpi_ssh, width: 1414, height: 1062}]}  
 caption="IP scanning and ssh"
 />

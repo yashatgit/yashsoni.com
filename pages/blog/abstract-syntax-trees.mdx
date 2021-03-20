@@ -5,7 +5,7 @@ description: 'abstraction is powerful'
 keywords: 'AST,abstract syntax tree,compiler,lexical analysis'
 ---
 
-import ImageGrid from '../../components/imageGrid'
+import MediaGrid from '../../components/mediaGrid'
 
 Language is a medium through which we interact with other beings.
 When it comes to interacting with machines or computers, we have built different _computer languages_ to program them.
@@ -20,7 +20,7 @@ For example
 
 In very simple terms, the schematics of this translation looks something like this:
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/compiler_1.jpg', width: 2400, height: 476},
 ]}
@@ -30,7 +30,7 @@ darkMode
 
 This compiler blackbox can be further divided into following stages:
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/compiler_2.jpg', width: 3298, height: 1058},
 ]}
@@ -85,7 +85,7 @@ Although, _Parse Tree_ and _Abstract Syntax Tree_ (AST) are two terms that are r
 
 The AST instead is a polished version of the parse tree, in which only the information relevant to understanding the code is maintained.
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/parse_trees.jpg', width: 1486, height: 1100},
 ]}
@@ -99,7 +99,7 @@ This is possible because, despite the syntactic differences, all languages have 
 
 A great tool to better understand an AST is [**AST Explorer**](https://astexplorer.net/), where you can enter code and generate a real-time AST. This is an incredibly powerful way to introspect an AST, including the types of nodes and their properties.
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/ast_explorer.jpg', width: 2102, height: 1192},
 ]}
@@ -199,7 +199,7 @@ Ever wondered how IDEs are capable of producing the code hints and autocompletio
 Intellisense analyses the AST and, based on what you've written so far, it suggests more code that can come after that.
 [VS code intellisense](https://code.visualstudio.com/docs/editor/intellisense) uses AI to give more meaningful results.
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/sw.gif', width: 1180, height: 524},
 ]}
@@ -211,7 +211,7 @@ caption={<a href="https://marketplace.visualstudio.com/items?itemName=VisualStud
 
 Static code analyzing is a method of computer program debugging that is done by examining the code without executing the program. It's done by analyzing the code against a set of coding rules. These analyzers work by running a set of rules against the compiles AST.
 
-<ImageGrid
+<MediaGrid
 photos={[
 {src:'/static/images/ast/ast_code_validation.jpg', width: 1114, height: 474},
 ]}

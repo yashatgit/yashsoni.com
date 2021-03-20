@@ -30,7 +30,7 @@ const getImageDimensions = (folderPath = '') => {
         const filePath = `${folderFullPath}/${fileName}`;
         const dimensions = sizeOf(filePath);
         codeUsage += `
-        <ImageGrid caption="" photos={[{src: ${abosoluteFileName}, width: ${dimensions.width},height: ${dimensions.height}}]}/>`;
+        <MediaGrid caption="" photos={[{src: ${abosoluteFileName}, width: ${dimensions.width},height: ${dimensions.height}}]}/>`;
       } else if (isVideo) {
         codeUsage += `
         <video poster="" src="${abosoluteFileName}" muted controls width="100%" muted></video>`;

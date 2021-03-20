@@ -3,7 +3,6 @@
 .next
 node_modules
 .env*
-public/sitemap.xml
 .idea
 .mdx-data
 .now 
