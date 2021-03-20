@@ -9,7 +9,7 @@ const photoExtensions = new Set(['jpg', 'png', 'gif']);
 const videoExtensions = new Set(['mp4', 'MP4', 'mov']);
 
 const getImageDimensions = (folderPath = '') => {
-  const folderFullPath = folderPath || `pages/blog/diving-in-maldives/media/new`;
+  const folderFullPath = folderPath || `pages/blog/building-a-personal-assistant-powered-by-ai-vision/media`;
 
   fs.readdir(folderFullPath, (err, files) => {
     const imageList = files.forEach(fileName => {
