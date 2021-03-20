@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 
 import Container from '../components/Container';
 import PageProgress from '../components/pageProgress';
@@ -54,7 +55,7 @@ const BlogLayout = ({ children, frontMatter }) => {
         <StyledBlogDetails>
           <StyledNameAvatar>
             <StyledAvatar>
-              <img src="/static/images/yash_soni.jpg" />
+              <Image width="1330" height="1338" src="/static/images/yash_soni.jpg" />
             </StyledAvatar>
             {frontMatter.author || 'Yash Soni'} / {full(frontMatter.date)}
           </StyledNameAvatar>
