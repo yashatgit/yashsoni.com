@@ -122,7 +122,7 @@ Successfully tagged hello-world-docker-image:latest
 
 Evident from the output, we can see that Docker reads and executes all the instructions one by one. Each instruction adds a **layer** which adds to the final **image** (an onion-like structure).
 Following is the screenshot from the [Docker Desktop App](https://www.docker.com/products/docker-desktop) which shows all the details for this created image.
-<ImageGrid
+<MediaGrid
 photos={[{src:docker_desktop_image, width: 2088 , height: 1330}]}  
 caption="Docker image build"
 />
@@ -139,7 +139,7 @@ docker run -d -p 4000:3000 --name hello-world-container hello-world-docker-image
 
 To test this on our local machine, we have asked Docker to forward port 3000 from the container to port 4000 on the host machine.
 
-<ImageGrid
+<MediaGrid
 photos={[{src:docker_desktop_container, width: 2084, height: 1330}, {src:docker_deployment, width: 1316, height: 800}]}  
 caption="Running Docker Container"
 />
@@ -154,7 +154,7 @@ docker history --human --format "{{.CreatedBy}}: {{.Size}}" hello-world-docker-i
 
 My personal favorite tool is [dive](https://github.com/wagoodman/dive). We can debug an image using `dive hello-world-docker-image` command.
 
-<ImageGrid
+<MediaGrid
 photos={[{src:docker_history, width: 1780 , height: 732}, {src:docker_dive, width: 2074 , height: 1244}]}  
 caption="Inspecting Docker Image layers"
 />

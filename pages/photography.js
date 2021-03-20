@@ -7,7 +7,7 @@ import Nav from '../components/nav';
 // import { spacing } from '../styles/vars';
 // import { heading } from '../styles/mixins';
 
-import ImageGrid from '../components/imageGrid';
+import MediaGrid from '../components/mediaGrid';
 
 const im = [
   {
@@ -160,7 +160,7 @@ const Index = () => (
   <>
     <Nav />
     <Container style={{ maxWidth: 1200 }}>
-      <ImageGrid
+      <MediaGrid
         photos={[
           { src: '/static/images/photography/places_8.jpg', width: 4898, height: 3265 },
           { src: '/static/images/photography/abstract_1.jpg', width: 4496, height: 3000 },

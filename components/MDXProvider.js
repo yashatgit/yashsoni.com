@@ -1,7 +1,7 @@
 import { MDXProvider as BaseMDXProvider } from '@mdx-js/react';
 import React from 'react';
 
-import ImageGrid from '../components/imageGrid';
+import MediaGrid from '../components/mediaGrid';
 import Blockquote, { Citation } from './elements/blockquote';
 import Code from './elements/code';
 import Em from './elements/em';
@@ -28,7 +28,7 @@ const components = {
   pre: Code,
   strong: Strong,
   ul: Ul,
-  ImageGrid,
+  MediaGrid,
 };
 
 const MDXProvider = ({ children }) => {

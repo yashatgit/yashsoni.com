@@ -5,7 +5,7 @@ description: 'training a model using Tensorflow in Google Colab, and running the
 keywords: 'google colab,tensorflow,tensorflow js,CNN,MNIST,deep learning in browser,ML,AI,handwriting recognition'
 ---
 
-import ImageGrid from '../../../components/imageGrid'
+import MediaGrid from '../../../components/mediaGrid'
 import HandwritingRecogniser from './CNN_Handwriting_MNIST.js';
 
 import pipeline from './images/pipeline.jpg'
@@ -248,11 +248,11 @@ The conversion script produces 2 types of file
 - `model.json` - dataflow graph and weight manifest file
 - `group1-shard\*of\*` - A group of binary weight files called shards. Each shard file is small in size for easier browser caching. The number of shards depends on the initial model.
 
-<ImageGrid photos={[{src: model_download}]} caption={'Files generated during model export'}/>
+<MediaGrid photos={[{src: model_download}]} caption={'Files generated during model export'}/>
 
 To further validate if the conversion was correct, we can use the [Neutron Visualiser](https://github.com/lutzroeder/Netron) to confirm the model architecture.
 
-<ImageGrid photos={[{src: model_CNN_2_summary}]} caption={'Model Summary'}/>
+<MediaGrid photos={[{src: model_CNN_2_summary}]} caption={'Model Summary'}/>
 
 ## Web Client Application
 
