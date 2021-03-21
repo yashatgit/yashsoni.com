@@ -26,6 +26,7 @@
     "build": "next build",
     "export": "yarn build && next export",
     "dev": "next",
+    "refresh-cache": "rm -rf .next/cache/next-babel-loader",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
