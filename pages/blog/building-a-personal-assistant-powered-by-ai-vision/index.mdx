@@ -106,54 +106,60 @@ Vision currently has the following ways to enable interaction with the outside w
 - **Natural Language Instant Messaging Interface**<br/>
   Anything that can be spoken can be typed too. The same parsing system allows me to extract the intent from the chat messages. This comes real handy when the microphone is out of reach.
 
-<MediaGrid caption="Vision App Interface" photos={[{src: vision_app_icon, width: 730,height: 1600}, {src: vision_app_video, poster: vision_app, width: 646,height: 1400}]}/>
-
 <MediaGrid caption="Vision Command Center Interface" photos={[{src: vision_commanCenter_off, width: 1600,height: 2133}, {src: vision_demo, poster: vision_demo_poster, width: 676,height: 1201}]}/>
+
+<MediaGrid caption="Vision App and Chat Interface" photos={[{src: vision_app_icon, width: 730,height: 1600}, {src: vision_app_video, poster: vision_app, width: 646,height: 1400}]}/>
 
 #### Controls
 
-These are the current set of tasks Vision is able to perform.
+These are the current set of tasks Vision can perform.
 
 - **Weather and forecast**: <br/>
   Shows latest weather updates and weekly forecast. The APIs are powered by [OpenWeather](https://openweathermap.org/api).
 
 - **Newsfeed** <br/>
-  Displays the latest headlines - AdFree.
+  Displays the latest headlines - **AdFree**.
   News is displayed by pooling the RSS feeds of different News publishers
 
 - **Realtime Air Quality Meter** <br/>
-  Living in the [most polluted city in the world](https://twitter.com/theworldindex/status/1103197455066247169?s=20) is not easy. To keep the residents informed, our condominium has installed an AQI meter that shows the data on an App.
-  This module pools the app servers to fetch the real-time AQI that helps us identify when it is safe to step out of the house and maybe go for a run.
+  Living in the [most polluted city in the world](https://twitter.com/theworldindex/status/1103197455066247169?s=20) is not easy.
+  Our condominium has installed an AQI meter to inform the residents about the air quality via an App.
+  This module pools the app servers to fetch the real-time AQI that helps me identify when it is safe to step out of the house and maybe go for a run.
 
 - **Realtime Traffic updates** <br/>
-  There has to be a source to the deadly air quality right? One of it is due to pollution from excessive traffic.
-  There had been many instances where after stepping from the house I found myself stuck dead in a heavy traffic Jam. This widget pools the Google Maps APIs to help us find the right time to leave our for offices.
+  There has to be a source of the deadly air quality. A major contributor to it is pollution from excessive traffic.
+  There have been many instances where I found myself dead stuck in a traffic jam as soon as I left for work. This widget uses the Google Maps APIs to help me find the right time to leave for some preset destinations.
 
 - **Daily meal planner** <br/>
-  We figured out that one of the easiest ways to stick to a healthy diet is to plan your meals! We prepare a weekly meal plan which helps us plan for the diet earlier and ensures we have the ingredients ready. The data is pulled from an Airtable which we populate weekly.
+  One of the easiest ways to stick to a healthy diet is to plan your meals! My wife and I prepare a weekly meal plan which helps us plan for the diet earlier and ensures we have the ingredients ready.
+  The data is pulled from an Airtable and displayed on the Command Center.
 
 - **Calendar notifications** <br/>
   This module fetches the latest events from our family calendar and announces them 20 mins prior. To make the notification interesting, I made Vision announce them in its voice.
 
 - **Spotify Player** <br/>
-  Makes Vision a [**Spotify connect**](https://support.spotify.com/us/article/spotify-connect/) client.
-  This makes Vision visible on our family Spotify Account helping anyone play songs on the attached music system.
+  Vision runs a [**Spotify connect**](https://support.spotify.com/us/article/spotify-connect/) client which makes it visible on the Spotify app.
+  This enables every in the family account play music to the attached music system.
 
 - **Mood Setter** <br/>
-  At 7 am Vision plays one Spotify playlist from a pre-curated list to set the morning mood. The same program runs at 8:30 PM to help us wind down after a long day.
+  At 7:00 AM Vision plays one Spotify playlist from a pre-curated list to set the morning mood. The same program runs at 8:30 PM to help us wind down after a long day.
 
 - **Lighting control** <br/>
-  Vision is connected to all the **Smart Lamps** in our House. It can power On/Off, toggle brightness, and set preprogrammed moods to these connected lamps. I can ask vision to dim the lights and play songs in the background to set the perfect dinner ambiance.
-  This is real handy when especially when the smart lamps from different brands. There is no need to open 3 different apps to control individual bulbs.
+  Vision is connected to all the **Smart Lamps** in our House.
+  It can power On/Off, toggle brightness, and set preprogrammed moods to these connected lamps.
+  I can ask vision to dim the lights and play songs in the background to set the perfect dinner ambiance.
+  This comes in handy when there are lamps from different brands. There is no need to open 3 different apps to control these individual lamps.
 
 - **Breathwork** <br/>
   Runs a Breathing exercise animation on the screen.
 
 - **Headless Google Assistant** <br/>
-  Why buy when you can assemble of your own! Google has published their [**Google Assistant SDK**](https://developers.google.com/assistant/sdk/guides/service/python) free for non-commercial uses. There are great [open source packages](https://github.com/shivasiddharth/Assistants-Pi) written which simplify this setup for a RPI system.
+  Why buy when you can assemble of your own! Google has published their [**Google Assistant SDK**](https://developers.google.com/assistant/sdk/guides/service/python) free for non-commercial uses.
+  The google assistant is invoked by the "Ok Google" hotword.
 
 - **Doggo Cam** <br/>
   I have not been able to put the camera for good use. For now, I just use this to spy on our Doggo for any mischieves he is doing.
+  I am working on adding a facial recognition system which will enable Vision to greet the family members if they are viewing anything on the Command Center.
 
 The following schematics may help give a better idea of all the interconnected systems and services.
 
@@ -165,9 +171,9 @@ The following schematics may help give a better idea of all the interconnected s
 But there’s no one size fits all solution. Vision helps me show the exact information that interests me without 100 other distractions.
 The modular architecture helps me to connect new features to it when there’s a new need.
 
-There is no comparison to the learning and satisfaction that one would get from creating something new, something **tangible**.
+Plus, there is no comparison to the learning and satisfaction that one would get from creating something new, something **tangible**.
 The whole process allows you to plan, focus, and enjoy the empowering feeling of creating something on your own.
 
 I will be writing a follow up post with detailed steps if you want to build something like this.
-The current state of code is not in its best shape to open source it, but that’s the aim!
+The current state of code is not in its best shape to open source it, but that’s the plan!
 If you have any suggestions to improve this setup please do share in the comments!
