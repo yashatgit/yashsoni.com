@@ -19,6 +19,7 @@ const StyledNav = styled.nav`
 const Logo = styled.img`
   display: flex;
   height: 16px;
+  width: auto;
   padding-right: 2em;
 
   @media (min-width: 737px) {
