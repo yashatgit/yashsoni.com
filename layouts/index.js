@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import Container from '../components/Container';
 import PageProgress from '../components/pageProgress';
-import { H1, H5 } from '../components/elements/text';
+import { H1 } from '../components/elements/text';
 import { full } from '../utils/date-format';
 
 import Footer from '../components/footer';
@@ -15,7 +15,10 @@ import BlogSeo from '../components/BlogSeo';
 
 const LazyUtterances = dynamic(() => import('../components/Utterances'));
 
-const StyledBlogDetails = styled(H5)`
+const StyledBlogDetails = styled.div`
+  color: var(--text2);
+  font-size: 16px;
+  font-weight: 500;
   margin: 10px 0 40px 0;
   display: flex;
   justify-content: space-between;
@@ -55,7 +58,7 @@ const BlogLayout = ({ children, frontMatter }) => {
         <StyledBlogDetails>
           <StyledNameAvatar>
             <StyledAvatar>
-              <Image width="1330" height="1338" src="/static/images/yash_soni.jpg" />
+              <Image alt="Yash Soni - Author" width="1330" height="1338" src="/static/images/yash_soni.jpg" />
             </StyledAvatar>
             {frontMatter.author || 'Yash Soni'} / {full(frontMatter.date)}
           </StyledNameAvatar>

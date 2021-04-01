@@ -103,7 +103,7 @@ const Book = ({ coverImage, bookTitle, borderRadius = '4px', rotate = '20' }) =>
   return (
     <StyledBookContainer isDarkMode={isDarkMode} borderRadius={borderRadius} rotate={rotate}>
       <StyledBook isDarkMode={isDarkMode} borderRadius={borderRadius} rotate={rotate}>
-        <img alt={bookTitle} src={coverImage} />
+        <img alt={bookTitle || 'Book Title'} src={coverImage} />
       </StyledBook>
     </StyledBookContainer>
   );
