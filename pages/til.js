@@ -1,35 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import Footer from '../components/footer';
 import Container from '../components/Container';
 import Nav from '../components/nav';
 import DefaultSEO from '../components/DefaultSEO';
 import Article from '../components/article';
-import { spacing } from '../styles/vars';
-import { heading } from '../styles/mixins';
 
 import { frontMatter as posts } from './til/**/*.mdx';
-
-const StyledArticlesTitle = styled.h1`
-  ${heading};
-  color: var(--text1);
-  font-size: 2.5em;
-  margin-bottom: ${spacing.xxs};
-`;
-
-const StyledArticlesDesc = styled.p`
-  margin-bottom: ${spacing.large};
-`;
-
-const StyledArticles = styled.section`
-  margin-bottom: ${spacing.normal};
-  vertical-align: top;
-
-  @media (min-width: 768px) {
-    display: inline-block;
-  }
-`;
 
 const Index = () => {
   const filteredPosts = posts
@@ -46,19 +23,19 @@ const Index = () => {
       />
       <Nav />
       <Container>
-        <StyledArticles>
-          <StyledArticlesTitle>Today I Learned</StyledArticlesTitle>
-          <StyledArticlesDesc>
+        <section>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 lg:mb-4 text-1">Today I Learned</h1>
+          <div className="mb-6 text-sm md:text-base">
             This is just a collection of small bits and pieces of knowledge I picked up on my way. We learn something
             new every day, so I wanted to keep that gained knowledge accessible for later. It also makes sharing easier.
             Most of it is just random thoughts and code snippets, with links to further resources.
-          </StyledArticlesDesc>
+          </div>
           <ul>
             {filteredPosts.map(article => (
               <Article article={article} key={article.slug} />
             ))}
           </ul>
-        </StyledArticles>
+        </section>
       </Container>
       <Footer />
     </>
