@@ -12,6 +12,7 @@ import MDXProvider from '../components/MDXProvider';
 
 import { lightTheme, darkTheme } from '../styles/theme';
 import GlobalStyle from '../components/GlobalStyle';
+import '../styles/global.css';
 import '../styles/prism.css';
 import '../styles/libraryOverrides.css';
 

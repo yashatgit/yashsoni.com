@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+// import reset from 'styled-reset';
 
 import { lightTheme, darkTheme } from '../styles/theme';
 import { spacing, mediaQuery } from '../styles/vars';
@@ -9,25 +9,15 @@ const buildCSSVars = theme =>
     return (cssString += typeof value === 'object' ? '' : `--${prop}: ${value}; `);
   }, '');
 
-const GlobalStyle = createGlobalStyle`
-    ${reset}
-
+const GlobalStyle = createGlobalStyle`    
     ::selection {
         background-color: #47A3F3;
         color: #fefefe;
     }
     
     html {
-        box-sizing: border-box;
         font-family: Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-        min-width: 320px;
-        scroll-behavior: smooth;
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: inherit;
-        }
+        min-width: 320px;        
     }
 
     body {        

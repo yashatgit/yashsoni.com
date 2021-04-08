@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import Footer from '../components/footer';
 import Container from '../components/Container';
@@ -7,26 +6,7 @@ import Nav from '../components/nav';
 import Article from '../components/article';
 import DefaultSEO from '../components/DefaultSEO';
 
-import { spacing } from '../styles/vars';
-import { heading } from '../styles/mixins';
-
 import { frontMatter as blogPosts } from './blog/**/*.mdx';
-
-const StyledArticlesTitle = styled.h1`
-  ${heading};
-  color: var(--text1);
-  font-size: 2.5em;
-  margin-bottom: ${spacing.large};
-`;
-
-const StyledArticles = styled.section`
-  margin-bottom: ${spacing.normal};
-  vertical-align: top;
-
-  @media (min-width: 768px) {
-    display: inline-block;
-  }
-`;
 
 const Index = () => {
   // console.log({ blogPosts });
@@ -44,14 +24,14 @@ const Index = () => {
       />
       <Nav />
       <Container>
-        <StyledArticles>
-          <StyledArticlesTitle>Writing</StyledArticlesTitle>
+        <div>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 lg:mb-12 text-1">Writing</h1>
           <ul>
             {filteredBlogPosts.map(article => (
               <Article article={article} key={article.slug} />
             ))}
           </ul>
-        </StyledArticles>
+        </div>
       </Container>
       <Footer />
     </>
