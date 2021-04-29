@@ -9,7 +9,6 @@ import DefaultSEO from '../components/DefaultSEO';
 import { frontMatter as blogPosts } from './blog/**/*.mdx';
 
 const Index = () => {
-  // console.log({ blogPosts });
   const filteredBlogPosts = blogPosts
     .filter(blogPost => blogPost.title)
     .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))

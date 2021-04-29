@@ -20,7 +20,10 @@ const StyledCaption = styled.div`
 
 const StyledImageContainer = styled.div`
   margin: 16px 0;
-  cursor: zoom-in;
+
+  img {
+    cursor: zoom-in;
+  }
 `;
 
 // https://github.com/neptunian/react-photo-gallery/blob/master/src/Photo.js
