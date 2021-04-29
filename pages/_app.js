@@ -1,12 +1,13 @@
 import React from 'react';
-import App from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import useDarkMode from 'use-dark-mode';
+import { useRouter } from 'next/router';
 
 //https://github.com/garmeeh/next-seo#default-seo-configuration
 import { DefaultSeo } from 'next-seo';
 import SEO from '../next-seo.config';
+import * as gtag from '../lib/gtag';
 
 import MDXProvider from '../components/MDXProvider';
 
@@ -23,23 +24,31 @@ const AppWithTheme = ({ children }) => {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 
-class CustomApp extends App {
-  render() {
-    const { Component, pageProps } = this.props;
+const CustomApp = ({ Component, pageProps }) => {
+  const router = useRouter();
 
-    return (
-      <AppWithTheme>
-        <Head>
-          <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5" />
-        </Head>
-        <MDXProvider>
-          <GlobalStyle />
-          <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
-        </MDXProvider>
-      </AppWithTheme>
-    );
-  }
-}
+  React.useEffect(() => {
+    const handleRouteChange = url => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
+  return (
+    <AppWithTheme>
+      <Head>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5" />
+      </Head>
+      <MDXProvider>
+        <GlobalStyle />
+        <DefaultSeo {...SEO} />
+        <Component {...pageProps} />
+      </MDXProvider>
+    </AppWithTheme>
+  );
+};
 
 export default CustomApp;
