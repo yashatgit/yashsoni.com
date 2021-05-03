@@ -85,6 +85,7 @@ class CustomDocument extends Document {
               function gtag() {
                 dataLayer.push(arguments);
               }
+              window.gtag = gtag;
               gtag('js', new Date());
               gtag('config', GA_TRACKING_ID, {
                 page_path: window.location.pathname,
