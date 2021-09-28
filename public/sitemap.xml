@@ -5,10 +5,6 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog</loc>
-  </url>
-
-  <url>
     <loc>https://yashsoni.com</loc>
   </url>
 
@@ -17,15 +13,7 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/til</loc>
-  </url>
-
-  <url>
     <loc>https://yashsoni.com/blog/abstract-syntax-trees</loc>
-  </url>
-
-  <url>
-    <loc>https://yashsoni.com/blog/fitbit-data-analysis</loc>
   </url>
 
   <url>
@@ -33,7 +21,9 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/intercepting-network-data-transmitted-by-apps</loc>
+    <loc
+      >https://yashsoni.com/blog/intercepting-network-data-transmitted-by-apps</loc
+    >
   </url>
 
   <url>
@@ -42,6 +32,10 @@
 
   <url>
     <loc>https://yashsoni.com/blog/wip-words-of-wisdom</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/snippets/google-analytics</loc>
   </url>
 
   <url>
@@ -81,6 +75,10 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/til/use-touchid-with-sudo</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/til/what-is-cron</loc>
   </url>
 
@@ -105,7 +103,15 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/building-a-gaming-arcade-with-raspberrypi-DIY/index</loc>
+    <loc
+      >https://yashsoni.com/blog/building-a-gaming-arcade-with-raspberrypi-DIY/index</loc
+    >
+  </url>
+
+  <url>
+    <loc
+      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
+    >
   </url>
 
   <url>
@@ -113,11 +119,7 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/handwriting-recognition-using-CNN/CNN_Handwriting_MNIST</loc>
-  </url>
-
-  <url>
-    <loc>https://yashsoni.com/blog/handwriting-recognition-using-CNN/FreehandDrawingCanvas</loc>
+    <loc>https://yashsoni.com/blog/fitbit-data-analysis/index</loc>
   </url>
 
   <url>
@@ -125,11 +127,9 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/maldives-2020-a-diving-extravaganza/index</loc>
-  </url>
-
-  <url>
-    <loc>https://yashsoni.com/blog/neural-networks-hello-world/NN</loc>
+    <loc
+      >https://yashsoni.com/blog/maldives-2020-a-diving-extravaganza/index</loc
+    >
   </url>
 
   <url>
@@ -138,5 +138,9 @@
 
   <url>
     <loc>https://yashsoni.com/til/how-to-docker/index</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/til/temp/index</loc>
   </url>
 </urlset>

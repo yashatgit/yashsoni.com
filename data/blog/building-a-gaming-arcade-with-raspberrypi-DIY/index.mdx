@@ -1,0 +1,161 @@
+---
+date: '2020-08-26'
+title: 'Building a Gaming Arcade with RaspberryPi - DIY 👾'
+description: 'all aboard the nostalgia train'
+keywords: 'raspberrypi,retropi,NES,arcade gaming'
+---
+
+import image_flashing1 from './images/flashing-1.jpg';
+import image_flashing2 from './images/flashing-2.jpg';
+import image_ipScan from './images/rpi-ip-scan.jpg';
+import image_rpi_ssh from './images/rpi-ssh.jpg';
+import image_rpi_logo from './images/retropie-logo.png';
+import image_thats_all from './images/thats-all-folks.gif';
+
+A few days back, I was watching this new docuseries on Netflix called [**Highscore**](https://www.netflix.com/title/81019087).
+It features stories and interviews with the developers and creators of early video games.
+
+Watching the first episode reminded me of my childhood days. Our school summer vacations meant a reunion of all the cousin brothers and sisters at my grandparent's house.
+We spent almost every afternoon glued to the TV sets where 2 of us would be playing the game and the entire flock sitting behind anxiously wishing for a _game over_ screen so that the next in line gets the chance.
+
+Since I didn't have my NES anymore, I searched for ways to play these games. I found many browser-based emulators that offered some of these game titles, but they were not giving the same feels.
+
+I did have an extra [**RaspberryPi**](https://www.raspberrypi.org/) lying around so I started looking for ideas to run these games on the RPI. Lo and behold, I found exactly what I was looking for in [**RetroPi**](https://retropie.org.uk/).
+
+## What you will need?
+
+- [RaspberryPi](https://www.raspberrypi.org/). Works with almost all the versions (A, A+, B, B+, 2, Zero, 3, 4)
+- Micro SD card to install the OS and games
+- External Controllers. Although, you can even use a USB Keyboard if you don't have one handy
+- Patience
+
+## Introducing RetroPie
+
+<img src={image_rpi_logo} alt="RetroPie logo" />
+
+[RetroPie](https://retropie.org.uk/) is an amazing open-source software package that allows you to play your favorite Arcade, home-console, and classic PC games with minimum set-up.
+It supports majority of the emulators like NES, SNES, Genesis, Atari, Gameboy, Sega, and Playstation. The list is [endless](https://retropie.org.uk/docs/Supported-Systems/).
+
+Before we begin, let's clear some of these buzzwords that you will encounter in the rest of the post.
+
+- **Emulator** is software that makes a computer behave like a video game console such as the Super Nintendo.
+- **ROMs** are digital versions of game cartridges. Loading up a ROM in an emulator is the equivalent of putting a cartridge in a game console.
+
+## Step 1: Install OS and RetroPie
+
+Our first step is to **format the SD card** to prepare it for Installation. [sdcard.org](https://www.sdcard.org/downloads/formatter/) has a handy list of formatters which you can download based on your OS.
+
+Next, we need to install an OS for the RaspberryPi so that we can install additional software like RetroPi on top of it.
+Thankfully, RetroPie comes with a pre-made image that is built on top of Rasberry Pi OS.
+This means that this image installs both the OS for RaspberryPi and the RetroPie software for us.
+Head over to the [retropi downloads page](https://retropie.org.uk/download/) to choose the image based on your version of the RPI.
+
+Once the image is downloaded, we need to write this image onto the SD Card.
+There are [many ways](https://retropie.org.uk/docs/First-Installation/#installation) to do this. My personal favorite is via software called [Etcher](https://www.balena.io/etcher/) which works both on Windows and Mac.
+
+<MediaGrid
+  photos={[
+    { src: image_flashing1, width: 1600, height: 965 },
+    { src: image_flashing2, width: 1600, height: 965 }
+  ]}
+  caption="Writing RetroPi image onto RaspberryPi"
+/>
+
+Once the writing is complete, our RaspberryPI is ready. The RetroPi software will autoboot on starting so you don't need any extra steps for it. You can plugin to any external monitor and start playing the games!
+
+**Troubleshooting installation**
+
+- For assistance in installing the images read the official [RaspberryPi docs](https://www.raspberrypi.org/documentation/installation/installing-images/).
+- [RetroPi docs](https://retropie.org.uk/docs/First-Installation/) are supremely helpful if you get stuck in any of these steps.
+
+## Step 2: Configuring RaspberryPI for remote control and login
+
+There will be many scenarios where you would want to control or configure your RaspberryPI without connecting it to an external monitor with a keyboard and mouse.
+One of the ways to achieve it by remote login using **ssh**.
+
+**Enabling ssh**
+
+ssh on RPI is disabled by default. To enable it, just create a file named `ssh` in the root folder of the SD card and ssh will be auto-enabled on restart.
+
+```bash
+cd /Volumes/boot
+touch ssh
+```
+
+The default login will be `username: pi` and `password: raspberry`
+
+**Auto-connect to Wifi**
+
+The next step is to ensure that our RaspberryPI auto connects to Wifi when online. We can do this by saving the credentials in a file named `wpa_supplicant.conf`.
+
+```bash
+cd /Volumes/boot
+touch wpa_supplicant.conf
+
+# copy the below file contents to this file
+
+# RETROPIE CONFIG START
+country=US
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="your_wifi_ssid"
+    psk="your_password"
+}
+# RETROPIE CONFIG END
+```
+
+Upon reboot, RPI will automatically connect to the Wifi.
+
+**Finding the IP address to establish ssh connection**
+
+To establish a ssh connection, we will need to find the IP address for our RPI.
+Open Terminal (Mac) or Command Prompt (Windows) and enter the following command to ping your RPI and return its network IP
+
+```bash
+ping retropie
+```
+
+If this doesn't work, you can take the help of a **Network Scanner** to find out which IP was allocated to the PI.
+I personally use [Angry IP Scanner](https://angryip.org/) which is best suited for this.
+
+<MediaGrid
+  photos={[
+    { src: image_ipScan, width: 1837, height: 1295 },
+    { src: image_rpi_ssh, width: 1414, height: 1062 }
+  ]}
+  caption="IP scanning and ssh"
+/>
+
+**Troubleshooting configuration**
+
+- [RetroPi guide on SSH](https://retropie.org.uk/docs/SSH/)
+- [RetroPi guide on Wifi](https://retropie.org.uk/docs/Wifi/)
+
+## Step 3: Adding the Games!
+
+Most retro games are owned by a company and are protected by copyright laws.
+While you can find tons of RetroPie ROMs on any Torrent site, just be wary of downloading the ones which are copyrighted.
+Fortunately, there are ways to download free ROMs. [MAMEdev.org](https://www.mamedev.org/roms/) has a nice list of these free, legal ROMs.
+
+Once you have the ROMs ready, copy them to their respective folders (in the `retropie/roms` folder).
+
+**Troubleshooting configuration**
+
+- [RetroPi guide on transferring ROMs](https://retropie.org.uk/docs/First-Installation/#transferring-roms)
+
+## Step 4: Controller configuration
+
+While you can enjoy playing with a Keyboard, RetroPie supports a wide variety of wired and wireless controllers.
+The [docs](https://retropie.org.uk/docs/Keyboard-Controllers/) do a pretty good job listing the steps to configure them.
+
+I tried connecting my PS4 wireless controller and it worked like a charm.
+The best thing is that the pairing configuration is saved so this is only a one-time thing.
+
+<img src={image_thats_all} alt="That's all folks" />
+
+---
+
+If you like building hobby projects and are new to the **RaspberryPI** world, I would seriously recommend investing some time playing around with it.
+There are a [ton](https://howchoo.com/g/ywrkztg1nda/raspberry-pi-projects) of amazing projects which you can build with RPI.

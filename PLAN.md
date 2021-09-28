@@ -71,3 +71,9 @@ WebmasterChecklist.pdf
 - why TIL and blog exists.
 - writing and learnings
 - shaping up the blog from previous versions
+
+- image as next/Image
+- add snippets
+- fix language tag
+
+- views?
