@@ -19,6 +19,7 @@ export const Fallback = () => (
     <circle cx="20" cy="20" r="20" />
   </ContentLoader>
 );
+Fallback.displayName = 'Fallback';
 
 const Utterances = dynamic(() => import('./Utterances'), {
   loading: () => <Fallback />
