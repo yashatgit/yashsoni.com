@@ -75,10 +75,6 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/til/use-touchid-with-sudo</loc>
-  </url>
-
-  <url>
     <loc>https://yashsoni.com/til/what-is-cron</loc>
   </url>
 
@@ -99,6 +95,10 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/til/wip-use-touchid-with-sudo</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/blog/breath-james-nestor-book-review/index</loc>
   </url>
 
@@ -109,17 +109,13 @@
   </url>
 
   <url>
-    <loc
-      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
-    >
-  </url>
-
-  <url>
     <loc>https://yashsoni.com/blog/coffee-can-investing/index</loc>
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/fitbit-data-analysis/index</loc>
+    <loc
+      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
+    >
   </url>
 
   <url>
@@ -134,6 +130,10 @@
 
   <url>
     <loc>https://yashsoni.com/blog/neural-networks-hello-world/index</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/blog/fitbit-data-analysis/index</loc>
   </url>
 
   <url>

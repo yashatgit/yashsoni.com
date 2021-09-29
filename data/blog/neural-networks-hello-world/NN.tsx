@@ -106,19 +106,22 @@ const getLineChartData = (theme) => ({
   ]
 });
 
+type ChartInstance = {
+  chartInstance: { update: () => void };
+};
+
 export default function App() {
   const { themeObj } = useTheme();
   const [isOn, setIsOn] = useState(false);
   const [summary, setSummary] = useState('');
 
   const chartData = React.useMemo(() => getLineChartData(themeObj), [themeObj]);
-  const chartRef = React.useRef();
+  const chartRef = React.useRef<ChartInstance>(null);
 
   const updateChartPoint = (newValue) => {
     if (chartRef.current) {
       chartData.datasets[0].data[11] = newValue;
-      // @ts-ignore
-      chartRef.current.chartInstance.update();
+      chartRef.current.chartInstance?.update();
     }
   };
 
@@ -147,6 +150,7 @@ export default function App() {
   };
   return (
     <>
+      {/* @ts-ignore */}
       <Line ref={chartRef} data={chartData} options={chartData.options} />
       <Button onClick={() => startTraining()} disabled={isOn}>
         {'Train Model'}
