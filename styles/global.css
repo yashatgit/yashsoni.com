@@ -81,10 +81,10 @@ body:after {
   display: block;
   position: relative;
 }
-.prose .code-highlight:after {
+.prose .code-tag {
   position: absolute;
-  top: -12px;
-  right: -18px;
+  top: 0;
+  right: 0;
   font-size: 0.7rem;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -130,7 +130,7 @@ body:after {
 }
 
 .prose pre {
-  @apply border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900;
+  @apply border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900 pt-6;
 }
 
 .prose code {
