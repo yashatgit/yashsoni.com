@@ -7,18 +7,12 @@ const StyledBook = (props) => {
   return (
     <style jsx>{`
       .bookContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         perspective: 600px;
-        margin-top: 20px;
-        margin-bottom: 60px;
       }
 
       .book {
         width: 200px;
         height: 300px;
-        position: relative;
         transform-style: preserve-3d;
         transform: rotateY(-${props.rotate}deg);
         transition: transform 1s ease;
@@ -109,10 +103,12 @@ const Book = ({
 }) => {
   const { isDarkMode } = useTheme();
   return (
-    <div className="bookContainer">
-      {StyledBook({ borderRadius, rotate, isDarkMode })}
-      <div className="book">
-        <img alt={bookTitle || 'Book Title'} src={coverImage} />
+    <div>
+      <div className="bookContainer flex items-center justify-center mt-10 mb-12">
+        {StyledBook({ borderRadius, rotate, isDarkMode })}
+        <div className="book relative">
+          <img alt={bookTitle || 'Book Title'} src={coverImage} />
+        </div>
       </div>
     </div>
   );

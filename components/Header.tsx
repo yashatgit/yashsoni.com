@@ -62,7 +62,7 @@ export default function Container(props) {
         {tabs.map((tab) => (
           <NextLink href={tab.href} key={tab.title}>
             <a
-              className={`p-1 sm:p-4 ${
+              className={`p-1 sm:p-4 text-sm md:text-base ${
                 asPath === tab.href
                   ? 'text-blue-500 dark:text-blue-400'
                   : 'text-gray-900 dark:text-gray-100'

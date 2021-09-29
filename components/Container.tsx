@@ -43,7 +43,7 @@ export default function Container(props) {
       <Header />
       <main
         id="skip"
-        className={`flex flex-col justify-center px-8 bg-white dark:bg-black ${overrides.mainClass}`}
+        className={`flex flex-col justify-center px-4 md:px-8 bg-white dark:bg-black ${overrides.mainClass}`}
       >
         {children}
         {!overrides.hideFooter ? <Footer /> : ''}
