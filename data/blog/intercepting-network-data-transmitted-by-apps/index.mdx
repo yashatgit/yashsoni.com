@@ -5,6 +5,17 @@ description: 'performing man in middle attacks'
 keywords: 'man in middle attacks,mitm proxy,smart bulbs,middlewares'
 ---
 
+import manInMiddle from './images/man-in-middle.png';
+import chrome1 from './images/chrome-1.png';
+import chrome2 from './images/chrome-2.png';
+import chrome3 from './images/chrome-3.png';
+import iphone1 from './images/iphone-1.png';
+import iphone2 from './images/iphone-2.png';
+import iphone3 from './images/iphone-3.png';
+import iphone4 from './images/iphone-4.png';
+import mitmweb from './images/mitmweb.png';
+import mitmproxy from './images/mitmproxy.png';
+
 The preceding of this article started from a simple task (as I earlier thought) I wanted to achieve.
 
 I wanted to control my MI Smart bulb with code. And since there was no exact documentation available, I thought of seeing what data is being sent by the MI home app to communicate with the bulb.
@@ -24,7 +35,7 @@ This is usually reffered as a typical [man-in-the-middle](https://www.cloudflare
 <MediaGrid
   photos={[
     {
-      src: '/static/images/mitmproxy/man-in-middle.png',
+      src: manInMiddle,
       width: '1488 ',
       height: '582'
     }
@@ -83,8 +94,8 @@ To check these details on chrome, click on the padlock 🔒 icon in the address 
 
 <MediaGrid
   photos={[
-    { src: '/static/images/mitmproxy/chrome-1.png', width: '11', height: '10' },
-    { src: '/static/images/mitmproxy/chrome-2.png', width: '1', height: '2' }
+    { src: chrome1, width: '11', height: '10' },
+    { src: chrome2, width: '1', height: '2' }
   ]}
 />
 
@@ -93,9 +104,7 @@ To check these details on chrome, click on the padlock 🔒 icon in the address 
 As on April 26, 2020, **95% of the Internet traffic is served over HTTPS**. Other way to look at is that still over **5% of internet data is relayed over unsecure HTTP connections**.
 
 <MediaGrid
-  photos={[
-    { src: '/static/images/mitmproxy/chrome-3.png', width: '2', height: '1' }
-  ]}
+  photos={[{ src: chrome3, width: '2', height: '1' }]}
   caption={
     <a href="https://transparencyreport.google.com/https/overview?hl=en">
       Google transpareny report
@@ -111,7 +120,8 @@ By now we know what we need to do to bypass the **HTTPS** security layer.
 - Become a certificate authority to self-sign the certificates
 
 This is where **[mitmproxy](https://mitmproxy.org/)** comes into play. mitmproxy is a **free** and **open source** interactive HTTPS proxy. The MITM in its name stands for _Man-In-The-Middle_ 🤷🏽‍♂️.
-![mitmproxy](/static/images/mitmproxy/mitmproxy.png)
+
+<MediaGrid photos={[{ src: mitmproxy, width: '1402', height: '450' }]} />
 
 The website lists the following features for mitmproxy
 
@@ -148,16 +158,16 @@ Once the proxy server is up and running, the IP for this server needs to be ente
 <MediaGrid
   photos={[
     {
-      src: '/static/images/mitmproxy/iphone-1.png',
+      src: iphone1,
       width: '46',
       height: '100'
     },
     {
-      src: '/static/images/mitmproxy/iphone-2.png',
+      src: iphone2,
       width: '46',
       height: '100'
     },
-    { src: '/static/images/mitmproxy/iphone-3.png', width: '46', height: '100' }
+    { src: iphone3, width: '46', height: '100' }
   ]}
   caption={'installing a self-signed certificate on an iOS device'}
 />
@@ -167,11 +177,11 @@ Doing so, out **man-in-middle proxy server** is in place snooping over all the n
 <MediaGrid
   photos={[
     {
-      src: '/static/images/mitmproxy/iphone-4.png',
+      src: iphone4,
       width: '46',
       height: '100'
     },
-    { src: '/static/images/mitmproxy/mitmweb.png', width: '18', height: '10' }
+    { src: mitmweb, width: '18', height: '10' }
   ]}
   caption={'intercepting traffic via mitmweb'}
 />

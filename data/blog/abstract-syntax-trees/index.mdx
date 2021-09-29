@@ -5,6 +5,13 @@ description: 'abstraction is powerful'
 keywords: 'AST,abstract syntax tree,compiler,lexical analysis'
 ---
 
+import compiler_1 from './images/compiler_1.jpg';
+import compiler_2 from './images/compiler_2.jpg';
+import parse_trees from './images/parse_trees.jpg';
+import ast_explorer from './images/ast_explorer.jpg';
+import sw from './images/sw.gif';
+import ast_code_validation from './images/ast_code_validation.jpg';
+
 Language is a medium through which we interact with other beings.
 When it comes to interacting with machines or computers, we have built different _computer languages_ to program them.
 
@@ -19,9 +26,7 @@ For example
 In very simple terms, the schematics of this translation looks something like this:
 
 <MediaGrid
-  photos={[
-    { src: '/static/images/ast/compiler_1.jpg', width: 2400, height: 476 }
-  ]}
+  photos={[{ src: compiler_1, width: 2400, height: 476 }]}
   rowHeight={200}
   darkMode
 />
@@ -29,9 +34,7 @@ In very simple terms, the schematics of this translation looks something like th
 This compiler blackbox can be further divided into following stages:
 
 <MediaGrid
-  photos={[
-    { src: '/static/images/ast/compiler_2.jpg', width: 3298, height: 1058 }
-  ]}
+  photos={[{ src: compiler_2, width: 3298, height: 1058 }]}
   rowHeight={200}
   darkMode
 />
@@ -84,9 +87,7 @@ Although, _Parse Tree_ and _Abstract Syntax Tree_ (AST) are two terms that are r
 The AST instead is a polished version of the parse tree, in which only the information relevant to understanding the code is maintained.
 
 <MediaGrid
-  photos={[
-    { src: '/static/images/ast/parse_trees.jpg', width: 1486, height: 1100 }
-  ]}
+  photos={[{ src: parse_trees, width: 1486, height: 1100 }]}
   rowHeight={200}
   caption={
     <a href="http://pages.cs.wisc.edu/~fischer/cs536.s06/course.hold/html/NOTES/4.SYNTAX-DIRECTED-TRANSLATION.html#astVsParse">
@@ -102,9 +103,7 @@ This is possible because, despite the syntactic differences, all languages have 
 A great tool to better understand an AST is [**AST Explorer**](https://astexplorer.net/), where you can enter code and generate a real-time AST. This is an incredibly powerful way to introspect an AST, including the types of nodes and their properties.
 
 <MediaGrid
-  photos={[
-    { src: '/static/images/ast/ast_explorer.jpg', width: 2102, height: 1192 }
-  ]}
+  photos={[{ src: ast_explorer, width: 2102, height: 1192 }]}
   rowHeight={200}
   caption={
     <a href="https://astexplorer.net/#/gist/2076969f800813a950edb9ad3395d80f/3970da247031c7892b412d1b3eacd3f05c06b5e0">
@@ -206,7 +205,7 @@ Intellisense analyses the AST and, based on what you've written so far, it sugge
 [VS code intellisense](https://code.visualstudio.com/docs/editor/intellisense) uses AI to give more meaningful results.
 
 <MediaGrid
-  photos={[{ src: '/static/images/ast/sw.gif', width: 1180, height: 524 }]}
+  photos={[{ src: sw, width: 1180, height: 524 }]}
   rowHeight={200}
   caption={
     <a href="https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode">
@@ -222,7 +221,7 @@ Static code analyzing is a method of computer program debugging that is done by 
 <MediaGrid
   photos={[
     {
-      src: '/static/images/ast/ast_code_validation.jpg',
+      src: ast_code_validation,
       width: 1114,
       height: 474
     }
