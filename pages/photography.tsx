@@ -1,7 +1,6 @@
 import React from 'react';
 import MediaGrid from 'components/mediaGrid';
 import StandardPageLayout from 'layouts/standardPage';
-import NN from 'data/blog/neural-networks-hello-world/NN';
 
 const Index = () => (
   <>
@@ -9,7 +8,6 @@ const Index = () => (
       title="Photography – Yash Soni"
       description="Some occasional photography"
     >
-      <NN />
       <MediaGrid
         photos={[
           {

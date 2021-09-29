@@ -3,50 +3,6 @@ import { useTheme } from 'components/hooks/useTheme';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 
-const headerStyles = () => {
-  return (
-    <style jsx>{`
-      body {
-        font-size: 18px;
-        border-left: 10px solid #000;
-        border-right: 10px solid #000;
-      }
-
-      body:before,
-      body:after {
-        content: '';
-        position: fixed;
-        background: #000;
-        left: 0;
-        right: 0;
-        height: 10px;
-        z-index: 10;
-      }
-      body:before {
-        top: 0;
-      }
-      body:after {
-        bottom: 0;
-      }
-
-      .sticky-nav {
-        position: sticky;
-        z-index: 10;
-        top: 0;
-        backdrop-filter: saturate(180%) blur(20px);
-        transition: background-color 0.1 ease-in-out;
-      }
-
-      @supports not (backdrop-filter: none) {
-        .sticky-nav {
-          backdrop-filter: none;
-          @apply bg-opacity-100;
-        }
-      }
-    `}</style>
-  );
-};
-
 const tabs = [
   { title: 'Home', href: '/' },
   { title: 'Writing', href: '/blog' },
@@ -64,7 +20,6 @@ export default function Container(props) {
 
   return (
     <nav className="flex items-center justify-between w-full max-w-4xl p-8 mx-auto my-0 text-gray-900 bg-white sticky-navv md:my-8 dark:bg-black bg-opacity-60 dark:text-gray-100">
-      {headerStyles()}
       <a
         href="#skip"
         className="skip-nav absolute px-4 py-2 transition-transform duration-200 transform -translate-y-12 left-1/4 focus:top-4 focus:translate-y-3 -top-8"

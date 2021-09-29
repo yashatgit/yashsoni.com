@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from 'components/hooks/useTheme';
+import { Fallback } from './LazyUtterances';
 
 const Utterances = () => {
   const { isDarkMode } = useTheme();
@@ -32,8 +33,8 @@ const Utterances = () => {
   }, [isDarkMode]);
 
   return (
-    <div className="react-utterences" ref={commentElemRef}>
-      {pending && <div>Loading comments...</div>}
+    <div className="react-utterences my-6" ref={commentElemRef}>
+      {pending && <Fallback />}
     </div>
   );
 };

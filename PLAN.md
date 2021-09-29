@@ -75,5 +75,7 @@ WebmasterChecklist.pdf
 - image as next/Image
 - add snippets
 - fix language tag
+- utterance tombstone
+- breath layout fixes
 
 - views?

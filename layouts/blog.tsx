@@ -25,22 +25,22 @@ export default function BlogLayout({ children, frontMatter }) {
         <h1 className="font-bold text-3xl md:text-5xl tracking-tight mb-4 text-black dark:text-white">
           {frontMatter.title}
         </h1>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full mt-2">
+        <div className="flex flex-row justify-between items-center w-full mt-2">
           <div className="flex items-center">
             <Image
-              alt="Lee Robinson"
+              alt="Yash Soni"
               height={30}
               width={30}
               src="/avatar.jpg"
               className="rounded-full"
             />
-            <p className="text-md text-gray-700 dark:text-gray-300 ml-2">
+            <p className="text-sm md:text-md text-gray-700 dark:text-gray-300 ml-2">
               {frontMatter.by}
               {'Yash Soni / '}
               {format(new Date(frontMatter.date), 'MMMM dd, yyyy')}
             </p>
           </div>
-          <p className="text-sm text-gray-500 min-w-32 mt-2 md:mt-0">
+          <p className="text-sm text-gray-500 min-w-32 mt-0">
             {frontMatter.readingTime.text}
             {/* {` • `}
             <ViewCounter slug={frontMatter.slug} /> */}
@@ -67,7 +67,9 @@ export default function BlogLayout({ children, frontMatter }) {
           </a> */}
         </div>
       </article>
-      <LazyUtterances />
+      <div className="max-w-2xl mx-auto w-full">
+        <LazyUtterances />
+      </div>
     </Container>
   );
 }
