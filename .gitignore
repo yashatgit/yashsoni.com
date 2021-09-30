@@ -2,7 +2,7 @@
 .DS_Store
 .next
 node_modules
-.env*
-.idea
-.mdx-data
-.now 
+public/sitemap.xml
+public/feed.xml
+.vercel
+.env
