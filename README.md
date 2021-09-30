@@ -4,8 +4,10 @@ This portfolio is built using
 
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
+- [Typescript](https://www.typescriptlang.org/)
 - [MDX](https://github.com/mdx-js/mdx)
-- [styled components](https://styled-components.com/)
+- [MDX-bundler](https://github.com/kentcdodds/mdx-bundler)
+- [Tailwind](https://tailwindcss.com/)
 
 Deployed using
 
