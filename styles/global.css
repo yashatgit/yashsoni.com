@@ -85,7 +85,7 @@ body:after {
   position: absolute;
   top: 0;
   right: 0;
-  font-size: 0.7rem;
+  font-size: 10px;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: rgb(34, 34, 47);

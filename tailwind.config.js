@@ -9,6 +9,9 @@ module.exports = {
       colors: {
         'blue-opaque': 'rgb(13 42 148 / 18%)'
       },
+      textColor: {
+        // black: 'rgb(10, 10, 70)'
+      },
       fontFamily: {
         sans: ['Inter', ...fontFamily.sans]
       },

@@ -16,7 +16,7 @@ const tf = require('@tensorflow/tfjs');
 let model;
 const loadModel = async () => {
   model = await tf.loadLayersModel(
-    'https://www.yashsoni.com/static/blog/handwriting-mnist/model/model.json'
+    'https://www.yashsoni.com/static/assets/blog/handwriting-recognition-using-CNN/model/model.json'
   );
   console.log('Model Loaded. Summary:');
   model.summary();
