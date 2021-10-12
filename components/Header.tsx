@@ -11,10 +11,11 @@ const tabs = [
 ];
 
 export default function Container(props) {
-  const { asPath } = useRouter();
+  const { asPath, pathname } = useRouter();
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme, isDarkMode } = useTheme();
 
+  console.log({ asPath, pathname });
   // After mounting, we have access to the theme
   useEffect(() => setMounted(true), []);
 
@@ -60,10 +61,14 @@ export default function Container(props) {
       </button>
       <div>
         {tabs.map((tab) => (
-          <NextLink href={tab.href} key={tab.title}>
+          <NextLink href={`${tab.href}`} key={tab.title}>
             <a
               className={`p-1 sm:p-4 text-sm md:text-base ${
-                asPath === tab.href
+                (
+                  tab.href.length > 1
+                    ? asPath.includes(tab.href)
+                    : asPath === tab.href
+                )
                   ? 'text-blue-500 dark:text-blue-400'
                   : 'text-gray-900 dark:text-gray-100'
               }`}
