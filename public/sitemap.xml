@@ -17,6 +17,14 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/blog/iceland-photo-essay</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/blog/wip-words-of-wisdom</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/til/anatomy-of-a-good-git-commit-msg</loc>
   </url>
 
@@ -77,18 +85,6 @@
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/iceland-photo-essay</loc>
-  </url>
-
-  <url>
-    <loc>https://yashsoni.com/blog/wip-words-of-wisdom</loc>
-  </url>
-
-  <url>
-    <loc>https://yashsoni.com/til/how-to-docker/index</loc>
-  </url>
-
-  <url>
     <loc>https://yashsoni.com/blog/abstract-syntax-trees/index</loc>
   </url>
 
@@ -98,22 +94,22 @@
 
   <url>
     <loc
-      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
-    >
-  </url>
-
-  <url>
-    <loc
       >https://yashsoni.com/blog/building-a-gaming-arcade-with-raspberrypi-DIY/index</loc
     >
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/fitbit-data-analysis/index</loc>
+    <loc
+      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
+    >
   </url>
 
   <url>
     <loc>https://yashsoni.com/blog/coffee-can-investing/index</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/blog/fitbit-data-analysis/index</loc>
   </url>
 
   <url>
@@ -133,10 +129,14 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/blog/neural-networks-hello-world/index</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/blog/wip-form-follows-function/index</loc>
   </url>
 
   <url>
-    <loc>https://yashsoni.com/blog/neural-networks-hello-world/index</loc>
+    <loc>https://yashsoni.com/til/how-to-docker/index</loc>
   </url>
 </urlset>

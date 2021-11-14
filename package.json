@@ -15,6 +15,7 @@
   "license": "MIT",
   "scripts": {
     "build": "next build",
+    "build-debug": "next build --debug",
     "postbuild": "node ./scripts/generate-sitemap.mjs",
     "dev": "next dev",
     "start": "next start",
