@@ -1,5 +1,5 @@
 module.exports = {
-  experimental: { esmExternals: true },
+  swcMinify: true,
   reactStrictMode: true,
   images: {
     domains: [
