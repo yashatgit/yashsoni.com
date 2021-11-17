@@ -2,7 +2,7 @@ Source of [yashsoni.com](https://www.yashsoni.com)
 
 This portfolio is built using
 
-- [Next.js](https://nextjs.org/)
+- [Next.js-12](https://nextjs.org/)
 - [React](https://reactjs.org/)
 - [Typescript](https://www.typescriptlang.org/)
 - [MDX](https://github.com/mdx-js/mdx)
