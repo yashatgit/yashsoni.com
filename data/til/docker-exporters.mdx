@@ -1,0 +1,108 @@
+---
+date: 'Dec 12, 2022'
+title: 'Extracting files from Docker Images and Containers'
+description: 'Intro to docker export, copy and docker exporters'
+keywords: 'docker export, docker copy, docker exporters'
+---
+
+Docker is a powerful tool for running and managing containers,
+which are lightweight and portable packages that contain all the necessary files and dependencies for an application to run.
+
+One useful feature of Docker is the ability to extract the contents of a container image,
+which can be useful for debugging or for making backups.
+
+There are a few ways to achive this.
+We will begin with a very simple Dockerfile which creates a `message.txt` file during the build process.
+
+```Dockerfile
+FROM alpine as BUILD
+WORKDIR /home
+RUN echo "Hello Docker" > message.txt
+```
+
+### 1. Export entire contents of container to a tar file
+
+```bash
+docker build -f Dockerfile -t buildx-cp .
+
+# create a container named "tmp" without running it
+docker create --name tmp buildx-cp
+
+# export the contents of entire image to a tar file
+docker export tmp > myimage.tar
+
+# remove the created container
+docker rm tmp
+```
+
+### 2. Export a single file from the container to filesystem
+
+When we need a specific file from the running container,
+we can use the `cp` command to copy contents from the container to the filesystem (or vice-versa).
+
+```bash
+# copy the file from a container to filesystem
+docker cp tmp:/home/message.txt .
+
+# copy myFile from filesystem to the container
+docker cp ./myfile tmp:/home
+```
+
+### 3. Export files from multi-staged builds
+
+Docker **multi-staged** builds are a way to optimize the Docker build process by using multiple build stages in a single Dockerfile.
+This allows you to separate your build process into multiple stages, each with its own specific purpose,
+and only include the necessary files and dependencies in the final Docker image.
+This can result in **smaller**, more efficient Docker images that are easier to manage and deploy.
+
+```Dockerfile
+FROM alpine as BUILD
+
+WORKDIR /home
+ADD ./isPrime.sh .
+RUN chmod +x ./isPrime.sh
+RUN echo "Hello Docker" >build-logs.txt
+
+FROM alpine as FINAL
+WORKDIR /home
+COPY --from=BUILD /home/isPrime.sh .
+CMD ["sh", "isPrime.sh"]
+```
+
+Here we create a _FINAL_ image copying only required files from the _BUILD_ stage.
+
+Let's say we need to get the contents of the `build-logs.txt` file which is generated as a part of the build process.
+With the solutions mentioned [till](#1-export-entire-contents-of-container-to-a-tar-file) [now](#2-export-a-single-file-from-the-container-to-filesystem), we will have to **unnecessarily copy this file** in _FINAL_ layer to be able to copy the contents.
+
+A better way is to use [**Docker Exporters**](https://docs.docker.com/build/building/exporters/)
+which provides handy options to output the entire Docker image to disk as a directory or TAR ball alongwith a `--target` option.
+
+However, instead of copying the entire contents, we can use the [`scratch`](https://hub.docker.com/_/scratch)
+image to copy only the required files in an intermediate stage.
+
+```Dockerfile
+FROM alpine as BUILD
+
+WORKDIR /home
+ADD ./isPrime.sh .
+RUN chmod +x ./isPrime.sh
+RUN echo "Hello Docker" >build-logs.txt
+
+# take an "empty" image as a starting point & copy the requires artefacts
+FROM scratch as EXPORT
+COPY --from=BUILD /home/message.txt ./
+
+FROM alpine as FINAL
+WORKDIR /home
+COPY --from=BUILD /home/isPrime.sh .
+CMD ["sh", "isPrime.sh"]
+```
+
+Now we can "target" the docker build till the `EXPORT` stage and gather the output using the `output` argument.
+
+```bash
+docker build -f Dockerfile_output --target EXPORT --output type=local,dest=out .
+```
+
+Using this method, we can extract files generated in intermediatery stages without the need of copying to subsequent stages
+and even creating temporary containers!
