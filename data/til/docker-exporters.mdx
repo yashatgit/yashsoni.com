@@ -12,12 +12,12 @@ One useful feature of Docker is the ability to extract the contents of a contain
 which can be useful for debugging or for making backups.
 
 There are a few ways to achive this.
-We will begin with a very simple Dockerfile which creates a `message.txt` file during the build process.
+We will begin with a very simple Dockerfile which creates a `build-logs.txt` file during the build process.
 
 ```Dockerfile
 FROM alpine as BUILD
 WORKDIR /home
-RUN echo "Hello Docker" > message.txt
+RUN echo "Hello Docker" > build-logs.txt
 ```
 
 ### 1. Export entire contents of container to a tar file
@@ -42,7 +42,7 @@ we can use the `cp` command to copy contents from the container to the filesyste
 
 ```bash
 # copy the file from a container to filesystem
-docker cp tmp:/home/message.txt .
+docker cp tmp:/home/build-logs.txt .
 
 # copy myFile from filesystem to the container
 docker cp ./myfile tmp:/home
@@ -90,7 +90,7 @@ RUN echo "Hello Docker" >build-logs.txt
 
 # take an "empty" image as a starting point & copy the requires artefacts
 FROM scratch as EXPORT
-COPY --from=BUILD /home/message.txt ./
+COPY --from=BUILD /home/build-logs.txt ./
 
 FROM alpine as FINAL
 WORKDIR /home
