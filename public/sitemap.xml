@@ -13,6 +13,10 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/uses</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/blog/iceland-photo-essay</loc>
   </url>
 
@@ -33,6 +37,10 @@
   </url>
 
   <url>
+    <loc>https://yashsoni.com/til/docker-exporters</loc>
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/til/javascript-module-system</loc>
   </url>
 
@@ -42,6 +50,10 @@
 
   <url>
     <loc>https://yashsoni.com/til/npm-scripts</loc>
+  </url>
+
+  <url>
+    <loc>https://yashsoni.com/til/path</loc>
   </url>
 
   <url>
@@ -89,18 +101,18 @@
   </url>
 
   <url>
+    <loc
+      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
+    >
+  </url>
+
+  <url>
     <loc>https://yashsoni.com/blog/breath-james-nestor-book-review/index</loc>
   </url>
 
   <url>
     <loc
       >https://yashsoni.com/blog/building-a-gaming-arcade-with-raspberrypi-DIY/index</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://yashsoni.com/blog/building-a-personal-assistant-powered-by-ai-vision/index</loc
     >
   </url>
 
@@ -118,13 +130,13 @@
 
   <url>
     <loc
-      >https://yashsoni.com/blog/maldives-2020-a-diving-extravaganza/index</loc
+      >https://yashsoni.com/blog/intercepting-network-data-transmitted-by-apps/index</loc
     >
   </url>
 
   <url>
     <loc
-      >https://yashsoni.com/blog/intercepting-network-data-transmitted-by-apps/index</loc
+      >https://yashsoni.com/blog/maldives-2020-a-diving-extravaganza/index</loc
     >
   </url>
 
