@@ -1,0 +1,123 @@
+---
+date: 'July 18, 2020'
+title: 'Sequential & Parallel execution of npm scripts'
+description: 'and general mistakes to avoid'
+keywords: 'npm, scripts,npm parallel execution,npm sequential execution'
+---
+
+NPM is not just a package manager for Javascript projects, it also helps setup tooling around the codebase.
+For the day to day work, we just write our code in separate files, and usually there is a separate toolchain that helps lint, transpile, test, and bundle our work.
+The majority of us handle all of this using `npm-scripts`.
+
+One of the most common use-case is having these scripts run in **sequential** or **parallel** execution mode.
+
+To explain, let's take a common example of scripts that outlines some of these tasks.
+
+```bash
+"scripts": {
+    "lint:css": "csslint",
+    "lint:js": "eslint",
+    "cleanup": "rm -rf dist/",
+    "bundle": "browserify main.js"
+}
+```
+
+- we can run the `lint:css` & `lint:js` in **parallel execution** since they do not interfere with each other
+- to build the bundles, we would need to cleanup the `dist` folder first. Hence we need **sequential execution** here.
+
+Here are some common ways to achieve the same.
+
+### Using npm lifecycle hooks
+
+Every script in npm runs three separate scripts under the hood. A `pre<script>`, the `<script>` itself and a `post<script>`.
+Those two additional scripts are run, as their names imply, before and after the main script.
+You can find more details [in here](https://docs.npmjs.com/misc/scripts).
+
+```bash
+"scripts": {
+    "lint:css": "csslint",
+    "lint:js": "eslint",
+
+    "prebuild": "rm -rf dist/",
+    "build": "browserify main.js",
+    "postbuild": "rm -rf tmp"
+}
+```
+
+Running `npm run build` will run the `prebuild` command first and upon completion, will run `postbuild`.
+
+### Using the built-in OS shell capabilities
+
+Because npm scripts are spawning a shell process under the hood, we can use its syntax to achieve what we need.
+We can provide `&` for running in parallel and `&&` for running in series.
+
+```bash
+"scripts": {
+    "lint:css": "csslint",
+    "lint:js": "eslint",
+    "cleanup": "rm -rf dist/",
+    "bundle": "browserify main.js",
+
+    "lint": "npm run lint:js & npm run lint:css", # parallel execution
+    "build": "npm run cleanup && npm run bundle" # sequential execution
+}
+```
+
+Issues with this approach
+
+- `&` syntax creates a subprocess, and we do not get better process handling. This results in the original npm process not being able to tell whether it already finishes or not.
+  When you have long-running scripts, this could be problematic.
+- Windows environment doesn't support `&`
+
+### Concurrently
+
+[Concurrently](https://www.npmjs.com/package/concurrently) helps run multiple commands - concurrently.
+The docs explain a lot of other cool features it has.
+
+```bash
+"scripts": {
+    "lint:css": "csslint",
+    "lint:js": "eslint",
+    "cleanup": "rm -rf dist/",
+    "bundle": "browserify main.js"
+
+    "lint": "concurrently 'npm run lint:js' 'npm run lint:css' --kill-others"
+    "lint": "npm:lint-*" # shorthand version
+}
+```
+
+As shown, we just pass a list of scripts to concurrently and it ensures to run them in all environments.
+The `--kill-others` argument kills other processes if one exits or dies.
+
+### npm-run-all
+
+[npm-run-all](https://www.npmjs.com/package/npm-run-all) provides CLI tools to run multiple npm-scripts in parallel or sequential.
+
+```bash
+"scripts": {
+    "lint:css": "csslint",
+    "lint:js": "eslint",
+    "cleanup": "rm -rf dist/",
+    "bundle": "browserify main.js"
+
+    "lint": "npm-run-all --parallel lint:js lint:css"
+    "build": "npm-run-all cleanup bundle"
+}
+```
+
+## Other npm-script tips
+
+Since we are on a subject of npm scripts, here is a list of things that I have discovered and found useful.
+
+**Always consider windows environment**
+
+Always pay attention to whether the commands you are writing are environment friendly. Some of them may not run in windows.
+
+- `&` doesn't work in windows terminal
+- Use [rimraf](https://www.npmjs.com/package/rimraf) package in case of `rm -rf` for cross env support.
+- Setting environment variables using [cross-env](https://www.npmjs.com/package/cross-env)
+
+**npm scripts auto-complete**
+
+There is no common convention on the scripts we have. Some projects use `npm run dev` other use `npm run start`. Hence it could take a while to build muscle memory to learn all the available scrips.
+A better alternative is to enable [**npm scripts completion**](https://docs.npmjs.com/cli/completion) in your terminal.

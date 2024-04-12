@@ -1,0 +1,60 @@
+---
+date: 'September 30, 2020'
+title: 'Base64'
+description: 'one encoding to rule them all'
+keywords: 'base64,encoding,binary to ascii,binary to text'
+---
+
+When we want to transmit the binary data across internet, we generally do not ship it terms of bits and bytes over the wire in a raw format, but in form of an [ASCII](https://en.wikipedia.org/wiki/ASCII) string format. This is to ensure that the data [remain intact](https://stackoverflow.com/a/201574/1766033) without modification during transport. And also we do not want the protocols to interpret the binary data as control characters.
+This transmission use-case becomes much more important when the need to transmit rich content like images, videos and audios.
+
+**Base64** is one such binary-to-text encoding algorithm which converts binary data into sequence of [printable characters](<https://en.wikipedia.org/wiki/Character_(computing)>) so that it is easily transmitted. There are [many such encoding algorithms](https://en.wikipedia.org/wiki/Binary-to-text_encoding), but thanks to the simplicity, efficiency and portability, Base64 became the most popular and was used almost everywhere.
+
+### The Algorithm
+
+Base64 relies on an encoding algorithm that describes some simple steps of converting data to Base64. This encoded value then can be passed to a decoder to get back the original binary data.
+
+Let’s say we want to convert the word `DOG` to Base64 representation.
+
+- The first step is to convert it to the Binary form since Base64 converts binary to ASCII representation.
+- The Binary representation of `DOG` is `01000100 01001111 01000111`
+- The resulting string is divided into groups of 6 characters
+  - `010001`
+  - `000100`
+  - `111101`
+  - `000111`
+- Now these groups of 6-bit bytes are converted to 8-bit bytes by adding a **padding** of `00` in front of each group
+  - `00010001`
+  - `00000100`
+  - `00111101`
+  - `00000111`
+- Convert the groups to **decimal** from its binary representation
+  - `17`
+  - `4`
+  - `61`
+  - `7`
+- The numbers obtained here are called “Base64 Indices”. The final representation can be created by looking the corresponding values of these Indices from the [base-64 characters table](https://base64.guru/learn/base64-characters) and gluing them together.
+  - `RE9H`
+
+Hence the representation of word `DOG` into Base64 is `RE9H`.
+
+Essentially, each Base64 digit represents exactly 6 bits of data. So, three 8-bits bytes of the input string/binary file (3×8 bits = 24 bits) can be represented by four 6-bit Base64 digits (4×6 = 24 bits).
+Hence, the resulting encoded version is always 33% larger than the initial data.
+
+### Usage
+
+The original use case for base64 was simply as a safe way to transmit data across machines. Overtime, base64 has been integrated into the implementation of certain core Internet technologies such as encryption and file embedding.
+
+- **Data transmission**: Base64 can simply be used as a way to transfer and store data without the risk of data corruption. It is often used to transmit JSON data and cookie information for a user.
+- **File embedding**: Base64 can be used to embed files and rich media in webpages. This helps avoid depending on external mediums. Email attachments are also often sent this way.
+  In HTML, this is achieved with the [DataURL scheme.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
+- **Data obfuscation**: Base64 can be used to obfuscate data since the resulting text is not human readable. But since this is easily reversible, it should not be used for encryption.
+- **Data hashing**: Data hashing schemes such as SHA and MD5 often produce results that are not readable or transmittable. Therefore, hashes are almost always base64 encoded so that they could be easily displayed and used for file integrity checks.
+- **Cryptography**: Similarly, encrypted data often contain sequences of bytes that are not easily transmitted or stored. When encrypted data needs to be stored in a database or sent over the Internet, base64 is often used. In addition, public key certificates and other encryption keys are also commonly stored in base64 format.
+
+### References
+
+- [base64.guru](https://base64.guru/)
+- base64 [encoder](https://base64.guru/converter/encode) and [decoder](https://base64.guru/converter/decode)
+- Other [binary-to-text](https://en.wikipedia.org/wiki/Binary-to-text_encoding) encoding schemes
+- [Powering the Internet with Base64](https://medium.com/swlh/powering-the-internet-with-base64-d823ec5df747)
