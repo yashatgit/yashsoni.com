@@ -12,7 +12,7 @@ export async function generateMetadata({ params }): Promise<Metadata | undefined
     return;
   }
 
-  let { title, publishedAt: publishedTime, summary: description, image } = post.metadata;
+  let { title, date: publishedTime, description, image } = post.metadata;
   let ogImage = image ? `https://leerob.io${image}` : `https://leerob.io/og?title=${title}`;
 
   return {
@@ -90,9 +90,9 @@ export default function Blog({ params }) {
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
+            datePublished: post.metadata.date,
+            dateModified: post.metadata.date,
+            description: post.metadata.description,
             image: post.metadata.image
               ? `https://leerob.io${post.metadata.image}`
               : `https://leerob.io/og?title=${post.metadata.title}`,

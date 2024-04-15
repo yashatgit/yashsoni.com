@@ -2,13 +2,23 @@ import fs from "fs";
 import path from "path";
 import readingTime from "reading-time";
 
+type MetadataTagsFilter = Array<string>;
+
 type Metadata = {
   title: string;
   date: string;
-  publishedAt: string;
-  summary: string;
+  description: string;
   image?: string;
+  tags?: string;
+
+  // derived
   readingTime: string;
+};
+
+type Post = {
+  metadata: Metadata;
+  slug: string;
+  content: string;
 };
 
 function parseFrontmatter(fileContent: string) {
@@ -25,13 +35,10 @@ function parseFrontmatter(fileContent: string) {
     value = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
     metadata[key.trim() as keyof Metadata] = value;
   });
+
   metadata.readingTime = readingTime(fileContent).text;
 
   return { metadata: metadata as Metadata, content };
-}
-
-function getMDXFiles(dir) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 }
 
 function readMDXFile(filePath) {
@@ -39,31 +46,35 @@ function readMDXFile(filePath) {
   return parseFrontmatter(rawContent);
 }
 
-function extractTweetIds(content) {
-  let tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
-  return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)[0]) || [];
+function getMDXData(dir, metadataTagsFilter?: MetadataTagsFilter) {
+  let mdxFiles = fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+
+  return mdxFiles
+    .map((file) => {
+      let { metadata, content } = readMDXFile(path.join(dir, file));
+      let slug = path.basename(file, path.extname(file));
+      let matchesFilter = !metadataTagsFilter;
+
+      if (metadataTagsFilter && metadata.tags) {
+        matchesFilter = metadataTagsFilter.every((tag) => (metadata.tags as string).indexOf(tag) > -1);
+      }
+
+      return (
+        matchesFilter && {
+          metadata,
+          slug,
+          content,
+        }
+      );
+    })
+    .filter(Boolean) as Array<Post>;
 }
 
-function getMDXData(dir) {
-  let mdxFiles = getMDXFiles(dir);
-  return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file));
-    let slug = path.basename(file, path.extname(file));
-    let tweetIds = extractTweetIds(content);
-    return {
-      metadata,
-      slug,
-      tweetIds,
-      content,
-    };
-  });
+export function getBlogPosts(metadataTagsFilter?: MetadataTagsFilter) {
+  return getMDXData(path.join(process.cwd(), `content/blog`), metadataTagsFilter);
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "content/til"));
-}
-
-export function getContent(contentName) {
+export function getPost(contentName) {
   let { metadata, content } = readMDXFile(path.join(process.cwd(), `content/${contentName}`));
   return { metadata, content };
 }

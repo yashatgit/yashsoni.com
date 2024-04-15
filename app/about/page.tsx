@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CustomMDX } from "app/components/mdx";
-import { getContent } from "app/db/blog";
+import { getPost } from "app/db/blog";
 
 export const metadata: Metadata = {
   title: "Uses",
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function UsesPage() {
-  const aboutPage = getContent("about.mdx").content;
+  const aboutPage = getPost("about.mdx").content;
   return (
     <section>
       <article className="prose prose-quoteless prose-neutral dark:prose-invert">

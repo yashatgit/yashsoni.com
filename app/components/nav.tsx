@@ -6,10 +6,10 @@ const navItems = {
   "/": {
     name: "Home",
   },
-  "/blog": {
+  "/blog?category=blog": {
     name: "Writing",
   },
-  "/til": {
+  "/blog?category=til": {
     name: "TIL",
   },
   "/about": {
