@@ -97,7 +97,7 @@ export function MediaGrid({ rowHeight = undefined, photos, className = "", capti
           {caption && <Caption>{caption}</Caption>}
         </StyledImageContainer>
       )}
-
+      {/*@ts-ignore*/}
       <ModalGateway>
         {viewerIsOpen ? (
           <Modal onClose={closeLightbox}>

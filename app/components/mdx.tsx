@@ -6,7 +6,7 @@ import { highlight } from "sugar-high";
 
 import { TweetComponent } from "./tweet";
 import { MediaGrid } from "./mediaGrid";
-import { Book } from "./Book";
+import { Book } from "./book";
 
 // import { LiveCode } from "./sandpack";
 

@@ -4,8 +4,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export function NavLink({ href, name }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
   //   const { asPath, pathname } = useRouter();
   // console.log({ pathname, href, name });
   return (
