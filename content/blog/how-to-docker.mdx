@@ -6,11 +6,6 @@ keywords: 'docker,dockerfile,docker image,docker container,how to docker'
 tags: 'til'
 ---
 
-import docker_desktop_image from './images/docker_desktop_image.jpg';
-import docker_desktop_container from './images/docker_desktop_container.jpg';
-import docker_deployment from './images/docker_deployment.jpg';
-import docker_dive from './images/docker_dive.jpg';
-import docker_history from './images/docker_history.jpg';
 
 [![XKCD](https://imgs.xkcd.com/comics/containers_2x.png)](https://xkcd.com/1988/)
 
@@ -125,7 +120,7 @@ Evident from the output, we can see that Docker reads and executes all the instr
 Following is the screenshot from the [Docker Desktop App](https://www.docker.com/products/docker-desktop) which shows all the details for this created image.
 
 <MediaGrid
-  photos={[{ src: docker_desktop_image, width: 2088, height: 1330 }]}
+  photos={[{ src: '/static/media/how-to-docker/docker_desktop_image.jpg', width: 2088, height: 1330 }]}
   caption="Docker image build"
 />
 
@@ -143,8 +138,8 @@ To test this on our local machine, we have asked Docker to forward port 3000 fro
 
 <MediaGrid
   photos={[
-    { src: docker_desktop_container, width: 2084, height: 1330 },
-    { src: docker_deployment, width: 1316, height: 800 }
+    { src: '/static/media/how-to-docker/docker_desktop_container.jpg', width: 2084, height: 1330 },
+    { src: '/static/media/how-to-docker/docker_deployment.jpg', width: 1316, height: 800 }
   ]}
   caption="Running Docker Container"
 />
@@ -161,8 +156,8 @@ My personal favorite tool is [dive](https://github.com/wagoodman/dive). We can d
 
 <MediaGrid
   photos={[
-    { src: docker_history, width: 1780, height: 732 },
-    { src: docker_dive, width: 2074, height: 1244 }
+    { src: '/static/media/how-to-docker/docker_history.jpg', width: 1780, height: 732 },
+    { src: '/static/media/how-to-docker/docker_dive.jpg', width: 2074, height: 1244 }
   ]}
   caption="Inspecting Docker Image layers"
 />
@@ -174,6 +169,7 @@ docker run --rm -it <DOCKER_LAYER_ID> bash -il
 ```
 
 ## References
+
 
 - Docker Summaries
   - [Docker in 10 minutes](https://www.youtube.com/watch?v=gAkwW2tuIqE&&)

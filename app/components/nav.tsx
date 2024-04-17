@@ -1,5 +1,5 @@
-import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+import { NavLink } from "./navLink";
 //import { useRouter } from "next/router";
 
 const navItems = {
@@ -18,7 +18,6 @@ const navItems = {
 };
 
 export function Navbar() {
-  const isDarkMode = true;
   //const { asPath, pathname } = useRouter();
   return (
     <aside className="-ml-[8px] mb-16 tracking-tight">
@@ -31,11 +30,7 @@ export function Navbar() {
             <ThemeToggle />
             <div className="flex flex-row space-x-0 pr-10">
               {Object.entries(navItems).map(([path, { name }]) => {
-                return (
-                  <Link key={path} href={path} className="p-1 sm:p-4 text-sm md:text-base ">
-                    {name}
-                  </Link>
-                );
+                return <NavLink key={name} href={path} name={name} />;
               })}
             </div>
           </div>

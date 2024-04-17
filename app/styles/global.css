@@ -130,6 +130,11 @@ table {
   white-space: nowrap;
 }
 
+table tr {
+  @apply text-left;
+  white-space: normal;
+}
+
 .prose .callout > p {
   margin: 0 !important;
 }

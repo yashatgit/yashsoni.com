@@ -1,4 +1,5 @@
-import "./global.css";
+import "./styles/global.css";
+import "./styles/libraryOverrides.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -45,15 +46,15 @@ export const metadata: Metadata = {
 
 const cx = (...classes) => classes.filter(Boolean).join(" ");
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
       className={cx("text-black bg-white dark:text-white dark:bg-[#000]", GeistSans.variable, GeistMono.variable)}
     >
       <head>{/* <SandpackCSS /> */}</head>
-      <body className="antialiased max-w-2xl mb-40 flex flex-col mx-4 mt-8 mx-auto">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+      <body className="antialiased mb-40 flex flex-col mt-8 w-full">
+        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0 mx-auto max-w-2xl">
           <Navbar />
           {children}
           <Analytics />
