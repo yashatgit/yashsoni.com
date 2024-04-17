@@ -6,6 +6,7 @@ import { highlight } from "sugar-high";
 
 import { TweetComponent } from "./tweet";
 import { MediaGrid } from "./mediaGrid";
+import { Book } from "./Book";
 
 // import { LiveCode } from "./sandpack";
 
@@ -130,6 +131,7 @@ let components = {
   pre: Pre,
   Table,
   MediaGrid,
+  Book,
   // LiveCode,
 };
 

@@ -136,12 +136,22 @@ The above exampled are taken from the [wonderful 2ality post](https://2ality.com
 
 ## Module loading techniques summary
 
-|                   | **Runs on**          | **Loaded** | **Filename ext.** |
-| ----------------- | -------------------- | ---------- | ----------------- |
-| Script            | browsers             | async      | `.js`             |
-| CommonJS module   | servers              | sync       | `.js .cjs`        |
-| AMD module        | browsers             | async      | `.js`             |
-| ECMAScript module | browsers and servers | async      | `.js .mjs`        |
+<Table
+  data={{
+    headers: [
+      'type',
+      'Runs on',
+      'Loaded',
+      'Filename ext.'
+    ],
+    rows: [
+      ['Script', 'servers', 'async', `.js`],
+      ['CommonJS module', 'browsers', 'sync', `.js .cjs`],
+      ['AMD module', 'browsers', 'async', `.js`],
+      ['ECMAScript module', 'browsers and servers', 'async', `.js .mjs`],      
+    ],
+  }}
+/>
 
 ## Further References
 
