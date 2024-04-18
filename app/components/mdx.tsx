@@ -11,6 +11,9 @@ import { Book } from "./book";
 // import { LiveCode } from "./sandpack";
 
 const NN_Lazy = dynamic(() => import(/* webpackChunkName: "NN" */ "./neural-networks-hello-world/NN"));
+const CNN_Handwriting_MNIST_Lazy = dynamic(
+  () => import(/* webpackChunkName: "NN" */ "./handwriting-recognition-using-CNN/CNN_Handwriting_MNIST")
+);
 
 function autoLinkText(markdown) {
   // Regex to match the markdown link syntax
@@ -146,6 +149,7 @@ let components = {
 
   // custom
   NN_Lazy,
+  CNN_Handwriting_MNIST_Lazy,
 };
 
 export function CustomMDX(props) {

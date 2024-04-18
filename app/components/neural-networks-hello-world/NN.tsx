@@ -29,7 +29,7 @@ const model = buildModel();
 const predict = (model, val) => model.predict(tf.tensor([val])).arraySync();
 
 const noop = () => {};
-const trainModel = ({ epochs, onEpochEnd = noop, onDone = noop, restart = true }) => {
+const trainModel = ({ epochs, _onEpochEnd, onDone = noop, restart = true }) => {
   const currentModel = restart ? buildModel() : model;
   currentModel
     .fit(x, y, {
@@ -38,10 +38,9 @@ const trainModel = ({ epochs, onEpochEnd = noop, onDone = noop, restart = true }
       callbacks: {
         onEpochEnd: (epoch, logs) => {
           const interimValue = predict(currentModel, 10);
-          // @ts-ignore
-          onEpochEnd({
+          _onEpochEnd({
             epoch: epoch + 1,
-            loss: Number(logs.loss).toFixed(5),
+            loss: Number(logs?.loss).toFixed(5),
             prediction: Number(interimValue).toFixed(5),
           });
         },
