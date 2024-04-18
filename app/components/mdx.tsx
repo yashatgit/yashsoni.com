@@ -1,21 +1,31 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
 
 import { TweetComponent } from "./tweet";
 import { MediaGrid } from "./mediaGrid";
 import { Book } from "./book";
-
 // import { LiveCode } from "./sandpack";
+
+const NN_Lazy = dynamic(() => import(/* webpackChunkName: "NN" */ "./neural-networks-hello-world/NN"));
+
+function autoLinkText(markdown) {
+  // Regex to match the markdown link syntax
+  const regex = /\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g;
+
+  // Replace markdown link with HTML <a> tag
+  return markdown.replace(regex, '<a href="$2">$1</a>');
+}
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => <th key={index}>{header}</th>);
   let rows = data.rows.map((row, index) => (
     <tr key={index}>
       {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
+        <td key={cellIndex} dangerouslySetInnerHTML={{ __html: autoLinkText(cell) }} />
       ))}
     </tr>
   ));
@@ -133,6 +143,9 @@ let components = {
   MediaGrid,
   Book,
   // LiveCode,
+
+  // custom
+  NN_Lazy,
 };
 
 export function CustomMDX(props) {
