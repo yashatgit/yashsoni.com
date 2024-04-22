@@ -2,8 +2,8 @@ import { getBlogPosts } from "app/db/blog";
 import { Article } from "app/components/article";
 
 export const metadata = {
-  title: "Blog",
-  description: "Read my thoughts on software development, design, and more.",
+  title: "Yash Soni - Blog",
+  description: "Experiments on programming, tech, ML/AI and life in general.",
 };
 
 const Blog = () => (

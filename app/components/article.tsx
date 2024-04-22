@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
 
+export const ArticleTag = ({ href, tag }) => {
+  return (
+    <Link href={href}>
+      <span className="bg-gray-100 rounded-full px-3 py-1 text-sm font-semibold text-gray-600">#{tag}</span>
+    </Link>
+  );
+};
+
 export const Article = ({ href, metadata }) => {
   const readTime = metadata.readingTime ? ` • ⏱ ${metadata.readingTime}` : "";
   return (
@@ -16,5 +24,25 @@ export const Article = ({ href, metadata }) => {
         </article>
       </div>
     </Link>
+  );
+};
+
+export const ArticleList = ({ allPosts }) => {
+  if (!allPosts.length) {
+    return null;
+  }
+  return (
+    <section>
+      {allPosts
+        .sort((a, b) => {
+          if (new Date(a.metadata.date) > new Date(b.metadata.date)) {
+            return -1;
+          }
+          return 1;
+        })
+        .map((post) => (
+          <Article href={`/blog/${post.slug}`} metadata={post.metadata} key={post.metadata.title} />
+        ))}
+    </section>
   );
 };

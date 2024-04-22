@@ -35,6 +35,29 @@ html {
   min-width: 360px;
 }
 
+body {
+  font-size: 18px;
+  border-left: 10px solid #000;
+  border-right: 10px solid #000;
+}
+
+body:before,
+body:after {
+  content: '';
+  position: fixed;
+  background: #000;
+  left: 0;
+  right: 0;
+  height: 10px;
+  z-index: 10;
+}
+body:before {
+  top: 0;
+}
+body:after {
+  bottom: 0;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 

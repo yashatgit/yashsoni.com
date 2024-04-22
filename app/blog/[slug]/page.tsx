@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Suspense, cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { getBlogPosts } from "app/db/blog";
-import { unstable_noStore as noStore } from "next/cache";
+import { ArticleTag } from "../../components/article";
 
 export async function generateMetadata({ params }): Promise<Metadata | undefined> {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
@@ -13,7 +12,7 @@ export async function generateMetadata({ params }): Promise<Metadata | undefined
   }
 
   let { title, date: publishedTime, description, image } = post.metadata;
-  let ogImage = image ? `https://leerob.io${image}` : `https://leerob.io/og?title=${title}`;
+  let ogImage = image ? `https://yashsoni.com/${image}` : `https://yashsoni.com/og?title=${title}`;
 
   return {
     title,
@@ -23,7 +22,7 @@ export async function generateMetadata({ params }): Promise<Metadata | undefined
       description,
       type: "article",
       publishedTime,
-      url: `https://leerob.io/blog/${post.slug}`,
+      url: `https://yashsoni.com/blog/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -79,6 +78,7 @@ export default function Blog({ params }) {
   if (!post) {
     notFound();
   }
+  const tags = post.metadata.tags?.split(",").filter((tag) => tag !== "blog" && tag !== "til");
 
   return (
     <section>
@@ -94,12 +94,12 @@ export default function Blog({ params }) {
             dateModified: post.metadata.date,
             description: post.metadata.description,
             image: post.metadata.image
-              ? `https://leerob.io${post.metadata.image}`
-              : `https://leerob.io/og?title=${post.metadata.title}`,
-            url: `https://leerob.io/blog/${post.slug}`,
+              ? `https://yashsoni.com${post.metadata.image}`
+              : `https://yashsoni.com/og?title=${post.metadata.title}`,
+            url: `https://yashsoni.com/blog/${post.slug}`,
             author: {
               "@type": "Person",
-              name: "Lee Robinson",
+              name: "Yash Soni",
             },
           }),
         }}
@@ -120,6 +120,17 @@ export default function Blog({ params }) {
       <article className="prose prose-quoteless prose-neutral dark:prose-invert">
         <CustomMDX source={post.content} />
       </article>
+
+      {tags?.length ? (
+        <div className="flex items-center mt-8">
+          <span>Tags: </span>
+          <div className="flex gap-2 flex-wrap ml-2">
+            {tags.map((tag) => (
+              <ArticleTag key={tag} href={`/tags/${tag}`} tag={tag} />
+            ))}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

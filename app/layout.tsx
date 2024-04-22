@@ -5,21 +5,19 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Navbar } from "./components/nav";
 import { Footer } from "./components/footer";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://leerob.io"),
+  metadataBase: new URL("https://yashsoni.com"),
   title: {
-    default: "Lee Robinson",
-    template: "%s | Lee Robinson",
+    default: "Yash Soni",
+    template: "%s | Yash Soni",
   },
   description: "Developer, writer, and creator.",
   openGraph: {
-    title: "Lee Robinson",
+    title: "Yash Soni",
     description: "Developer, writer, and creator.",
-    url: "https://leerob.io",
-    siteName: "Lee Robinson",
+    url: "https://yashsoni.com",
+    siteName: "Yash Soni",
     locale: "en_US",
     type: "website",
   },
@@ -35,12 +33,9 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Lee Robinson",
+    title: "Yash Soni",
     card: "summary_large_image",
-  },
-  verification: {
-    google: "eZSdmzAXlLkKhNJzfgwDqWORghxnJ8qR9_CHdAh5-xw",
-    yandex: "14d2e73487fa6c71",
+    site: "@yashs0ni",
   },
 };
 
@@ -53,12 +48,10 @@ export default function RootLayout({ children }) {
       className={cx("text-black bg-white dark:text-white dark:bg-[#000]", GeistSans.variable, GeistMono.variable)}
     >
       <head>{/* <SandpackCSS /> */}</head>
-      <body className="antialiased mb-40 flex flex-col mt-8 w-full">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0 mx-auto max-w-2xl">
+      <body className="antialiased flex flex-col w-full flex-1">
+        <main className="flex-auto min-w-0 mt-6 justify-center flex flex-col px-2 md:px-0 mx-auto max-w-2xl w-full mbb-40 mtt-8">
           <Navbar />
           {children}
-          <Analytics />
-          <SpeedInsights />
           <Footer />
         </main>
       </body>

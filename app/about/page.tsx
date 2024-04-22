@@ -3,8 +3,8 @@ import { CustomMDX } from "app/components/mdx";
 import { getPost } from "app/db/blog";
 
 export const metadata: Metadata = {
-  title: "Uses",
-  description: "Here's what tech I'm currently using for coding, videos, and music.",
+  title: "About – Yash Soni",
+  description: "Why this blog",
 };
 
 export default function UsesPage() {
