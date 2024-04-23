@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
 import { getBlogPosts } from "app/db/blog";
 import { ArticleTag } from "../../components/article";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function generateMetadata({ params }): Promise<Metadata | undefined> {
   let post = getBlogPosts().find((post) => post.slug === params.slug);
