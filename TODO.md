@@ -9,3 +9,5 @@ border in handwriting
 location of MNIST_Tensorflow.ipynb
 
 setup OG
+
+favicon
