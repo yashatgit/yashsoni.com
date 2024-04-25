@@ -48,12 +48,14 @@ export default function RootLayout({ children }) {
       className={cx("text-black bg-white dark:text-white dark:bg-[#000]", GeistSans.variable, GeistMono.variable)}
     >
       <head>{/* <SandpackCSS /> */}</head>
-      <body className="antialiased flex flex-col w-full flex-1">
-        <main className="flex-auto min-w-0 mt-6 justify-center flex flex-col px-2 md:px-0 mx-auto max-w-2xl w-full mbb-40 mtt-8">
-          <Navbar />
-          {children}
-          <Footer />
-        </main>
+      <body className="antialiased w-full">
+        <div id="app_root" className="flex flex-col mx-4 md:mx-0">
+          <main className="flex-1 min-w-0 mt-6 flex flex-col px-2 md:px-0 mx-auto max-w-2xl w-full">
+            <Navbar />
+            {children}
+            <Footer />
+          </main>
+        </div>
       </body>
     </html>
   );

@@ -41,6 +41,10 @@ body {
   border-right: 10px solid #000;
 }
 
+#app_root {
+  min-height: 100vh;
+}
+
 body:before,
 body:after {
   content: '';
