@@ -7,8 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: post.metadata.date,
   }));
 
-  let routes = ["", "/about", "/blog", "/tags"].map((route) => ({
-    url: `https://yashsoni.io${route}`,
+  let routes = ["", "/about", "/blog", "/tags", "/photography"].map((route) => ({
+    url: `https://yashsoni.com${route}`,
     lastModified: new Date().toISOString().split("T")[0],
   }));
 

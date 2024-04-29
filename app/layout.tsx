@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@yashs0ni",
   },
+  icons: [{ rel: "apple-touch-icon", url: "./static/favicons/apple-touch-icon.png" }],
 };
 
 const cx = (...classes) => classes.filter(Boolean).join(" ");

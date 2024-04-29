@@ -128,8 +128,9 @@ const FreehandDrawingCanvas = forwardRef(({ size, onDrawEnd }, ref) => {
     <canvas
       width={size}
       height={size}
-      style={{ border: '1px solid black', cursor: 'crosshair' }}
+      style={{ cursor: 'crosshair' }}
       ref={canvasRef}
+      className='border border-gray-900 dark:border-white'
     ></canvas>
   );
 });
