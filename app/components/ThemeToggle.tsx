@@ -1,5 +1,6 @@
 /*
 References:
+https://github.com/vercel/next.js/discussions/53063
 https://www.npmjs.com/package/next-app-theme
 https://hangindev.com/blog/avoid-flash-of-default-theme-an-implementation-of-dark-mode-in-react-app
 
