@@ -1,1 +1,0 @@
-.bookContainer{display:flex;align-items:center;justify-content:center;perspective:600px;margin-top:20px;margin-bottom:60px}.book{width:200px;height:300px;position:relative;transform-style:preserve-3d;transform:rotateY(20deg);transition:transform 1s ease;animation:1s ease 0s 1 initAnimation}

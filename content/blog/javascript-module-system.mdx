@@ -1,0 +1,162 @@
+---
+date: 'March 24, 2020'
+title: 'Javascript Module System'
+description: 'Javascript Module System'
+keywords: 'javascript,module system,javascript modules,commonjs,amd,es modules,iffe'
+tags: 'til,javascript'
+---
+
+When we say an application is **modular**, we generally mean it's composed of a set of highly decoupled, distinct pieces of functionality stored in modules.
+
+However, unlike other traditional programming languages, for a long time, JavaScript didn't provide developers with the means to import such modules of code in a clean, organized manner.
+
+But, this didn't stop the community and they created impressive work-arounds. Following are the most used module loading patterns used by the developers:
+
+- `Scripts` are code fragments that browsers run in global scope. They are precursors of modules.
+- `CommonJS` modules are a module format that is mainly used on servers (e.g., via Node.js).
+- `AMD` is a module format that is mainly used in browsers.
+- `ECMAScript modules` are JavaScript’s built-in module format. It supersedes all previous formats.
+
+## CommonJS modules
+
+[CommonJS](http://www.commonjs.org/) is a project that aims to define a series of specifications to help in the development of server-side JavaScript applications.
+The CommonJS module proposal specifies a simple API for declaring modules server-side and unlike AMD attempts to cover a broader set of concerns such as IO, filesystem, promises and more.
+
+There are essentially two elements to interact with the module system: `require` and `exports`
+
+- `require` is a function that can be used to import symbols from another module to the current scope
+- `exports` is a special object: anything put in it will get exported
+
+```JavaScript
+var lib = require('package/lib');
+
+// some behaviour for our module
+function foo(){
+    lib.log('hello world!');
+}
+
+// export (expose) foo to other modules
+exports.foo = foo;
+```
+
+**Implementations**
+
+Since it was made primarily for the server, it is well implemented in [NodeJs](https://nodejs.org/api/modules.html) (Node.js modules have a few features that go beyond CommonJS).
+For the client there are currently two popular options: [webpack](https://webpack.github.io/docs/commonjs.html) and [browserify](http://browserify.org/index.html) which help bundle these modules.
+
+## Asynchronous Module Definition (AMD)
+
+AMD was born as CommonJS wasn’t suited for the browsers early on. The main difference between AMD and CommonJS lies in its support for asynchronous module loading.
+
+```JavaScript
+//Calling define with a dependency array and a factory function
+define(['dep1', 'dep2'], function (dep1, dep2) {
+
+    //Define the module value by returning a value.
+    return function () {};
+});
+
+// Or:
+define(function (require) {
+    var dep1 = require('dep1'),
+    dep2 = require('dep2');
+
+    return function () {};
+});
+```
+
+**Implementations**
+
+Currently the most popular implementations of AMD are [require.js](http://requirejs.org/) and [Dojo](https://dojotoolkit.org/).
+
+## ECMAScript 6 modules
+
+Fortunately, the ECMA team behind the standardization of JavaScript decided to standardize modules. We finally have a standard to define modules in Javascript
+which compatible with both synchronous and asynchronous modes of operation.
+
+- On lines of `require` and `define`, ES6 modules have an `import` directive which can be used to bring in modules into namespace.
+- `export` helps to explicitly make elements public. A module can have 2 types of exports
+  - `named exports` which can be several per module
+  - `default export` primary export of module
+
+**Importing examples**
+
+```JavaScript
+// Default exports and named exports
+import theDefault, { named1, named2 } from 'src/mylib';
+import theDefault from 'src/mylib';
+import { named1, named2 } from 'src/mylib';
+
+// Renaming: import named1 as myNamed1
+import { named1 as myNamed1, named2 } from 'src/mylib';
+
+// Importing the module as an object
+// (with one property per named export)
+import * as mylib from 'src/mylib';
+
+// Only load the module, don’t import anything
+import 'src/mylib';
+```
+
+**Exporting examples**
+
+```JavaScript
+// export inline
+export var myVar1 = ...;
+export let myVar2 = ...;
+export const MY_CONST = ...;
+
+export default 123;
+
+// define everyting and export at the last
+export { MY_CONST, myFunc };
+
+// export things under different names:
+export { MY_CONST as THE_CONST, myFunc as theFunc };
+```
+
+**ReExporting examples**
+Re-exporting means adding another module’s exports to those of the current module.
+
+```JavaScript
+// add all of the other module’s exports:
+export * from 'src/other_module';
+
+// be more selective
+export { foo, bar } from 'src/other_module';
+
+// Export other_module’s foo as myFoo
+export { foo as myFoo, bar } from 'src/other_module';
+
+// Re-export other_module's default export
+export { default } from 'src/other_module';
+```
+
+The above exampled are taken from the [wonderful 2ality post](https://2ality.com/2014/09/es6-modules-final.html#fn1)
+
+## Module loading techniques summary
+
+<Table
+  data={{
+    headers: [
+      'type',
+      'Runs on',
+      'Loaded',
+      'Filename ext.'
+    ],
+    rows: [
+      ['Script', 'servers', 'async', `.js`],
+      ['CommonJS module', 'browsers', 'sync', `.js .cjs`],
+      ['AMD module', 'browsers', 'async', `.js`],
+      ['ECMAScript module', 'browsers and servers', 'async', `.js .mjs`],      
+    ],
+  }}
+/>
+
+## Further References
+
+- [ECMAScript 6 modules: the final syntax](https://2ality.com/2014/09/es6-modules-final.html#fn1)
+- [Writing modular JS](https://addyosmani.com/writing-modular-js/)
+- [JavaScript for impatient programmers](https://exploringjs.com/impatient-js/toc.html)
+- [ES modules - A cartoon Deep Dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
+- [Loading ES modules in Browsers](https://www.sitepoint.com/using-es-modules/)

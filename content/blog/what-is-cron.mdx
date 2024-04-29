@@ -1,0 +1,59 @@
+---
+date: 'May 26, 2020'
+title: 'Cron'
+description: 'automate everything'
+keywords: 'cron,automation,scheduler,cron scheduler'
+tags: 'til,scripts,unix'
+---
+
+Automation, while often met with fear, is an important goal of software development and technology in general.
+There are times when there’s a need for running a group of tasks automatically at certain predefined times in the future.
+And lets face it, no one likes to do repetitive jobs. This is where **Cron** comes into picture.
+
+**Cron** is a **time-based** job scheduler in Unix-like systems, used to run commands or scripts at specific intervals (times, dates, etc.).
+
+The most used version of Cron is _Vixie Cron_ which was developed by [Paul Vixie](https://en.wikipedia.org/wiki/Paul_Vixie) in 1987. The word originates from the Greek word _χρόνος_ (chronos), which means time.
+
+## Crontabs & Cron jobs
+
+Cron uses special configuration files called **crontab** files, which lists a _tabular_ list of commands or _jobs_ to run.
+
+Crontab stands for **cron table** and each line in the crontab file is called a **cron job**.
+
+To list the configured crontab file, run the following command
+
+```bash
+crontab -l
+```
+
+If you don’t have any cron jobs currently configured, you should see a message, saying `no crontab for <user>`.
+
+## Anatomy of a Crontab Entry
+
+The anatomy of a user-level crontab entry looks like the following:
+
+```bash
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+# │ │ │ │ │                                   7 is also Sunday on some systems)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * * <command to execute>
+```
+
+The 5 astrieks **\*** represent the time to execute the command.
+
+Suppose you want to schedule a job every which takes a backup every 30 minutes. The corresponding conjob would be something like this:
+
+```bash
+*/30 * * * * /var/www/sites/db_backup.sh
+```
+
+Memorising the exact syntax can be difficult so you can visit the following sites to build a custom cron schedule expression.
+
+- [crontab.guru](https://crontab.guru/)
+- [crontab-generator](https://crontab-generator.org/)
+- [cronmaker](http://www.cronmaker.com/)

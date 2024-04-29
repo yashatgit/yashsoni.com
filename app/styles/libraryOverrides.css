@@ -1,0 +1,13 @@
+.react-images__view-image {
+  max-height: 100vh !important;
+  /* https://github.com/jossmac/react-images/issues/373 */
+}
+
+.image-container img {
+  cursor: zoom-in;
+}
+
+body[data-scroll-locked]{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

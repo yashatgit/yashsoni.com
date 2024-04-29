@@ -1,0 +1,90 @@
+---
+date: 'June 10, 2020'
+title: 'Demystifying $PATH'
+description: 'making programs omnipresent!'
+keywords: 'scripts,$PATH,PATH,unix'
+tags: 'til,unix,scripts'
+---
+
+Whenever we write a command in the shell to execute, it consults an environment variable called `$PATH`
+which lists directories the shell should look for to find this program.
+This is why we can use certain commands like `echo` and `pwd` and such from any directory we happen to be in.
+
+```bash
+❯ echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+❯ which echo
+/bin/echo
+```
+
+When we run the `echo` command, it searches through the ":" separated list of directories in `$PATH` for a file by that name.
+
+The order of directories listed in `$PATH` _does_ matters. In the above example, the shell tries to find the executable from left to right
+i.e it looks for `echo` first in `/usr/local/sbin` then in `/usr/local/bin` and so on.
+
+We can find out which file is executed for a given program name using the `which` program.
+
+## Modifying PATH
+
+Let's say you have created a program that prints if a number is a prime or not.
+The current location of this program is `/Users/me/scripts/isPrime`.
+
+```bash
+❯ pwd
+/Users/me/scripts/isPrime
+
+❯ isPrime 42
+42 is not a prime number
+
+❯ cd ..
+❯ isPrime 42
+No such file or directory
+```
+
+Here `isPrime` is not available as soon as we change directories.
+To make our program accessible to us wherever we are, without having to point at its location (its path),
+we will have to add the `scripts` folder in our `$PATH`.
+
+**To make a program available anywhere, we can either place that program in a directory that’s already in our `$PATH`, or we can add a new directory to our `$PATH` that contains the program.**
+
+### Temporary assignment
+
+Whenever we launch a terminal session, it inherits all the global variables - including `$PATH`.
+We can use the `export` command to set the variable for any sub-processes launched by the terminal.
+
+```bash
+❯ export PATH="$PATH:/Users/me/scripts"
+
+❯ isPrime 42
+42 is not a prime number
+
+❯ cd ..
+❯ isPrime 42
+42 is not a prime number
+```
+
+Now our program works even if we change the location.
+
+### Permanent assignment
+
+As noted above, that method only temporarily modifies our `$PATH`, which is sometimes useful.
+For permanent addition, we need to add this `export` command in the shell profile.
+
+The [location](https://unix.stackexchange.com/questions/117467/how-to-permanently-set-environmental-variables) of these profiles depends upon the kind of shell we are using.
+
+```bash
+# find the shell in use
+❯ echo $SHELL
+/bin/zsh
+
+❯ vi ~/.profile # for bash, ksh, bourne
+❯ vi ~/.zprofile # for zsh
+
+#add lines at the bottom of the file:
+export PATH="$PATH:/Users/me/scripts"
+
+❯ source ~/.zprofile
+```
+
+Since this profile file gets run each time we open a terminal window, we will have our modified `$PATH` every time!
