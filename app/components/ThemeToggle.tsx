@@ -1,30 +1,30 @@
+/*
+References:
+https://www.npmjs.com/package/next-app-theme
+https://hangindev.com/blog/avoid-flash-of-default-theme-an-implementation-of-dark-mode-in-react-app
+
+*/
+
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = window.localStorage.getItem("theme");
-      if (savedTheme) {
-        return savedTheme; // Use saved theme if available
-      } else {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; // Default to system preference
-      }
-    }
-    return "light"; // Default theme if window is not available
-  });
-  const isDarkMode = theme === "dark";
+export function useTheme() {
+  const [theme, setTheme] = useState(typeof window === "undefined" ? "light" : window.__theme || "light");
 
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.add(theme);
-    html.classList.remove(theme === "dark" ? "light" : "dark");
-    localStorage.setItem("theme", theme); // Save the current theme to local storage
+  const toggleTheme = useCallback(() => {
+    window?.__setPreferredTheme(theme === "light" ? "dark" : "light");
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  useEffect(() => {
+    window.__onThemeChange = setTheme;
+  }, []);
+
+  return { theme, toggleTheme };
+}
+
+const ThemeToggle = () => {
+  const { theme, toggleTheme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   return (
     <button

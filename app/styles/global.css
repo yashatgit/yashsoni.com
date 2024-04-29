@@ -62,6 +62,14 @@ body:after {
   bottom: 0;
 }
 
+.light {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 

@@ -1,6 +1,14 @@
-import ThemeToggle from "./ThemeToggle";
+import React from "react";
+import dynamic from "next/dynamic";
+
 import { NavLink } from "./navLink";
-//import { useRouter } from "next/router";
+
+// Don't SSR the toggle since the value on the server will be different than the client
+const ThemeToggle = dynamic(() => import("./ThemeToggle"), {
+  ssr: false,
+  // Make sure to code a placeholder so the UI doesn't jump when the component loads
+  loading: () => <div className="w-10 h-10 p-3 bg-gray-200 rounded dark:bg-gray-800" />,
+});
 
 const navItems = {
   "/": {
