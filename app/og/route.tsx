@@ -1,3 +1,5 @@
+//https://render.myfonts.net/fonts/font_rend.php?id=3ca799e68db7528d89ff8e6230372b78&rt=YS&rs=400&w=1500&rbe=&sc=2&nie=true&fg=FFFFFF&bg=000000&ft=&nf=1
+
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 

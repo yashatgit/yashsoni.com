@@ -1,0 +1,127 @@
+---
+date: 'April 30, 2024'
+title: 'Open Graph protocol and generating Dynamic OG images in Next.Js'
+description: 'Discover how to create dynamic, automatically updating Open Graph images in Next.js for visually rich link previews'
+keywords: 'nextJS,opengraph,SEO'
+tags: 'til,nextJS,opengraph,SEO'
+---
+
+The [Open Graph protocol](https://ogp.me/), developed by Facebook, enhances web pages by enabling them to become rich objects within a social graph or, 
+more simply, across various social media platforms. 
+This enhancement is achieved by adding descriptive tags and images to the content, which appear as a link preview without the need for users to visit the actual page.
+
+At its core, this functionality is controlled by incorporating `meta` tags into the web page.
+
+<Table
+  data={{
+    headers: [
+      'meta tag name',
+      'description'
+    ],
+    rows: [
+        ['og:title', 'The title of your object as it should appear within the graph, e.g.'],      
+        ['og:description', 'A one to two sentence description of your object.'],
+        ['og:type', 'The type of your object, e.g., "video.movie". Depending on the type you specify, other properties may also be required.'],
+        ['og:image' ,'An image URL which should represent your object within the graph.'],
+        ['og:url', 'The canonical URL of your object that will be used as its permanent ID in the graph.'],
+    ],
+  }}
+/>
+
+For example, a link to this page would display differently across various social networks as follows: 
+
+This is achieved by inserting the following tags into the page: 
+
+```html
+<meta property="og:title" content="Open Graph protocol and generating Dynamic OG images in Next.Js">
+<meta property="og:description" content="Discover how to create dynamic, automatically updating Open Graph images in Next.js for visually rich link previews">
+<meta property="og:url" content="https://yashsoni.com/blog/open-graph-protocol-and-generating-dynamic-OG-images">
+<meta property="og:image" content="https://yashsoni.com/og?title=Open Graph protocol and generating dynamic OG images">
+<meta property="og:type" content="article">
+```
+
+## Generating Dynamic Open Graph Images in Next.js
+
+For this site, my requirements for the Open Graph image were straightforward: a standard background with dynamic text for each web page.
+
+- Design an HTML and CSS layout featuring a background image and dynamic text.
+- Convert this layout into an image using the npm package [Satori](https://github.com/vercel/satori).
+- Expose this as a [Vercel Edge Function](https://vercel.com/docs/functions), allowing these images to be dynamically created at build time or runtime using `@vercel/og`.
+
+The [entire code](https://github.com/yashatgit/yashsoni.com/blob/master/app/og/route.tsx) looks like this:
+```TSX
+// filename: app/og/route.tsx
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = req.nextUrl;
+  const postTitle = searchParams.get("title");
+  
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          backgroundImage: "url(https://yashsoni.com/og-bg-author.jpeg)",
+        }}
+      >
+        <div
+          style={{
+            color: "white",            
+          }}
+        >
+          {postTitle}
+        </div>
+      </div>
+    ),
+    {
+      width: 1920,
+      height: 1080,
+    }
+  );
+}
+```
+
+This exposes a nifty Route on `https://yashsoni.com/og?title=${title}` which can generate Dynamic Images.
+
+This route then can be fed into the blog page to generate the OG images.
+
+```tsx
+// filename app/blog/[slug]/page.tsx
+export async function generateMetadata({ params }) {
+  let { title, description} = post.metadata;
+  let ogImage = `https://yashsoni.com/og?title=${title}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: `https://yashsoni.com/blog/${post.slug}`,
+      images: [
+        {
+          url: ogImage,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
+```
+
+### References
+- [Vercel Open Graph (OG) Image Generation](https://vercel.com/docs/functions/og-image-generation)
+- [Vercel OG playground](https://og-playground.vercel.app/)
+- [OG preview app](https://www.opengraph.xyz/)
+- Open graph tag documentation for [Twitter](https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started), [Facebook](https://developers.facebook.com/docs/sharing/webmasters/), [Pinterest](https://developers.pinterest.com/docs/rich-pins/overview/), [LinkedIn](https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en)
