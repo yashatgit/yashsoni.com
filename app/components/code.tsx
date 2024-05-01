@@ -86,7 +86,6 @@ export function Code({ className, codeContent }) {
 
 export function Pre(props) {
   const codeContent = props.children?.props?.children;
-  //console.log(props);
   const { commentMetadata, remainingCode } = extractFirstLineComment(codeContent);
   return (
     <div className="code-wrapper pt-3">

@@ -26,7 +26,6 @@ const navItems = {
 };
 
 export function Navbar() {
-  //const { asPath, pathname } = useRouter();
   return (
     <aside className="mb-2 md:mb-16 tracking-tight">
       <div className="lg:sticky lg:top-20">
@@ -36,7 +35,7 @@ export function Navbar() {
         >
           <div className="flex items-center justify-between w-full">
             <ThemeToggle />
-            <div className="flex flex-row space-x-0">
+            <div className="flex flex-row space-x-2 md:space-x-0">
               {Object.entries(navItems).map(([path, { name }]) => {
                 return <NavLink key={name} href={path} name={name} />;
               })}
@@ -47,5 +46,3 @@ export function Navbar() {
     </aside>
   );
 }
-
-// text-blue-500 dark:text-blue-400
