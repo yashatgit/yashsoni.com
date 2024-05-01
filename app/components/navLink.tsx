@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export function NavLink({ href, name }) {
+export function _NavLink({ href, name }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -19,5 +19,13 @@ export function NavLink({ href, name }) {
     >
       {name}
     </Link>
+  );
+}
+
+export function NavLink(props) {
+  return (
+    <Suspense>
+      <_NavLink {...props} />
+    </Suspense>
   );
 }
