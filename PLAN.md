@@ -20,7 +20,6 @@
 
 ### Fix
 
-- book component
 - TF graph plot issue
 - code tag scrolling in mobile
 - selected page in nav
