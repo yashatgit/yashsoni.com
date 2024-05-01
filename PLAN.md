@@ -21,4 +21,3 @@
 ### Fix
 
 - TF graph plot issue
-- selected page in nav
