@@ -64,8 +64,7 @@ For this site, my requirements for the Open Graph image were straightforward: a 
 
 The [entire code](https://github.com/yashatgit/yashsoni.com/blob/master/app/og/route.tsx) looks like this:
 ```TSX
-// filename: app/og/route.tsx
-
+// filename=app/og/route.tsx
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get("title");
@@ -105,7 +104,7 @@ This exposes a nifty Route on `https://yashsoni.com/og?title=${title}` which can
 This route then can be fed into the blog page to generate the OG images.
 
 ```tsx
-// filename app/blog/[slug]/page.tsx
+// filename=app/blog/[slug]/page.tsx
 export async function generateMetadata({ params }) {
   let { title, description} = post.metadata;
   let ogImage = `https://yashsoni.com/og?title=${title}`;

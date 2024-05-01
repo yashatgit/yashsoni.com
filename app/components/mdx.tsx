@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
 
+import { Pre } from "./code";
 import { TweetComponent } from "./tweet";
 import { MediaGrid } from "./mediaGrid";
 import { Book } from "./book";
@@ -74,32 +74,6 @@ function Callout(props) {
   );
 }
 
-function Pre(props) {
-  return <pre {...props} className={`dark ${props.className}`} />;
-}
-
-function Code({ children, ...props }) {
-  const hasLanguageSpecified = !!props.className;
-  const isMultilineCode = children.indexOf("\n") > -1 || hasLanguageSpecified;
-  let codeHTML = highlight(children);
-
-  if (isMultilineCode) {
-    const regexp = /language-([^\s]+)/g;
-    const languageProp = props.className || "";
-    const matches = [...languageProp.matchAll(regexp)];
-    const language = matches[0]?.[1];
-
-    return (
-      <div className="relative dark">
-        {hasLanguageSpecified ? <span className="code-tag">{language}</span> : null}
-        <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
-      </div>
-    );
-  } else {
-    return <code dangerouslySetInnerHTML={{ __html: children }} {...props} />;
-  }
-}
-
 function slugify(str) {
   return str
     .toString()
@@ -140,7 +114,6 @@ let components = {
   a: CustomLink,
   Callout,
   StaticTweet: TweetComponent,
-  code: Code,
   pre: Pre,
   Table,
   MediaGrid,
