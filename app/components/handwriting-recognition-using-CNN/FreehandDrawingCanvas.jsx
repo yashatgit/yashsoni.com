@@ -40,7 +40,7 @@ const setupCanvas = (canvas, onDrawEnd) => {
     function(e) {
       mouse.x = e.pageX - this.offsetLeft;
       mouse.y = e.pageY - this.offsetTop;
-      console.log(mouse);
+      //console.log(mouse);
     },
     false
   );
