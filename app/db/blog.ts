@@ -50,6 +50,7 @@ function getMDXData(dir, metadataTagsFilter?: MetadataTagsFilter) {
   let mdxFiles = fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 
   return mdxFiles
+    .filter((file) => file.indexOf("wip-") === -1)
     .map((file) => {
       let { metadata, content } = readMDXFile(path.join(dir, file));
       let slug = path.basename(file, path.extname(file));
