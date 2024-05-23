@@ -1,0 +1,33 @@
+---
+date: 'May 21, 2024'
+title: 'Jupyter Notebooks meets Javascript'
+description: 'Embracing Deno Kernel Integration in Jupyter Notebooks'
+keywords: 'jupyter,javascript,deno'
+tags: 'til,jupyter,javascript,deno'
+---
+
+I am a huge fan of using Jupyter Notebooks because it allow a beautiful blend of code execution, 
+visualization, and documentation in a single environment.
+
+Only issue was it was not available for Javascript runtime...
+
+So few days back I stumbled upon this tweet and the [announcement](https://deno.com/blog/v1.37#jupyter-notebook-integration)
+<StaticTweet id="1704495791698575365"/>
+
+Setting it up was surprisingly easy, as long as the Python environment is [correctly setup](https://xkcd.com/1987/)!
+```bash
+pip install jupyterlab
+
+deno jupyter --unstable
+```
+
+Once launched, you are prompted with the kernel to use:
+
+<MediaGrid
+  photos={[{ src: '/static/media/jupyter-notebook-with-deno/kernel_selection.jpg', width:1400, height: 860 }]}
+/>
+
+Now, JavaScript runtime in the form of the Deno kernel is available for all the JavaScript magic ✨.
+
+## References
+- [Jupyter Kernel for Deno](https://docs.deno.com/runtime/manual/tools/jupyter)
