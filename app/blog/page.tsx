@@ -1,5 +1,6 @@
 import { getBlogPosts } from "app/db/blog";
 import { Article } from "app/components/article";
+import { PageHeading } from "app/components/pageLayout";
 
 export const metadata = {
   title: "Yash Soni - Blog",
@@ -14,16 +15,14 @@ const Blog = () => (
 
 const TIL = () => {
   return (
-    <div className="mb-8">
-      <h3 className="font-bold text-2xl md:text-4xl tracking-tight mb-4 mt-8 text-black dark:text-white">
-        Today I Learned
-      </h3>
-      <div className="mb-6 text-sm md:text-base">
+    <PageHeading
+      title={"Today I Learned"}
+      subtitle={`
         A collection of small nuggets of knowledge I've gathered along my journey. Learning something new every day, so
         I'm keeping it handy for later. Makes it easier to share too. Mostly just random thoughts and bits of code, with
         links to more info.
-      </div>
-    </div>
+    `}
+    />
   );
 };
 
@@ -34,7 +33,7 @@ export default function WritingPage({ searchParams }) {
 
   return (
     <section>
-      {category === "til" ? <TIL /> : <Blog />}
+      {category === "til" ? <TIL /> : <PageHeading title={"Writing"} />}
       {allBlogs
         .sort((a, b) => {
           if (new Date(a.metadata.date) > new Date(b.metadata.date)) {

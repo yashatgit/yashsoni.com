@@ -1,5 +1,6 @@
 import { getBlogPosts } from "app/db/blog";
 import { ArticleList } from "app/components/article";
+import { PageHeading } from "app/components/pageLayout";
 
 export const metadata = {
   title: "Yash Soni - Tags",
@@ -11,6 +12,7 @@ export default function PostsFromTags({ params }) {
 
   return (
     <section>
+      <PageHeading title={`Tag: ${params.tag}`} />
       <ArticleList allPosts={allPosts} />
     </section>
   );
