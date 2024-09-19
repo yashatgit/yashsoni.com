@@ -11,7 +11,7 @@ import React, { useState, useCallback } from "react";
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";
 
-import { Caption, MediaWithCaption } from "./media";
+import { Caption, MediaWithCaption, isMediaVideo } from "./media";
 
 const StyledMediaContainer = ({ children }) => {
   const isDarkMode = false;
@@ -61,6 +61,7 @@ const CustomGalleryViewComponent = (props) => {
 export function MediaGrid({ rowHeight = undefined, photos, className = "", caption = "", darkMode = false }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const isSingleVideo = photos.length === 1 && isMediaVideo(photos[0].src);
 
   const openLightbox = useCallback((event, { index }) => {
     setCurrentImage(index);
@@ -82,7 +83,7 @@ export function MediaGrid({ rowHeight = undefined, photos, className = "", capti
             darkMode={darkMode}
             className={className}
             caption={caption}
-            onClick={(e) => openLightbox(e, { index: 0 })}
+            onClick={isSingleVideo ? null : (e) => openLightbox(e, { index: 0 })}
           />
         </StyledMediaContainer>
       ) : (

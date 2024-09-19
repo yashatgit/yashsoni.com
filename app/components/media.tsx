@@ -5,15 +5,19 @@ const noop = () => {};
 const videoExtensions = new Set(["mov", "mp4"]);
 
 export const Caption = ({ children, style = {} }) => (
-  <div style={style} className="block max-w-full text-center text-md text-gray-700 dark:text-white leading-3 mt-1.5">
+  <div style={style} className="block max-w-full text-center text-md text-gray-700 dark:text-white leading-4 mt-1.5">
     {children}
   </div>
 );
 
+export const isMediaVideo = (src) => {
+  const [filename, extension] = src.split(".");
+  return videoExtensions.has(extension);
+};
+
 export const MediaWithCaption = ({ darkMode, onClick = noop, asGif, caption, className = "", ...rest }) => {
   const { src, height, width } = rest;
-  const [filename, extension] = src.split(".");
-  const isVideo = videoExtensions.has(extension);
+  const isVideo = isMediaVideo(src);
   const isDarkMode = false;
 
   const classNames = `block max-w-full h-auto m-auto ${className}${darkMode && isDarkMode ? " dark-image" : ""}`;
