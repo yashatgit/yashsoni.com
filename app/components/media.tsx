@@ -22,7 +22,7 @@ export const MediaWithCaption = ({ darkMode, onClick = noop, asGif, caption, cla
   if (asGif) {
     mediaComponent = <video className={classNames} onClick={onClick} loop muted autoPlay playsInline {...rest} />;
   } else if (isVideo) {
-    mediaComponent = <video muted controls className={classNames} onClick={onClick} {...rest} />;
+    mediaComponent = <video controls className={classNames} onClick={onClick} {...rest} />;
   } else if (height && width) {
     mediaComponent = <Image alt="" className={classNames} onClick={onClick} src={src} {...rest} />;
   } else {
