@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="antialiased w-full">
         <div id="app_root" className="flex flex-col mx-4 md:mx-0">
-          <main className="flex-1 min-w-0 mt-6 flex flex-col px-2 md:px-0 mx-auto max-w-2xl w-full">
+          <main className="flex-1 min-w-0 mt-6 flex flex-col px-2 md:px-0 mx-auto max-w-4xl w-full">
             <Navbar />
             {children}
             <Footer />

@@ -19,9 +19,9 @@ const TIL = () => {
         Today I Learned
       </h3>
       <div className="mb-6 text-sm md:text-base">
-        This is just a collection of small bits and pieces of knowledge I picked up on my way. We learn something new
-        every day, so I wanted to keep that gained knowledge accessible for later. It also makes sharing easier. Most of
-        it is just random thoughts and code snippets, with links to further resources.
+        A collection of small nuggets of knowledge I've gathered along my journey. Learning something new every day, so
+        I'm keeping it handy for later. Makes it easier to share too. Mostly just random thoughts and bits of code, with
+        links to more info.
       </div>
     </div>
   );

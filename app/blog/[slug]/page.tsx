@@ -118,7 +118,7 @@ export default function Blog({ params }) {
         </div>
         <div className="text-sm text-gray-500 min-w-32 mt-0 text-right">{post.metadata.readingTime}</div>
       </div>
-      <article className="prose prose-quoteless prose-neutral dark:prose-invert mt-8">
+      <article className="prose prose-quoteless prose-neutral dark:prose-invert mt-8 w-full">
         <CustomMDX source={post.content} />
       </article>
 

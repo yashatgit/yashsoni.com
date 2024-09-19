@@ -5,7 +5,7 @@ const noop = () => {};
 const videoExtensions = new Set(["mov", "mp4"]);
 
 export const Caption = ({ children, style = {} }) => (
-  <div style={style} className="block max-w-full text-center text-sm text-gray-500 dark:text-white leading-3">
+  <div style={style} className="block max-w-full text-center text-md text-gray-700 dark:text-white leading-3 mt-1.5">
     {children}
   </div>
 );

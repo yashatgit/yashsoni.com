@@ -13,10 +13,9 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 
 import { Caption, MediaWithCaption } from "./media";
 
-const StyledImageContainer = ({ children }) => {
+const StyledMediaContainer = ({ children }) => {
   const isDarkMode = false;
-
-  return <div className={`my-4 image-container ${isDarkMode ? "dark-gallery" : ""}`}>{children}</div>;
+  return <div className={`pb-6 image-container ${isDarkMode ? "dark-gallery" : ""}`}>{children}</div>;
 };
 
 // https://github.com/neptunian/react-photo-gallery/blob/master/src/Photo.js
@@ -76,7 +75,7 @@ export function MediaGrid({ rowHeight = undefined, photos, className = "", capti
   return (
     <>
       {photos.length === 1 ? (
-        <StyledImageContainer>
+        <StyledMediaContainer>
           <MediaWithCaption
             style={{ maxWidth: "100%", height: "auto" }}
             {...photos[0]}
@@ -85,9 +84,9 @@ export function MediaGrid({ rowHeight = undefined, photos, className = "", capti
             caption={caption}
             onClick={(e) => openLightbox(e, { index: 0 })}
           />
-        </StyledImageContainer>
+        </StyledMediaContainer>
       ) : (
-        <StyledImageContainer>
+        <StyledMediaContainer>
           <Gallery
             targetRowHeight={rowHeight}
             photos={photos}
@@ -95,7 +94,7 @@ export function MediaGrid({ rowHeight = undefined, photos, className = "", capti
             renderImage={CustomRenderComponent}
           />
           {caption && <Caption>{caption}</Caption>}
-        </StyledImageContainer>
+        </StyledMediaContainer>
       )}
       {/*@ts-ignore*/}
       <ModalGateway>
