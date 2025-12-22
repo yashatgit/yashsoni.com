@@ -14,7 +14,8 @@ const nextConfig = {
     return [
       {
         // Rewrite /tools/:path to /tools/:path.html
-        // This allows clean URLs like /tools/tools instead of /tools/tools.html
+        // This allows clean URLs like /tools/polaroid-studio instead of /tools/polaroid-studio.html
+        // Individual tools are served directly from public/tools/ via this rewrite
         source: "/tools/:path([^.]+)",
         destination: "/tools/:path.html",
       },
