@@ -10,16 +10,26 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        // Rewrite /tools/:path to /tools/:path.html
+        // This allows clean URLs like /tools/tools instead of /tools/tools.html
+        source: "/tools/:path([^.]+)",
+        destination: "/tools/:path.html",
+      },
+    ];
+  },
 };
 
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live;
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.vercel-insights.com vercel.live va.vercel-scripts.com;
-    style-src 'self' 'unsafe-inline';
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.vercel-insights.com vercel.live va.vercel-scripts.com cdn.tailwindcss.com;
+    style-src 'self' 'unsafe-inline' fonts.googleapis.com;
     img-src * blob: data:;
     media-src 'self';
     connect-src *;
-    font-src 'self' data:;
+    font-src 'self' data: fonts.gstatic.com;
     frame-src 'self' *.codesandbox.io vercel.live;
 `;
 

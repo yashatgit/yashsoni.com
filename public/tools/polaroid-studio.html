@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polaroid Studio Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
+    <style>
+      .canvas-shadow {
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+      canvas {
+        touch-action: none;
+        user-select: none;
+        outline: none;
+      }
+      input[type="range"] {
+        accent-color: #2563eb;
+      }
+      .tooltip {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .group:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      #sheetModal {
+        display: none;
+        backdrop-filter: blur(8px);
+      }
+      .preview-sheet {
+        background: white;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+      textarea {
+        resize: none;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      .format-svg {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+      }
+      .toggle-checkbox:checked {
+        right: 0;
+        border-color: #2563eb;
+      }
+      .toggle-checkbox:checked + .toggle-label {
+        background-color: #2563eb;
+      }
+      .preset-btn.active {
+        border-color: #2563eb;
+        background-color: #eff6ff;
+        color: #1d4ed8;
+      }
+      /* Mode Switch Styling */
+      .mode-tab.active {
+        background: white;
+        color: #1e293b;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-900 font-sans overflow-x-hidden">
+    <div class="max-w-[1600px] mx-auto px-4 py-4 md:py-8">
+      <header
+        class="mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-200 pb-6"
+      >
+        <div class="flex items-center gap-4">
+          <div class="bg-blue-600 p-2.5 rounded-2xl shadow-lg shadow-blue-200">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none">
+              Polaroid Studio <span class="text-blue-600">Pro</span>
+            </h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+              Professional Print Utility
+            </p>
+          </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="bg-slate-200/50 p-1.5 rounded-2xl flex gap-1 self-center lg:self-auto">
+          <button
+            onclick="switchMode('editor')"
+            id="editorModeBtn"
+            class="mode-tab active px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
+          >
+            Studio Editor
+          </button>
+          <button
+            onclick="switchMode('batch')"
+            id="batchModeBtn"
+            class="mode-tab px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-500 transition-all hover:text-slate-700"
+          >
+            Batch Print
+          </button>
+        </div>
+
+        <div class="hidden xl:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Engine: 10px/mm
+        </div>
+      </header>
+
+      <!-- EDITOR MODE SECTION -->
+      <div
+        id="editorWorkspace"
+        class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-in fade-in duration-500"
+      >
+        <!-- Controls Panel (Left Sidebar) -->
+        <div class="lg:col-span-4 xl:col-span-3 space-y-3 order-2 lg:order-1">
+          <div
+            class="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 space-y-4 overflow-y-auto max-h-[calc(100vh-160px)] scrollbar-hide"
+          >
+            <!-- 1. Source -->
+            <section>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400">01. Source</label>
+                <div class="relative group">
+                  <button class="text-slate-400 hover:text-blue-500 transition-colors">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-3.5 w-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="tooltip absolute left-0 bottom-full mb-2 w-48 p-2 bg-slate-800 text-white text-[10px] rounded-lg shadow-xl z-10 pointer-events-none"
+                  >
+                    <p class="font-bold mb-1">Source Info:</p>
+                    <p id="infoDimensions">No image loaded</p>
+                    <p id="infoFormat" class="mt-1 opacity-60"></p>
+                    <div class="absolute w-2 h-2 bg-slate-800 rotate-45 left-4 -bottom-1"></div>
+                  </div>
+                </div>
+              </div>
+              <input type="file" id="imageLoader" accept="image/*" class="hidden" />
+              <label
+                for="imageLoader"
+                id="dropZone"
+                class="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 text-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-blue-500 mb-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
+                <span class="block text-blue-600 font-bold text-[10px] uppercase tracking-widest" id="uploadStatus"
+                  >Upload to Editor</span
+                >
+              </label>
+            </section>
+
+            <!-- 2. Format -->
+            <section>
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2"
+                >02. Format</label
+              >
+              <div class="grid grid-cols-1 gap-1.5" id="formatPicker">
+                <button
+                  data-format="instaxMini"
+                  class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3 group"
+                >
+                  <svg viewBox="0 0 24 24" class="format-svg text-slate-400 fill-current">
+                    <rect x="7" y="2" width="10" height="20" rx="1" />
+                    <rect x="8.5" y="3.5" width="7" height="11" fill="white" opacity="0.6" />
+                  </svg>
+                  <div>
+                    <span class="block text-xs font-bold text-slate-600 group-[.bg-blue-50]:text-blue-700"
+                      >Instax Mini</span
+                    ><span class="text-[9px] text-slate-400 font-bold uppercase">54x86mm</span>
+                  </div>
+                </button>
+                <button
+                  data-format="instaxSquare"
+                  class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3 group"
+                >
+                  <svg viewBox="0 0 24 24" class="format-svg text-slate-400 fill-current">
+                    <rect x="5" y="4" width="14" height="16" rx="1" />
+                    <rect x="6.5" y="5.5" width="11" height="11" fill="white" opacity="0.6" />
+                  </svg>
+                  <div>
+                    <span class="block text-xs font-bold text-slate-600 group-[.bg-blue-50]:text-blue-700"
+                      >Instax Square</span
+                    ><span class="text-[9px] text-slate-400 font-bold uppercase">72x86mm</span>
+                  </div>
+                </button>
+                <button
+                  data-format="classic"
+                  class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3 group"
+                >
+                  <svg viewBox="0 0 24 24" class="format-svg text-slate-400 fill-current">
+                    <rect x="4" y="2" width="16" height="20" rx="1" />
+                    <rect x="5.5" y="3.5" width="13" height="13" fill="white" opacity="0.6" />
+                  </svg>
+                  <div>
+                    <span class="block text-xs font-bold text-slate-600 group-[.bg-blue-50]:text-blue-700"
+                      >Classic 600</span
+                    ><span class="text-[9px] text-slate-400 font-bold uppercase">88x107mm</span>
+                  </div>
+                </button>
+                <button
+                  data-format="instaxWide"
+                  class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3 group"
+                >
+                  <svg viewBox="0 0 24 24" class="format-svg text-slate-400 fill-current">
+                    <rect x="2" y="5" width="20" height="14" rx="1" />
+                    <rect x="3.5" y="6.5" width="17" height="9.5" fill="white" opacity="0.6" />
+                  </svg>
+                  <div>
+                    <span class="block text-xs font-bold text-slate-600 group-[.bg-blue-50]:text-blue-700"
+                      >Instax Wide</span
+                    ><span class="text-[9px] text-slate-400 font-bold uppercase">108x86mm</span>
+                  </div>
+                </button>
+              </div>
+            </section>
+
+            <!-- 3. Geometry -->
+            <section class="space-y-3 pt-2 border-t border-slate-50">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1"
+                >03. Framing</label
+              >
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <div class="flex items-center gap-1">
+                    <span>Border Width</span>
+                    <button
+                      onclick="resetFraming('thick')"
+                      class="text-blue-500 hover:text-blue-700 font-black lowercase text-[8px]"
+                    >
+                      [reset]
+                    </button>
+                  </div>
+                  <span id="thickVal" class="text-slate-600">8%</span>
+                </div>
+                <input
+                  type="range"
+                  id="thickRange"
+                  min="2"
+                  max="25"
+                  step="0.5"
+                  value="8"
+                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                />
+              </div>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <div class="flex items-center gap-1">
+                    <span>Bottom Length</span>
+                    <button
+                      onclick="resetFraming('btm')"
+                      class="text-blue-500 hover:text-blue-700 font-black lowercase text-[8px]"
+                    >
+                      [reset]
+                    </button>
+                  </div>
+                  <span id="btmVal" class="text-slate-600">22%</span>
+                </div>
+                <input
+                  type="range"
+                  id="btmRange"
+                  min="5"
+                  max="40"
+                  step="0.5"
+                  value="22"
+                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                />
+              </div>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <span>Frame Grain</span>
+                  <span id="grainVal" class="text-slate-600">15%</span>
+                </div>
+                <input
+                  type="range"
+                  id="grainRange"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="15"
+                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                />
+              </div>
+            </section>
+
+            <!-- 4. Collapsible Filters -->
+            <section class="pt-2 border-t border-slate-50">
+              <details class="group/filters" open>
+                <summary class="flex items-center justify-between cursor-pointer list-none">
+                  <label class="text-[10px] font-black uppercase tracking-wider text-slate-400 cursor-pointer"
+                    >04. Image Filters</label
+                  >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-3 w-3 text-slate-400 transition-transform group-open/filters:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div class="space-y-4 mt-4 pb-2">
+                  <div>
+                    <span class="block text-[9px] font-bold text-slate-400 mb-2 uppercase">Style Presets</span>
+                    <div class="grid grid-cols-3 gap-1.5" id="presetPicker">
+                      <button
+                        onclick="setPreset('none')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold active uppercase"
+                      >
+                        None
+                      </button>
+                      <button
+                        onclick="setPreset('vivid')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Vivid
+                      </button>
+                      <button
+                        onclick="setPreset('warm')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Warm
+                      </button>
+                      <button
+                        onclick="setPreset('cool')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Cool
+                      </button>
+                      <button
+                        onclick="setPreset('retro')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Retro
+                      </button>
+                      <button
+                        onclick="setPreset('fade')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Fade
+                      </button>
+                      <button
+                        onclick="setPreset('bw_classic')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        B&W
+                      </button>
+                      <button
+                        onclick="setPreset('noir')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase text-nowrap"
+                      >
+                        Noir Contrast
+                      </button>
+                      <button
+                        onclick="setPreset('silver')"
+                        class="preset-btn px-2 py-1.5 border border-slate-100 bg-slate-50 rounded text-[9px] font-bold uppercase"
+                      >
+                        Silver
+                      </button>
+                    </div>
+                  </div>
+                  <div class="border-t border-slate-50 pt-2 space-y-4">
+                    <div>
+                      <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                        <div class="flex items-center gap-1">
+                          <span>Brightness</span
+                          ><button
+                            onclick="resetFilter('bright')"
+                            class="text-blue-500 hover:text-blue-700 font-black lowercase text-[8px]"
+                          >
+                            [reset]
+                          </button>
+                        </div>
+                        <span id="brightVal" class="text-slate-600">100%</span>
+                      </div>
+                      <input
+                        type="range"
+                        id="brightRange"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value="100"
+                        class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                      />
+                    </div>
+                    <div>
+                      <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                        <div class="flex items-center gap-1">
+                          <span>Contrast</span
+                          ><button
+                            onclick="resetFilter('contrast')"
+                            class="text-blue-500 hover:text-blue-700 font-black lowercase text-[8px]"
+                          >
+                            [reset]
+                          </button>
+                        </div>
+                        <span id="contrastVal" class="text-slate-600">100%</span>
+                      </div>
+                      <input
+                        type="range"
+                        id="contrastRange"
+                        min="0"
+                        max="200"
+                        step="1"
+                        value="100"
+                        class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                      />
+                    </div>
+                    <div>
+                      <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                        <div class="flex items-center gap-1">
+                          <span>Sepia</span
+                          ><button
+                            onclick="resetFilter('sepia')"
+                            class="text-blue-500 hover:text-blue-700 font-black lowercase text-[8px]"
+                          >
+                            [reset]
+                          </button>
+                        </div>
+                        <span id="sepiaVal" class="text-slate-600">0%</span>
+                      </div>
+                      <input
+                        type="range"
+                        id="sepiaRange"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="0"
+                        class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </section>
+
+            <!-- 5. Caption -->
+            <section class="pt-2 border-t border-slate-50">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2"
+                >05. Handwritten Caption</label
+              >
+              <textarea
+                id="captionInput"
+                rows="2"
+                placeholder="Write message..."
+                class="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all"
+              ></textarea>
+              <div class="mt-2">
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                  <span>Text Size</span>
+                  <span id="textSizeVal" class="text-slate-600">40%</span>
+                </div>
+                <input
+                  type="range"
+                  id="textSizeRange"
+                  min="10"
+                  max="80"
+                  step="1"
+                  value="40"
+                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                />
+              </div>
+            </section>
+
+            <!-- 6. Export Options -->
+            <section class="pt-2 border-t border-slate-50">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2"
+                >06. Export Options</label
+              >
+              <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-100">
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-bold text-slate-700 leading-tight">Cutting Border</span>
+                  <span class="text-[9px] text-slate-400 font-medium leading-tight"
+                    >Thin guide for precise cutting</span
+                  >
+                </div>
+                <div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+                  <input
+                    type="checkbox"
+                    name="cuttingGuideToggle"
+                    id="cuttingGuideToggle"
+                    class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer outline-none"
+                  />
+                  <label
+                    for="cuttingGuideToggle"
+                    class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"
+                  ></label>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Editor Main Area -->
+        <div class="lg:col-span-8 xl:col-span-9 flex flex-col items-center justify-start order-1 lg:order-2 px-2">
+          <div class="w-full max-w-2xl flex flex-col items-center">
+            <div class="relative group/preview w-full flex flex-col items-center justify-center min-h-[400px]">
+              <div
+                class="canvas-shadow bg-white p-1 rounded-sm overflow-hidden inline-block border border-slate-200 mb-6 transition-transform hover:scale-[1.005]"
+              >
+                <canvas
+                  id="polaroidCanvas"
+                  tabindex="0"
+                  class="max-w-full h-auto cursor-move bg-white"
+                  style="max-height: 55vh; min-width: 280px"
+                ></canvas>
+              </div>
+              <div
+                class="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-200 flex items-center gap-3 opacity-0 group-hover/preview:opacity-100 transition-opacity duration-300 pointer-events-auto"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-3 w-3 text-slate-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                  />
+                </svg>
+                <input
+                  type="range"
+                  id="zoomRange"
+                  min="0.05"
+                  max="3"
+                  step="0.01"
+                  value="1"
+                  class="w-32 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <span id="zoomValOverlay" class="text-[10px] font-black text-slate-600 w-8 text-center">100%</span>
+              </div>
+            </div>
+
+            <div
+              class="w-full max-w-lg flex flex-col sm:flex-row gap-2 items-center justify-center border-t border-slate-200 pt-6 mt-2"
+            >
+              <button
+                onclick="openSheetPreview()"
+                class="h-12 w-full sm:flex-1 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all flex items-center justify-center gap-2 text-[13px]"
+              >
+                Preview on Print
+              </button>
+              <div class="flex gap-2 w-full sm:flex-[2]">
+                <button
+                  id="btnPng"
+                  class="h-12 flex-1 bg-slate-900 text-white rounded-xl font-bold hover:bg-black transition-all text-[13px]"
+                >
+                  Export PNG
+                </button>
+                <button
+                  id="btnJpg"
+                  class="h-12 flex-1 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all text-center text-[13px]"
+                >
+                  JPG
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="dragHint"
+              class="mt-4 flex items-center gap-3 text-slate-400 opacity-0 transition-opacity duration-700 text-center"
+            >
+              <span class="text-[9px] font-black uppercase tracking-[0.15em]"
+                >Drag anywhere to load photo • Arrows for precision move</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BATCH PRINT MODE SECTION -->
+      <div
+        id="batchWorkspace"
+        class="hidden flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500"
+      >
+        <div class="w-full max-w-5xl flex flex-col lg:flex-row gap-8 items-start">
+          <!-- Batch Controls Sidebar -->
+          <div class="w-full lg:w-72 shrink-0 space-y-6">
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm space-y-6">
+              <section>
+                <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3"
+                  >01. Import Pre-made Polaroids</label
+                >
+                <input type="file" id="batchLoader" multiple accept="image/*" class="hidden" />
+                <label
+                  for="batchLoader"
+                  class="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 text-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-blue-500 mb-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest">Add Multiple Files</span>
+                </label>
+              </section>
+
+              <section>
+                <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3"
+                  >02. Paper Size</label
+                >
+                <select
+                  id="batchSheetSelector"
+                  onchange="updateBatchSheetSize()"
+                  class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold uppercase tracking-widest cursor-pointer outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                >
+                  <option value="a4">A4 (210 x 297mm)</option>
+                  <option value="a3">A3 (297 x 420mm)</option>
+                  <option value="4x6">4 x 6" Photo (102 x 152mm)</option>
+                  <option value="5x7">5 x 7" Photo (127 x 178mm)</option>
+                  <option value="8x10">8 x 10" Photo (203 x 254mm)</option>
+                  <option value="letter">US Letter (216 x 279mm)</option>
+                  <option value="square12">Square 12" (305 x 305mm)</option>
+                </select>
+              </section>
+
+              <section>
+                <div class="flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">
+                  <span>03. Item Spacing</span>
+                  <span id="batchSpacingVal" class="text-blue-600">2mm</span>
+                </div>
+                <input
+                  type="range"
+                  id="batchSpacingRange"
+                  min="0"
+                  max="20"
+                  step="1"
+                  value="2"
+                  oninput="updateBatchSpacing()"
+                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                />
+                <p class="text-[9px] text-slate-400 mt-2 italic text-center">
+                  Set to 0 to pack images touching each other
+                </p>
+              </section>
+
+              <section class="pt-4 border-t border-slate-50 flex flex-col gap-2">
+                <button
+                  onclick="exportBatchSheet()"
+                  class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all shadow-xl shadow-slate-200 text-sm text-nowrap"
+                >
+                  Export Combined Sheet
+                </button>
+                <button
+                  onclick="clearBatchSheet()"
+                  class="w-full text-red-500 font-bold text-[10px] uppercase tracking-[0.2em] py-2 hover:text-red-700 transition-all"
+                >
+                  Clear All Items
+                </button>
+              </section>
+            </div>
+          </div>
+
+          <!-- Batch Canvas Workspace -->
+          <div class="flex-1 flex flex-col items-center">
+            <div class="bg-white p-1 rounded-sm border border-slate-200 canvas-shadow mb-6 overflow-hidden">
+              <canvas id="batchCanvas" class="max-w-full h-auto bg-slate-100"></canvas>
+            </div>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] animate-pulse">
+              Items automatically tiled based on real-world dimensions
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layout Assembler Modal -->
+    <div
+      id="sheetModal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 overflow-y-auto"
+    >
+      <div class="w-full max-w-5xl my-auto flex flex-col items-center justify-center space-y-6 py-8">
+        <div class="flex w-full justify-between items-center px-4 max-w-4xl">
+          <h2 class="text-white font-bold uppercase tracking-widest text-xs font-black">Layout Assembler</h2>
+          <div class="flex items-center gap-4">
+            <button
+              onclick="clearSheet()"
+              class="text-red-400 hover:text-red-300 text-[10px] font-bold uppercase tracking-widest"
+            >
+              Clear Sheet
+            </button>
+            <button onclick="closeSheetPreview()" class="text-white hover:text-red-400 transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="sheetElement" class="preview-sheet overflow-hidden bg-slate-50 border border-white/20 p-8">
+          <div
+            class="absolute inset-4 border border-dashed border-slate-200 pointer-events-none flex items-center justify-center text-center"
+          >
+            <span
+              id="sheetDimensionsLabel"
+              class="text-slate-200 text-[9px] font-bold uppercase rotate-45 opacity-40 italic tracking-widest leading-none text-nowrap"
+              >Actual Size for Printing</span
+            >
+          </div>
+          <div
+            id="sheetPreviewContainer"
+            class="relative z-10 flex flex-wrap gap-4 justify-center items-start content-start min-h-full"
+          ></div>
+        </div>
+
+        <div class="flex flex-wrap gap-3 justify-center">
+          <select
+            id="sheetSizeSelector"
+            onchange="updateSheetSize()"
+            class="px-5 py-3 bg-white/10 rounded-full text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 outline-none hover:bg-white/20 transition-all cursor-pointer"
+          >
+            <option value="a4">A4 (210 x 297mm)</option>
+            <option value="a3">A3 (297 x 420mm)</option>
+            <option value="4x6">4 x 6" Photo (102 x 152mm)</option>
+            <option value="5x7">5 x 7" Photo (127 x 178mm)</option>
+            <option value="8x10">8 x 10" Photo (203 x 254mm)</option>
+          </select>
+          <button
+            onclick="addMoreToSheet()"
+            class="px-6 py-3 bg-blue-500 rounded-full text-white text-[10px] font-bold uppercase tracking-widest hover:bg-blue-600 transition-all shadow-lg"
+          >
+            Add Current
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("polaroidCanvas");
+      const ctx = canvas.getContext("2d");
+      const batchCanvas = document.getElementById("batchCanvas");
+      const batchCtx = batchCanvas.getContext("2d");
+
+      const imageLoader = document.getElementById("imageLoader");
+      const batchLoader = document.getElementById("batchLoader");
+      const dropZone = document.getElementById("dropZone");
+      const zoomRange = document.getElementById("zoomRange");
+      const zoomValOverlay = document.getElementById("zoomValOverlay");
+      const thickRange = document.getElementById("thickRange");
+      const btmRange = document.getElementById("btmRange");
+      const grainRange = document.getElementById("grainRange");
+      const cuttingGuideToggle = document.getElementById("cuttingGuideToggle");
+      const batchSpacingRange = document.getElementById("batchSpacingRange");
+      const batchSpacingVal = document.getElementById("batchSpacingVal");
+
+      const brightRange = document.getElementById("brightRange");
+      const contrastRange = document.getElementById("contrastRange");
+      const sepiaRange = document.getElementById("sepiaRange");
+
+      const textSizeRange = document.getElementById("textSizeRange");
+      const captionInput = document.getElementById("captionInput");
+      const formatButtons = document.querySelectorAll(".format-btn");
+      const uploadStatus = document.getElementById("uploadStatus");
+      const dragHint = document.getElementById("dragHint");
+      const infoDimensions = document.getElementById("infoDimensions");
+      const infoFormat = document.getElementById("infoFormat");
+
+      const sheetModal = document.getElementById("sheetModal");
+      const sheetElement = document.getElementById("sheetElement");
+      const sheetPreviewContainer = document.getElementById("sheetPreviewContainer");
+      const sheetSizeSelector = document.getElementById("sheetSizeSelector");
+      const batchSheetSelector = document.getElementById("batchSheetSelector");
+      const sheetLabel = document.getElementById("sheetDimensionsLabel");
+
+      // Resolution Standard: 10 pixels per millimeter
+      const PMM = 10;
+
+      const FORMATS = {
+        instaxMini: { w: 54 * PMM, h: 86 * PMM, defaultBtm: 22, realW: 54, realH: 86 },
+        instaxSquare: { w: 72 * PMM, h: 86 * PMM, defaultBtm: 20, realW: 72, realH: 86 },
+        classic: { w: 88 * PMM, h: 107 * PMM, defaultBtm: 24, realW: 88, realH: 107 },
+        instaxWide: { w: 108 * PMM, h: 86 * PMM, defaultBtm: 18, realW: 108, realH: 86 },
+      };
+
+      const SHEETS = {
+        a4: { w: 210, h: 297, label: "A4 (210 x 297mm)" },
+        a3: { w: 297, h: 420, label: "A3 (297 x 420mm)" },
+        "4x6": { w: 101.6, h: 152.4, label: '4 x 6" Photo (102 x 152mm)' },
+        "5x7": { w: 127, h: 177.8, label: '5 x 7" Photo (127 x 178mm)' },
+        "8x10": { w: 203.2, h: 254, label: '8 x 10" Photo (203 x 254mm)' },
+        letter: { w: 215.9, h: 279.4, label: "US Letter (216 x 279mm)" },
+        square12: { w: 304.8, h: 304.8, label: 'Square 12" (305 x 305mm)' },
+      };
+
+      const PRESETS = {
+        none: "",
+        vivid: "saturate(160%) contrast(110%) brightness(105%)",
+        warm: "sepia(30%) saturate(140%) brightness(110%)",
+        cool: "hue-rotate(180deg) saturate(90%) brightness(105%) contrast(105%)",
+        retro: "sepia(50%) contrast(90%) brightness(110%) saturate(120%)",
+        fade: "brightness(115%) saturate(70%) contrast(85%)",
+        bw_classic: "grayscale(100%) contrast(110%)",
+        noir: "grayscale(100%) contrast(180%) brightness(90%)",
+        silver: "grayscale(100%) contrast(95%) brightness(120%) saturate(0%)",
+      };
+
+      let currentKey = "classic";
+      let currentPreset = "none";
+      let img = new Image();
+      let imgLoaded = false;
+      let imgState = { x: 0, y: 0, scale: 1, isDragging: false, lastX: 0, lastY: 0 };
+      let batchImages = [];
+
+      function switchMode(mode) {
+        const editorWorkspace = document.getElementById("editorWorkspace");
+        const batchWorkspace = document.getElementById("batchWorkspace");
+        const editorBtn = document.getElementById("editorModeBtn");
+        const batchBtn = document.getElementById("batchModeBtn");
+
+        if (mode === "editor") {
+          editorWorkspace.style.display = "grid";
+          batchWorkspace.style.display = "none";
+          editorBtn.classList.add("active");
+          batchBtn.classList.remove("active", "text-slate-500");
+          batchBtn.classList.add("text-slate-500");
+        } else {
+          editorWorkspace.style.display = "none";
+          batchWorkspace.style.display = "flex";
+          batchBtn.classList.add("active");
+          editorBtn.classList.remove("active");
+          editorBtn.classList.add("text-slate-500");
+          updateBatchSheetSize();
+        }
+      }
+
+      function saveSettings() {
+        localStorage.setItem(
+          "polaroid_studio_settings",
+          JSON.stringify({
+            format: currentKey,
+            thickness: thickRange.value,
+            bottom: btmRange.value,
+            grain: grainRange.value,
+            textSize: textSizeRange.value,
+            caption: captionInput.value,
+          })
+        );
+      }
+
+      function loadSettings() {
+        const saved = localStorage.getItem("polaroid_studio_settings");
+        if (saved) {
+          try {
+            const s = JSON.parse(saved);
+            currentKey = s.format || "classic";
+            if (!FORMATS[currentKey]) currentKey = "classic";
+            thickRange.value = s.thickness || 8;
+            btmRange.value = s.bottom || FORMATS[currentKey].defaultBtm;
+            grainRange.value = s.grain !== undefined ? s.grain : 15;
+            textSizeRange.value = s.textSize || 40;
+            captionInput.value = s.caption || "";
+            return true;
+          } catch (e) {}
+        }
+        return false;
+      }
+
+      function setPreset(key) {
+        currentPreset = key;
+        document.querySelectorAll(".preset-btn").forEach((btn) => {
+          btn.classList.remove("active", "border-blue-500", "bg-blue-50", "text-blue-700");
+          if (btn.innerText.toLowerCase().includes(key.replace("_", " "))) {
+            btn.classList.add("active", "border-blue-500", "bg-blue-50", "text-blue-700");
+          }
+        });
+        draw();
+      }
+
+      function resetFilter(type) {
+        if (type === "bright") brightRange.value = 100;
+        if (type === "contrast") contrastRange.value = 100;
+        if (type === "sepia") sepiaRange.value = 0;
+        updateUIValues();
+        draw();
+      }
+
+      function resetFraming(type) {
+        if (type === "thick") thickRange.value = 8;
+        if (type === "btm") btmRange.value = FORMATS[currentKey].defaultBtm;
+        updateUIValues();
+        resetImageFit();
+        draw();
+      }
+
+      function init() {
+        loadSettings();
+        setFormat(currentKey);
+        setupListeners();
+        document.fonts.load('10pt "Caveat"').then(() => draw());
+      }
+
+      function setFormat(key) {
+        if (!FORMATS[key]) return;
+        currentKey = key;
+        const config = FORMATS[key];
+        canvas.width = config.w;
+        canvas.height = config.h;
+
+        formatButtons.forEach((btn) => {
+          const isActive = btn.dataset.format === key;
+          btn.classList.toggle("border-blue-200", isActive);
+          btn.classList.toggle("bg-blue-50", isActive);
+          btn.classList.toggle("border-transparent", !isActive);
+          btn.classList.toggle("bg-slate-50", !isActive);
+          btn.querySelector(".format-svg").classList.toggle("text-blue-500", isActive);
+          btn.querySelector(".format-svg").classList.toggle("text-slate-400", !isActive);
+          btn.querySelector("span:first-of-type").classList.toggle("text-blue-700", isActive);
+        });
+
+        if (imgLoaded) resetImageFit();
+        saveSettings();
+        draw();
+      }
+
+      function resetImageFit() {
+        const config = FORMATS[currentKey];
+        const pad = (parseInt(thickRange.value) / 100) * config.w;
+        const btm = (parseInt(btmRange.value) / 100) * config.h;
+        const photoW = config.w - pad * 2;
+        const photoH = config.h - pad - btm;
+        const scaleX = photoW / img.width;
+        const scaleY = photoH / img.height;
+        imgState.scale = Math.max(scaleX, scaleY);
+        imgState.x = pad + (photoW - img.width * imgState.scale) / 2;
+        imgState.y = pad + (photoH - img.height * imgState.scale) / 2;
+        zoomRange.value = imgState.scale;
+        updateUIValues();
+      }
+
+      function updateUIValues() {
+        const pct = Math.round(zoomRange.value * 100) + "%";
+        if (zoomValOverlay) zoomValOverlay.innerText = pct;
+        document.getElementById("thickVal").innerText = thickRange.value + "%";
+        document.getElementById("btmVal").innerText = btmRange.value + "%";
+        document.getElementById("grainVal").innerText = grainRange.value + "%";
+        document.getElementById("brightVal").innerText = brightRange.value + "%";
+        document.getElementById("contrastVal").innerText = contrastRange.value + "%";
+        document.getElementById("sepiaVal").innerText = sepiaRange.value + "%";
+        document.getElementById("textSizeVal").innerText = textSizeRange.value + "%";
+        if (imgLoaded) infoDimensions.innerText = `${img.naturalWidth} x ${img.naturalHeight} px`;
+      }
+
+      function draw() {
+        const config = FORMATS[currentKey];
+        const pad = (parseInt(thickRange.value) / 100) * config.w;
+        const btm = (parseInt(btmRange.value) / 100) * config.h;
+        const grain = parseInt(grainRange.value);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (grain > 0) {
+          ctx.save();
+          for (let i = 0; i < canvas.width * canvas.height * (grain / 2000); i++) {
+            const gx = Math.random() * canvas.width;
+            const gy = Math.random() * canvas.height;
+            const gs = Math.random() * (PMM / 4);
+            ctx.fillStyle = Math.random() > 0.5 ? `rgba(0,0,0,${grain / 500})` : `rgba(255,255,255,${grain / 250})`;
+            ctx.fillRect(gx, gy, gs, gs);
+          }
+          ctx.restore();
+        }
+
+        const photoW = config.w - pad * 2;
+        const photoH = config.h - pad - btm;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(pad, pad, photoW, photoH);
+        ctx.clip();
+        if (imgLoaded) {
+          const baseFilter = PRESETS[currentPreset];
+          ctx.filter = `${baseFilter} brightness(${brightRange.value}%) contrast(${contrastRange.value}%) sepia(${sepiaRange.value}%)`;
+          ctx.drawImage(img, imgState.x, imgState.y, img.width * imgState.scale, img.height * imgState.scale);
+          ctx.filter = "none";
+        } else {
+          ctx.fillStyle = "#f8fafc";
+          ctx.fillRect(pad, pad, photoW, photoH);
+          ctx.fillStyle = "#e2e8f0";
+          ctx.font = `bold ${Math.round(config.w / 12)}px sans-serif`;
+          ctx.textAlign = "center";
+          ctx.fillText("READY", config.w / 2, (config.h - btm) / 2);
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = "rgba(0,0,0,0.06)";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(pad, pad, photoW, photoH);
+
+        const text = captionInput.value.trim();
+        if (text) {
+          ctx.fillStyle = "#2d3748";
+          const fontSize = btm * (parseInt(textSizeRange.value) / 100);
+          ctx.font = `${fontSize}px "Caveat"`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          const lines = text.split("\n");
+          const lh = fontSize * 1.1;
+          const sy = config.h - btm / 2 - (lines.length * lh) / 2 + lh / 2;
+          lines.forEach((l, i) => ctx.fillText(l, config.w / 2, sy + i * lh));
+        }
+
+        if (cuttingGuideToggle.checked) {
+          ctx.strokeStyle = "#e5e7eb";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
+        }
+      }
+
+      async function processFile(file, isBatch = false) {
+        if (!file) return;
+        if (isBatch) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const bImg = new Image();
+            bImg.onload = () => {
+              batchImages.push({ img: bImg, w: bImg.width, h: bImg.height });
+              renderBatchSheet();
+            };
+            bImg.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        if (uploadStatus) uploadStatus.innerText = "Processing...";
+        const r = new FileReader();
+        r.onload = (ev) => {
+          img = new Image();
+          img.onload = () => {
+            imgLoaded = true;
+            if (uploadStatus) uploadStatus.innerText = file.name;
+            if (dragHint) dragHint.classList.remove("opacity-0");
+            resetImageFit();
+            draw();
+          };
+          img.src = ev.target.result;
+        };
+        r.readAsDataURL(file);
+      }
+
+      function setupListeners() {
+        imageLoader.onchange = (e) => processFile(e.target.files[0]);
+        batchLoader.onchange = (e) => Array.from(e.target.files).forEach((f) => processFile(f, true));
+
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((ev) =>
+          window.addEventListener(ev, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          })
+        );
+        window.addEventListener("drop", (e) => {
+          const isBatchMode = document.getElementById("batchWorkspace").style.display === "flex";
+          if (e.dataTransfer.files.length > 0) {
+            if (isBatchMode) Array.from(e.dataTransfer.files).forEach((f) => processFile(f, true));
+            else processFile(e.dataTransfer.files[0]);
+          }
+        });
+
+        zoomRange.oninput = () => {
+          imgState.scale = parseFloat(zoomRange.value);
+          updateUIValues();
+          draw();
+        };
+        thickRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        btmRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        grainRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        brightRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        contrastRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        sepiaRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        textSizeRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        captionInput.oninput = () => {
+          saveSettings();
+          draw();
+        };
+        cuttingGuideToggle.onchange = () => draw();
+        formatButtons.forEach((btn) => btn.addEventListener("click", () => setFormat(btn.dataset.format)));
+
+        const getPos = (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const cx = e.touches ? e.touches[0].clientX : e.clientX;
+          const cy = e.touches ? e.touches[0].clientY : e.clientY;
+          return {
+            x: (cx - rect.left) * (canvas.width / rect.width),
+            y: (cy - rect.top) * (canvas.height / rect.height),
+          };
+        };
+        const start = (e) => {
+          if (!imgLoaded) return;
+          imgState.isDragging = true;
+          const pos = getPos(e);
+          imgState.lastX = pos.x;
+          imgState.lastY = pos.y;
+        };
+        const move = (e) => {
+          if (!imgState.isDragging) return;
+          const pos = getPos(e);
+          imgState.x += pos.x - imgState.lastX;
+          imgState.y += pos.y - imgState.lastY;
+          imgState.lastX = pos.x;
+          imgState.lastY = pos.y;
+          draw();
+        };
+        canvas.addEventListener("mousedown", start);
+        window.addEventListener("mousemove", move);
+        window.addEventListener("mouseup", () => (imgState.isDragging = false));
+        canvas.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          start(e);
+        });
+        canvas.addEventListener("touchmove", (e) => {
+          e.preventDefault();
+          move(e);
+        });
+        canvas.addEventListener("touchend", () => (imgState.isDragging = false));
+
+        window.addEventListener("keydown", (e) => {
+          if (!imgLoaded || document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA")
+            return;
+          const step = e.shiftKey ? 40 : 5;
+          switch (e.key) {
+            case "ArrowLeft":
+              imgState.x -= step;
+              break;
+            case "ArrowRight":
+              imgState.x += step;
+              break;
+            case "ArrowUp":
+              imgState.y -= step;
+              break;
+            case "ArrowDown":
+              imgState.y += step;
+              break;
+            default:
+              return;
+          }
+          e.preventDefault();
+          draw();
+        });
+
+        document.getElementById("btnPng").onclick = () => exportFn("png");
+        document.getElementById("btnJpg").onclick = () => exportFn("jpg");
+      }
+
+      function updateBatchSpacing() {
+        const val = batchSpacingRange.value;
+        batchSpacingVal.innerText = val + "mm";
+        renderBatchSheet();
+      }
+
+      function updateBatchSheetSize() {
+        const sheet = SHEETS[batchSheetSelector.value];
+        batchCanvas.width = sheet.w * PMM;
+        batchCanvas.height = sheet.h * PMM;
+        renderBatchSheet();
+      }
+
+      function renderBatchSheet() {
+        const sheet = SHEETS[batchSheetSelector.value];
+        const spacing = parseInt(batchSpacingRange.value) * PMM;
+        const margin = spacing > 0 ? spacing : 0; // If spacing is 0, they touch.
+
+        batchCtx.fillStyle = "#FFFFFF";
+        batchCtx.fillRect(0, 0, batchCanvas.width, batchCanvas.height);
+
+        // Initial offset from sheet edge
+        let curX = spacing;
+        let curY = spacing;
+        let maxRowH = 0;
+
+        batchImages.forEach((item) => {
+          // Check if item fits in current row
+          if (curX + item.w + spacing > batchCanvas.width) {
+            curX = spacing;
+            curY += maxRowH + spacing;
+            maxRowH = 0;
+          }
+
+          // Don't draw if it goes off the bottom of the sheet
+          if (curY + item.h <= batchCanvas.height) {
+            batchCtx.drawImage(item.img, curX, curY);
+            maxRowH = Math.max(maxRowH, item.h);
+            curX += item.w + spacing;
+          }
+        });
+      }
+
+      function clearBatchSheet() {
+        batchImages = [];
+        renderBatchSheet();
+      }
+      function exportBatchSheet() {
+        if (batchImages.length === 0) return;
+        const link = document.createElement("a");
+        link.download = `print-sheet-${Date.now()}.png`;
+        link.href = batchCanvas.toDataURL("image/png", 0.95);
+        link.click();
+      }
+
+      function openSheetPreview() {
+        sheetModal.style.display = "flex";
+        updateSheetSize();
+        if (sheetPreviewContainer.children.length === 0) addMoreToSheet();
+      }
+      function closeSheetPreview() {
+        sheetModal.style.display = "none";
+      }
+      function clearSheet() {
+        sheetPreviewContainer.innerHTML = "";
+      }
+      function updateSheetSize() {
+        const sheet = SHEETS[sheetSizeSelector.value];
+        sheetElement.style.aspectRatio = `${sheet.w} / ${sheet.h}`;
+        if (sheet.h > sheet.w) {
+          sheetElement.style.width = "auto";
+          sheetElement.style.height = "70vh";
+        } else {
+          sheetElement.style.width = "70vw";
+          sheetElement.style.height = "auto";
+        }
+        Array.from(sheetPreviewContainer.children).forEach((el) => {
+          const config = FORMATS[el.dataset.formatKey];
+          if (config) el.style.width = (config.realW / sheet.w) * 100 + "%";
+        });
+      }
+      function addMoreToSheet() {
+        const config = FORMATS[currentKey];
+        const sheet = SHEETS[sheetSizeSelector.value];
+        const imgEl = new Image();
+        imgEl.src = canvas.toDataURL();
+        imgEl.className = "shadow border border-slate-100";
+        imgEl.dataset.formatKey = currentKey;
+        imgEl.style.width = (config.realW / sheet.w) * 100 + "%";
+        sheetPreviewContainer.appendChild(imgEl);
+      }
+
+      function exportFn(fmt) {
+        if (!imgLoaded && !captionInput.value) return;
+        const link = document.createElement("a");
+        link.download = `polaroid-${Date.now()}.${fmt}`;
+        link.href = canvas.toDataURL(fmt === "jpg" ? "image/jpeg" : "image/png", 0.95);
+        link.click();
+      }
+
+      init();
+    </script>
+  </body>
+</html>
