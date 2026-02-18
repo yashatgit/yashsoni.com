@@ -7,6 +7,17 @@ export const metadata = {
   description: "Collection of AI-powered tools and utilities",
 };
 
+const TOOL_META: Record<string, { name: string; description: string }> = {
+  "polaroid-studio": {
+    name: "Polaroid Studio Pro",
+    description: "Create print-ready polaroid frames with filters, captions, and batch printing",
+  },
+  "pdf-shrink": {
+    name: "PDF Kit",
+    description: "Compress, merge, split, rotate, convert, and unlock PDFs — 100% in your browser",
+  },
+};
+
 function getTools() {
   const toolsDir = path.join(process.cwd(), "public", "tools");
 
@@ -16,16 +27,17 @@ function getTools() {
       .filter((file) => file.endsWith(".html"))
       .map((file) => {
         const toolId = file.replace(".html", "");
-        // You can extract title/description from the HTML file if needed
-        // For now, we'll use a simple format
-        const name = toolId
+        const meta = TOOL_META[toolId];
+        const name = meta?.name ?? toolId
           .split("-")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" ");
+        const description = meta?.description ?? "";
 
         return {
           id: toolId,
           name,
+          description,
           filename: file,
         };
       });
@@ -64,6 +76,9 @@ export default function ToolsPage() {
                 className="block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
               >
                 <h2 className="text-xl font-semibold mb-2">{tool.name}</h2>
+                {tool.description && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{tool.description}</p>
+                )}
               </Link>
             ))}
           </div>
