@@ -12,7 +12,7 @@ const TOOL_META: Record<string, { name: string; description: string }> = {
     name: "Polaroid Studio Pro",
     description: "Create print-ready polaroid frames with filters, captions, and batch printing",
   },
-  "pdf-shrink": {
+  "pdf-kit": {
     name: "PDF Kit",
     description: "Compress, merge, split, rotate, convert, and unlock PDFs — 100% in your browser",
   },
