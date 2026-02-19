@@ -47,7 +47,6 @@
         <button onclick="switchTool('compress')" data-tool="compress" class="tool-tab active px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Compress</button>
         <button onclick="switchTool('merge')" data-tool="merge" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Merge</button>
         <button onclick="switchTool('split')" data-tool="split" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Split</button>
-        <button onclick="switchTool('rotate')" data-tool="rotate" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Rotate</button>
         <button onclick="switchTool('pdftoimg')" data-tool="pdftoimg" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">PDF → Images</button>
         <button onclick="switchTool('imgtopdf')" data-tool="imgtopdf" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Images → PDF</button>
         <button onclick="switchTool('unlock')" data-tool="unlock" class="tool-tab px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">Unlock</button>
@@ -166,36 +165,6 @@
           <div id="splitActions" class="hidden p-6 border-t border-slate-100 bg-slate-50/30 flex gap-3">
             <button onclick="split_extractSelected()" class="flex-1 h-12 bg-violet-500 text-white rounded-xl font-bold hover:bg-violet-600 shadow-lg shadow-violet-100 transition-all text-sm">Extract Selected</button>
             <button onclick="split_splitAll()" class="flex-1 h-12 bg-slate-900 text-white rounded-xl font-bold hover:bg-black transition-all text-sm">Split Each Page</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ ROTATE ============ -->
-      <div id="tool-rotate" class="tool-panel hidden">
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="p-6">
-            <input type="file" id="rotateInput" accept="application/pdf" class="hidden" />
-            <label for="rotateInput" id="rotateDropZone" class="drop-zone flex flex-col items-center justify-center w-full p-10 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/30 transition-all text-center">
-              <svg class="h-8 w-8 text-amber-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-              <span class="block text-amber-500 font-bold text-sm">Drop a PDF to rotate pages</span>
-              <span class="block text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Click pages to rotate individually</span>
-            </label>
-          </div>
-          <div id="rotateControls" class="hidden border-t border-slate-100 px-6 py-4 space-y-4">
-            <div class="flex items-center justify-between">
-              <span id="rotateInfo" class="text-xs font-bold text-slate-600"></span>
-              <button onclick="rotate_clear()" class="text-[10px] font-bold uppercase tracking-wider text-red-400 hover:text-red-600">Clear</button>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="rotate_all(90)" class="px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg text-[10px] font-bold uppercase hover:bg-amber-100">Rotate All 90°</button>
-              <button onclick="rotate_all(180)" class="px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg text-[10px] font-bold uppercase hover:bg-amber-100">Rotate All 180°</button>
-              <button onclick="rotate_all(270)" class="px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg text-[10px] font-bold uppercase hover:bg-amber-100">Rotate All 270°</button>
-              <button onclick="rotate_reset()" class="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-bold uppercase hover:bg-slate-100">Reset All</button>
-            </div>
-            <div id="rotatePageGrid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3"></div>
-          </div>
-          <div id="rotateActions" class="hidden p-6 border-t border-slate-100 bg-slate-50/30">
-            <button onclick="rotate_run()" id="rotateBtn" class="w-full h-12 bg-amber-500 text-white rounded-xl font-bold hover:bg-amber-600 shadow-lg shadow-amber-100 transition-all text-sm">Save Rotated PDF</button>
           </div>
         </div>
       </div>
@@ -383,16 +352,20 @@
       document.querySelector(`[data-tool="${name}"]`).classList.add("active");
     }
 
-    // Global drag-and-drop prevention
-    ["dragenter","dragover","dragleave","drop"].forEach(ev => window.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); }));
+    // Global drag-and-drop prevention (prevent only, don't stopPropagation so drop zones work)
+    ["dragenter","dragover","dragleave","drop"].forEach(ev => window.addEventListener(ev, e => { e.preventDefault(); }));
+
+    function isPdf(file) {
+      return file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    }
 
     function setupDropZone(dropId, inputId, handler) {
       const dz = document.getElementById(dropId);
       const inp = document.getElementById(inputId);
-      dz.addEventListener("dragenter", () => dz.classList.add("drag-over"));
-      dz.addEventListener("dragover", () => dz.classList.add("drag-over"));
+      dz.addEventListener("dragenter", e => { e.preventDefault(); dz.classList.add("drag-over"); });
+      dz.addEventListener("dragover", e => { e.preventDefault(); dz.classList.add("drag-over"); });
       dz.addEventListener("dragleave", () => dz.classList.remove("drag-over"));
-      dz.addEventListener("drop", e => { dz.classList.remove("drag-over"); handler(e.dataTransfer.files); });
+      dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("drag-over"); if (e.dataTransfer.files.length) handler(e.dataTransfer.files); });
       inp.addEventListener("change", e => { handler(e.target.files); inp.value = ""; });
     }
 
@@ -416,7 +389,7 @@
 
     async function compress_handleFiles(files) {
       for (const f of Array.from(files)) {
-        if (f.type !== "application/pdf") continue;
+        if (!isPdf(f)) continue;
         const entry = { file: f, originalSize: f.size, compressedBlob: null, compressedSize: null, status: "pending", pageSizes: [] };
         try {
           const buf = await f.arrayBuffer();
@@ -534,7 +507,7 @@
     setupDropZone("mergeDropZone", "mergeInput", merge_handleFiles);
 
     function merge_handleFiles(files) {
-      Array.from(files).forEach(f => { if(f.type==="application/pdf") merge.files.push(f); });
+      Array.from(files).forEach(f => { if(isPdf(f)) merge.files.push(f); });
       merge_render();
     }
 
@@ -585,7 +558,7 @@
     setupDropZone("splitDropZone", "splitInput", split_handleFiles);
 
     async function split_handleFiles(files) {
-      const f = Array.from(files).find(f => f.type === "application/pdf");
+      const f = Array.from(files).find(f => isPdf(f));
       if (!f) return;
       split.file = f;
       split.buf = await f.arrayBuffer();
@@ -657,55 +630,6 @@
     }
 
     // ═══════════════════════════════════════════
-    //  ROTATE
-    // ═══════════════════════════════════════════
-    const rotate = { file: null, buf: null, pageCount: 0, angles: [] };
-
-    setupDropZone("rotateDropZone", "rotateInput", rotate_handleFiles);
-
-    async function rotate_handleFiles(files) {
-      const f = Array.from(files).find(f => f.type === "application/pdf");
-      if (!f) return;
-      rotate.file = f;
-      rotate.buf = await f.arrayBuffer();
-      const doc = await PDFLib.PDFDocument.load(rotate.buf, { ignoreEncryption:true });
-      rotate.pageCount = doc.getPageCount();
-      rotate.angles = new Array(rotate.pageCount).fill(0);
-      document.getElementById("rotateInfo").innerText = `${f.name} — ${rotate.pageCount} pages`;
-      rotate_renderGrid();
-      document.getElementById("rotateControls").classList.remove("hidden");
-      document.getElementById("rotateActions").classList.remove("hidden");
-    }
-
-    function rotate_renderGrid() {
-      document.getElementById("rotatePageGrid").innerHTML = rotate.angles.map((a,i) =>
-        `<button onclick="rotate_toggle(${i})" class="page-thumb aspect-[3/4] rounded-lg border-2 ${a?"border-amber-400 bg-amber-50":"border-slate-200 bg-white"} flex flex-col items-center justify-center gap-1 hover:border-amber-300 transition-all">
-          <svg class="w-5 h-5 ${a?"text-amber-500":"text-slate-300"}" style="transform:rotate(${a}deg)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          <span class="text-[10px] font-black ${a?"text-amber-600":"text-slate-400"}">${i+1}${a?" · "+a+"°":""}</span>
-        </button>`
-      ).join("");
-    }
-
-    function rotate_toggle(i) { rotate.angles[i] = (rotate.angles[i] + 90) % 360; rotate_renderGrid(); }
-    function rotate_all(deg) { rotate.angles = rotate.angles.map(a => (a + deg) % 360); rotate_renderGrid(); }
-    function rotate_reset() { rotate.angles.fill(0); rotate_renderGrid(); }
-    function rotate_clear() { rotate.file=null; rotate.buf=null; rotate.pageCount=0; rotate.angles=[]; document.getElementById("rotateControls").classList.add("hidden"); document.getElementById("rotateActions").classList.add("hidden"); }
-
-    async function rotate_run() {
-      if (!rotate.buf) return;
-      const btn = document.getElementById("rotateBtn");
-      setButtonLoading(btn, true);
-      try {
-        const doc = await PDFLib.PDFDocument.load(rotate.buf, { ignoreEncryption:true });
-        doc.getPages().forEach((p,i) => { if(rotate.angles[i]) p.setRotation(PDFLib.degrees((p.getRotation().angle + rotate.angles[i]) % 360)); });
-        const out = await doc.save();
-        const name = rotate.file.name.replace(/\.pdf$/i,"");
-        downloadBlob(new Blob([out],{type:"application/pdf"}), `${name}-rotated.pdf`);
-      } catch(e) { console.error(e); alert("Error: "+e.message); }
-      setButtonLoading(btn, false, "Save Rotated PDF");
-    }
-
-    // ═══════════════════════════════════════════
     //  PDF TO IMAGES
     // ═══════════════════════════════════════════
     const pdftoimg = { file: null, buf: null, pageCount: 0 };
@@ -713,7 +637,7 @@
     setupDropZone("pdfToImgDropZone", "pdfToImgInput", pdftoimg_handleFiles);
 
     async function pdftoimg_handleFiles(files) {
-      const f = Array.from(files).find(f => f.type === "application/pdf");
+      const f = Array.from(files).find(f => isPdf(f));
       if (!f) return;
       pdftoimg.file = f;
       pdftoimg.buf = await f.arrayBuffer();
@@ -801,10 +725,20 @@
         const doc = await PDFLib.PDFDocument.create();
         for (const img of imgtopdf.images) {
           let embedded;
-          const bytes = dataUrlToUint8Array(img.dataUrl);
-          if (img.file.type === "image/png") embedded = await doc.embedPng(bytes);
-          else embedded = await doc.embedJpg(bytes);
-          // If not jpg/png, try png first
+          const isPng = img.file.type === "image/png";
+          const isJpg = img.file.type === "image/jpeg";
+          if (isPng || isJpg) {
+            const bytes = dataUrlToUint8Array(img.dataUrl);
+            embedded = isPng ? await doc.embedPng(bytes) : await doc.embedJpg(bytes);
+          } else {
+            // Convert other formats (WebP, etc.) to PNG via canvas
+            const cvs = document.createElement("canvas"); cvs.width = img.width; cvs.height = img.height;
+            const cx = cvs.getContext("2d");
+            const drawImg = await new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = img.dataUrl; });
+            cx.drawImage(drawImg, 0, 0);
+            const pngBytes = dataUrlToUint8Array(cvs.toDataURL("image/png"));
+            embedded = await doc.embedPng(pngBytes);
+          }
           let pw, ph;
           if (pageSize === "fit") { pw = img.width; ph = img.height; }
           else if (pageSize === "a4") { pw = 595.28; ph = 841.89; }
@@ -835,7 +769,7 @@
     setupDropZone("unlockDropZone", "unlockInput", unlock_handleFiles);
 
     async function unlock_handleFiles(files) {
-      const f = Array.from(files).find(f => f.type === "application/pdf");
+      const f = Array.from(files).find(f => isPdf(f));
       if (!f) return;
       unlock.file = f;
       unlock.buf = await f.arrayBuffer();
