@@ -16,6 +16,10 @@ const TOOL_META: Record<string, { name: string; description: string }> = {
     name: "PDF Kit",
     description: "Compress, merge, split, rotate, convert, and unlock PDFs — 100% in your browser",
   },
+  "passport-photo": {
+    name: "Passport Photo Studio",
+    description: "Crop and print passport photos for US, UK, India, EU and more — ready to print at home",
+  },
 };
 
 function getTools() {

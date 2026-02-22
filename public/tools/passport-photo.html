@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Passport Photo Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .canvas-shadow { box-shadow: 0 20px 50px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.05); }
+      canvas { touch-action: none; user-select: none; outline: none; }
+      input[type="range"] { accent-color: #2563eb; }
+      .mode-tab.active { background: white; color: #1e293b; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+      .mode-tab:not(.active) { color: #94a3b8; }
+      .format-btn.active { border-color: #2563eb; background-color: #eff6ff; }
+      .format-btn.active span { color: #1d4ed8; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      .preview-sheet { background: white; box-shadow: 0 0 40px rgba(0,0,0,0.2); position: relative; }
+      #sheetModal { display: none; backdrop-filter: blur(8px); }
+      .guide-line { position: absolute; pointer-events: none; }
+      .crop-handle { position: absolute; width: 10px; height: 10px; background: white; border: 2px solid #2563eb; border-radius: 2px; }
+    </style>
+  </head>
+  <body class="bg-slate-50 min-h-screen text-slate-900 font-sans overflow-x-hidden">
+    <div class="max-w-[1600px] mx-auto px-4 py-4 md:py-8">
+
+      <!-- Header -->
+      <header class="mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-200 pb-6">
+        <div class="flex items-center gap-4">
+          <div class="bg-indigo-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-200">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c0 1.306.835 2.417 2 2.83M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl font-black tracking-tighter text-slate-900 uppercase leading-none">
+              Passport <span class="text-indigo-600">Photo Studio</span>
+            </h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Professional ID Photo Print Utility</p>
+          </div>
+        </div>
+
+        <!-- Mode Switcher -->
+        <div class="bg-slate-200/50 p-1.5 rounded-2xl flex gap-1 self-center lg:self-auto">
+          <button onclick="switchMode('editor')" id="editorModeBtn" class="mode-tab active px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Photo Editor</button>
+          <button onclick="switchMode('print')" id="printModeBtn" class="mode-tab px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:text-slate-700">Print Sheet</button>
+        </div>
+
+        <div class="hidden xl:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Engine: 10px/mm
+        </div>
+      </header>
+
+      <!-- ═══════ EDITOR MODE ═══════ -->
+      <div id="editorWorkspace" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Left Sidebar -->
+        <div class="lg:col-span-4 xl:col-span-3 space-y-3 order-2 lg:order-1">
+          <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 space-y-4 overflow-y-auto max-h-[calc(100vh-160px)] scrollbar-hide">
+
+            <!-- 01. Source -->
+            <section>
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2">01. Source Photo</label>
+              <input type="file" id="imageLoader" accept="image/*" class="hidden" />
+              <label for="imageLoader" id="dropZone"
+                class="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-300 text-center">
+                <svg class="h-6 w-6 text-indigo-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                <span class="block text-indigo-600 font-bold text-[10px] uppercase tracking-widest" id="uploadStatus">Upload Photo</span>
+              </label>
+            </section>
+
+            <!-- 02. Format Presets -->
+            <section class="pt-2 border-t border-slate-50">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2">02. Photo Size</label>
+              <div class="grid grid-cols-1 gap-1.5" id="formatPicker">
+                <button data-format="us" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">🇺🇸</span>
+                  <div><span class="block text-xs font-bold text-slate-600">US Passport</span><span class="text-[9px] text-slate-400 font-bold uppercase">51×51mm · 2×2"</span></div>
+                </button>
+                <button data-format="uk" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">🇬🇧</span>
+                  <div><span class="block text-xs font-bold text-slate-600">UK Passport</span><span class="text-[9px] text-slate-400 font-bold uppercase">35×45mm</span></div>
+                </button>
+                <button data-format="india" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">🇮🇳</span>
+                  <div><span class="block text-xs font-bold text-slate-600">India Passport</span><span class="text-[9px] text-slate-400 font-bold uppercase">51×51mm</span></div>
+                </button>
+                <button data-format="eu" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">🇪🇺</span>
+                  <div><span class="block text-xs font-bold text-slate-600">EU / Schengen</span><span class="text-[9px] text-slate-400 font-bold uppercase">35×45mm</span></div>
+                </button>
+                <button data-format="china" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">🇨🇳</span>
+                  <div><span class="block text-xs font-bold text-slate-600">China Passport</span><span class="text-[9px] text-slate-400 font-bold uppercase">33×48mm</span></div>
+                </button>
+                <button data-format="custom" class="format-btn w-full border border-transparent bg-slate-50 px-3 py-2 rounded-lg text-left hover:bg-slate-100 transition-all flex items-center gap-3">
+                  <span class="text-base">✏️</span>
+                  <div><span class="block text-xs font-bold text-slate-600">Custom Size</span><span class="text-[9px] text-slate-400 font-bold uppercase">Enter manually</span></div>
+                </button>
+              </div>
+              <!-- Custom dimensions -->
+              <div id="customDims" class="hidden mt-2 grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-[9px] font-bold uppercase text-slate-400 mb-1 block">Width (mm)</label>
+                  <input type="number" id="customW" value="35" min="10" max="200" class="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-indigo-400"/>
+                </div>
+                <div>
+                  <label class="text-[9px] font-bold uppercase text-slate-400 mb-1 block">Height (mm)</label>
+                  <input type="number" id="customH" value="45" min="10" max="200" class="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold outline-none focus:ring-2 focus:ring-indigo-400"/>
+                </div>
+                <button onclick="applyCustomSize()" class="col-span-2 py-1.5 bg-indigo-500 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all">Apply</button>
+              </div>
+            </section>
+
+            <!-- 03. Framing -->
+            <section class="pt-2 border-t border-slate-50 space-y-3">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400">03. Framing</label>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <div class="flex items-center gap-1"><span>Zoom</span><button onclick="resetZoom()" class="text-indigo-500 hover:text-indigo-700 font-black lowercase text-[8px]">[reset]</button></div>
+                  <span id="zoomVal">100%</span>
+                </div>
+                <input type="range" id="zoomRange" min="0.5" max="4" step="0.01" value="1" class="w-full h-1 bg-slate-100 rounded-lg appearance-none"/>
+              </div>
+              <p class="text-[9px] text-slate-400 italic">Drag the preview to reposition. Use zoom to fill the frame.</p>
+            </section>
+
+            <!-- 04. Adjustments -->
+            <section class="pt-2 border-t border-slate-50 space-y-3">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400">04. Adjustments</label>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <div class="flex items-center gap-1"><span>Brightness</span><button onclick="resetAdj('bright')" class="text-indigo-500 hover:text-indigo-700 font-black lowercase text-[8px]">[reset]</button></div>
+                  <span id="brightVal">100%</span>
+                </div>
+                <input type="range" id="brightRange" min="50" max="200" step="1" value="100" class="w-full h-1 bg-slate-100 rounded-lg appearance-none"/>
+              </div>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <div class="flex items-center gap-1"><span>Contrast</span><button onclick="resetAdj('contrast')" class="text-indigo-500 hover:text-indigo-700 font-black lowercase text-[8px]">[reset]</button></div>
+                  <span id="contrastVal">100%</span>
+                </div>
+                <input type="range" id="contrastRange" min="50" max="200" step="1" value="100" class="w-full h-1 bg-slate-100 rounded-lg appearance-none"/>
+              </div>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <span>Sharpness</span>
+                  <span id="sharpVal">0%</span>
+                </div>
+                <input type="range" id="sharpRange" min="0" max="100" step="1" value="0" class="w-full h-1 bg-slate-100 rounded-lg appearance-none"/>
+              </div>
+            </section>
+
+            <!-- 05. Background -->
+            <section class="pt-2 border-t border-slate-50">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2">05. Border</label>
+              <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-100">
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-bold text-slate-700 leading-tight">Cutting Guide</span>
+                  <span class="text-[9px] text-slate-400 font-medium">Thin border for scissors</span>
+                </div>
+                <div class="relative inline-block w-10 align-middle select-none">
+                  <input type="checkbox" id="cuttingGuide" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer outline-none"/>
+                  <label for="cuttingGuide" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                </div>
+              </div>
+              <style>
+                .toggle-checkbox:checked { right:0; border-color:#4f46e5; }
+                .toggle-checkbox:checked + .toggle-label { background-color:#4f46e5; }
+              </style>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- Editor Canvas Area -->
+        <div class="lg:col-span-8 xl:col-span-9 flex flex-col items-center justify-start order-1 lg:order-2 px-2">
+          <div class="w-full max-w-xl flex flex-col items-center">
+
+            <!-- Size Badge -->
+            <div id="sizeBadge" class="mb-3 px-4 py-1.5 bg-indigo-50 border border-indigo-100 rounded-full text-[10px] font-black uppercase tracking-widest text-indigo-600"></div>
+
+            <!-- Canvas -->
+            <div class="canvas-shadow bg-white inline-block border border-slate-200 mb-6 transition-transform hover:scale-[1.005] overflow-hidden">
+              <canvas id="passportCanvas" tabindex="0" class="cursor-move bg-white block" style="max-height:55vh; max-width:100%;"></canvas>
+            </div>
+
+            <!-- Export Bar -->
+            <div class="w-full max-w-md flex flex-col sm:flex-row gap-2 items-center justify-center border-t border-slate-200 pt-6 mt-2">
+              <button onclick="openPrintSheet()" class="h-12 w-full sm:flex-1 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all flex items-center justify-center gap-2 text-[13px]">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                Preview Print Sheet
+              </button>
+              <div class="flex gap-2 w-full sm:flex-[2]">
+                <button id="btnPng" onclick="exportPhoto('png')" class="h-12 flex-1 bg-slate-900 text-white rounded-xl font-bold hover:bg-black transition-all text-[13px]">Export PNG</button>
+                <button id="btnJpg" onclick="exportPhoto('jpg')" class="h-12 flex-1 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all text-[13px]">JPG</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════ PRINT SHEET MODE ═══════ -->
+      <div id="printWorkspace" class="hidden flex-col items-center">
+        <div class="w-full max-w-5xl flex flex-col lg:flex-row gap-8 items-start">
+
+          <!-- Print Controls -->
+          <div class="w-full lg:w-72 shrink-0 space-y-6">
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm space-y-6">
+
+              <section>
+                <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">01. Paper Size</label>
+                <select id="paperSize" onchange="renderPrintSheet()" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-xs font-bold uppercase tracking-widest cursor-pointer outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                  <option value="a4">A4 (210 × 297mm)</option>
+                  <option value="a3">A3 (297 × 420mm)</option>
+                  <option value="4x6">4 × 6" Photo (102 × 152mm)</option>
+                  <option value="5x7">5 × 7" Photo (127 × 178mm)</option>
+                  <option value="letter">US Letter (216 × 279mm)</option>
+                </select>
+              </section>
+
+              <section>
+                <div class="flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400 mb-3">
+                  <span>02. Spacing</span>
+                  <span id="spacingVal" class="text-indigo-600">3mm</span>
+                </div>
+                <input type="range" id="spacingRange" min="0" max="10" step="0.5" value="3" oninput="updateSpacing()" class="w-full h-1 bg-slate-100 rounded-lg appearance-none"/>
+              </section>
+
+              <section>
+                <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2">03. Cutting Guides</label>
+                <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-100">
+                  <div><span class="text-[11px] font-bold text-slate-700">Show guides</span></div>
+                  <div class="relative inline-block w-10 align-middle select-none">
+                    <input type="checkbox" id="printGuides" checked onchange="renderPrintSheet()" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer outline-none"/>
+                    <label for="printGuides" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <p id="printStats" class="text-[10px] font-bold text-slate-400 text-center"></p>
+              </section>
+
+              <section class="pt-4 border-t border-slate-50 flex flex-col gap-2">
+                <button onclick="exportPrintSheet()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 text-sm">Export Print Sheet</button>
+              </section>
+            </div>
+          </div>
+
+          <!-- Print Canvas -->
+          <div class="flex-1 flex flex-col items-center gap-4">
+            <div class="bg-white p-1 rounded-sm border border-slate-200 canvas-shadow overflow-hidden">
+              <canvas id="printCanvas" class="max-w-full h-auto bg-slate-100 block"></canvas>
+            </div>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Photos auto-tiled at real-world dimensions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Print Preview Modal -->
+    <div id="sheetModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 overflow-y-auto">
+      <div class="w-full max-w-5xl my-auto flex flex-col items-center justify-center space-y-6 py-8">
+        <div class="flex w-full justify-between items-center px-4 max-w-4xl">
+          <h2 class="text-white font-bold uppercase tracking-widest text-xs font-black">Print Preview</h2>
+          <button onclick="closeModal()" class="text-white hover:text-red-400 transition-colors">
+            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="modalSheetEl" class="preview-sheet overflow-hidden bg-white"></div>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <select id="modalPaperSize" onchange="renderModalSheet()" class="px-5 py-3 bg-white/10 rounded-full text-white text-[10px] font-bold uppercase tracking-widest border border-white/20 outline-none hover:bg-white/20 transition-all cursor-pointer">
+            <option value="a4">A4 (210 × 297mm)</option>
+            <option value="a3">A3 (297 × 420mm)</option>
+            <option value="4x6">4 × 6" Photo</option>
+            <option value="5x7">5 × 7" Photo</option>
+            <option value="letter">US Letter</option>
+          </select>
+          <button onclick="exportModalSheet()" class="px-6 py-3 bg-indigo-500 rounded-full text-white text-[10px] font-bold uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-lg">Export Sheet</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // ─── Constants ───────────────────────────────────────────────
+    const PMM = 10; // pixels per mm at 10px/mm
+
+    const FORMATS = {
+      us:     { label: "US Passport",    w: 51, h: 51 },
+      uk:     { label: "UK Passport",    w: 35, h: 45 },
+      india:  { label: "India Passport", w: 51, h: 51 },
+      eu:     { label: "EU / Schengen",  w: 35, h: 45 },
+      china:  { label: "China Passport", w: 33, h: 48 },
+      custom: { label: "Custom",         w: 35, h: 45 },
+    };
+
+    const PAPERS = {
+      a4:     { w: 210, h: 297 },
+      a3:     { w: 297, h: 420 },
+      "4x6":  { w: 101.6, h: 152.4 },
+      "5x7":  { w: 127, h: 177.8 },
+      letter: { w: 215.9, h: 279.4 },
+    };
+
+    // ─── State ───────────────────────────────────────────────────
+    let currentFormat = "us";
+    let img = new Image();
+    let imgLoaded = false;
+    let imgState = { x: 0, y: 0, scale: 1, isDragging: false, lastX: 0, lastY: 0 };
+
+    // ─── DOM refs ────────────────────────────────────────────────
+    const canvas      = document.getElementById("passportCanvas");
+    const ctx         = canvas.getContext("2d");
+    const zoomRange   = document.getElementById("zoomRange");
+    const brightRange = document.getElementById("brightRange");
+    const contrastRange = document.getElementById("contrastRange");
+    const sharpRange  = document.getElementById("sharpRange");
+    const cuttingGuide = document.getElementById("cuttingGuide");
+    const printCanvas = document.getElementById("printCanvas");
+    const pCtx        = printCanvas.getContext("2d");
+
+    // ─── Init ────────────────────────────────────────────────────
+    function init() {
+      setFormat("us");
+      setupListeners();
+    }
+
+    // ─── Mode switch ─────────────────────────────────────────────
+    function switchMode(mode) {
+      const editor = document.getElementById("editorWorkspace");
+      const print  = document.getElementById("printWorkspace");
+      const eBtn   = document.getElementById("editorModeBtn");
+      const pBtn   = document.getElementById("printModeBtn");
+      if (mode === "editor") {
+        editor.style.display = "grid"; print.style.display = "none";
+        eBtn.classList.add("active"); pBtn.classList.remove("active");
+      } else {
+        editor.style.display = "none"; print.style.display = "flex";
+        pBtn.classList.add("active"); eBtn.classList.remove("active");
+        renderPrintSheet();
+      }
+    }
+
+    // ─── Format ──────────────────────────────────────────────────
+    function setFormat(key) {
+      if (key === "custom") {
+        document.getElementById("customDims").classList.remove("hidden");
+      } else {
+        document.getElementById("customDims").classList.add("hidden");
+      }
+      currentFormat = key;
+      const fmt = FORMATS[key];
+      canvas.width  = fmt.w * PMM;
+      canvas.height = fmt.h * PMM;
+
+      document.getElementById("sizeBadge").innerText =
+        `${fmt.label} · ${fmt.w}×${fmt.h}mm`;
+
+      document.querySelectorAll(".format-btn").forEach(btn => {
+        const active = btn.dataset.format === key;
+        btn.classList.toggle("active", active);
+        btn.classList.toggle("border-indigo-200", active);
+        btn.classList.toggle("bg-indigo-50", active);
+        btn.classList.toggle("bg-slate-50", !active);
+        btn.classList.toggle("border-transparent", !active);
+        const name = btn.querySelector("span");
+        if (name) name.classList.toggle("text-indigo-700", active);
+      });
+
+      if (imgLoaded) resetFit();
+      draw();
+    }
+
+    function applyCustomSize() {
+      const w = parseFloat(document.getElementById("customW").value) || 35;
+      const h = parseFloat(document.getElementById("customH").value) || 45;
+      FORMATS.custom.w = w;
+      FORMATS.custom.h = h;
+      currentFormat = "custom";
+      canvas.width  = w * PMM;
+      canvas.height = h * PMM;
+      document.getElementById("sizeBadge").innerText = `Custom · ${w}×${h}mm`;
+      if (imgLoaded) resetFit();
+      draw();
+    }
+
+    // ─── Image fit ───────────────────────────────────────────────
+    function resetFit() {
+      const scaleX = canvas.width  / img.naturalWidth;
+      const scaleY = canvas.height / img.naturalHeight;
+      imgState.scale = Math.max(scaleX, scaleY);
+      imgState.x = (canvas.width  - img.naturalWidth  * imgState.scale) / 2;
+      imgState.y = (canvas.height - img.naturalHeight * imgState.scale) / 2;
+      zoomRange.value = imgState.scale;
+      updateUI();
+    }
+
+    function resetZoom() {
+      if (imgLoaded) resetFit();
+    }
+
+    // ─── Draw ────────────────────────────────────────────────────
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // white background
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (imgLoaded) {
+        const sharp = parseInt(sharpRange.value);
+        ctx.filter = `brightness(${brightRange.value}%) contrast(${contrastRange.value}%)`;
+
+        if (sharp > 0) {
+          // Draw to offscreen, apply unsharp mask approximation via contrast+saturate
+          ctx.filter = `brightness(${brightRange.value}%) contrast(${Math.min(200, parseInt(contrastRange.value) + sharp * 0.5)}%)`;
+        }
+
+        ctx.drawImage(img,
+          imgState.x, imgState.y,
+          img.naturalWidth  * imgState.scale,
+          img.naturalHeight * imgState.scale
+        );
+        ctx.filter = "none";
+      } else {
+        // Placeholder
+        ctx.fillStyle = "#f1f5f9";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = `bold ${Math.round(canvas.width / 10)}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("READY", canvas.width / 2, canvas.height / 2);
+
+        // Draw guide lines for head positioning
+        drawGuideLines();
+      }
+
+      // Cutting guide border
+      if (cuttingGuide.checked) {
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+        ctx.setLineDash([]);
+      }
+    }
+
+    function drawGuideLines() {
+      // Head top should be ~15% from top, chin at ~85%
+      ctx.strokeStyle = "rgba(99,102,241,0.25)";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      const topGuide = canvas.height * 0.10;
+      const botGuide = canvas.height * 0.85;
+      ctx.beginPath(); ctx.moveTo(0, topGuide); ctx.lineTo(canvas.width, topGuide); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, botGuide); ctx.lineTo(canvas.width, botGuide); ctx.stroke();
+      // Face oval guide
+      ctx.setLineDash([3,3]);
+      ctx.beginPath();
+      ctx.ellipse(canvas.width/2, canvas.height*0.45, canvas.width*0.28, canvas.height*0.37, 0, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Labels
+      ctx.fillStyle = "rgba(99,102,241,0.4)";
+      ctx.font = `bold ${Math.round(canvas.width / 18)}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillText("HEAD GUIDE", canvas.width / 2, botGuide - 4);
+    }
+
+    // ─── Print sheet renderer ─────────────────────────────────────
+    function getPhotoDataUrl() {
+      // Snapshot current canvas state
+      const tmp = document.createElement("canvas");
+      tmp.width = canvas.width;
+      tmp.height = canvas.height;
+      const t = tmp.getContext("2d");
+      t.drawImage(canvas, 0, 0);
+      return tmp.toDataURL("image/jpeg", 0.95);
+    }
+
+    function renderSheetToCanvas(targetCanvas, paperKey, spacingMm, showGuides) {
+      const paper   = PAPERS[paperKey];
+      const fmt     = FORMATS[currentFormat];
+      const spacing = spacingMm * PMM;
+
+      targetCanvas.width  = paper.w * PMM;
+      targetCanvas.height = paper.h * PMM;
+      const tc = targetCanvas.getContext("2d");
+
+      tc.fillStyle = "#FFFFFF";
+      tc.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
+
+      if (!imgLoaded) {
+        tc.fillStyle = "#e2e8f0";
+        tc.font = "bold 20px sans-serif";
+        tc.textAlign = "center";
+        tc.textBaseline = "middle";
+        tc.fillText("Load a photo first", targetCanvas.width / 2, targetCanvas.height / 2);
+        return 0;
+      }
+
+      const photoW = fmt.w * PMM;
+      const photoH = fmt.h * PMM;
+      const cols   = Math.floor((targetCanvas.width  + spacing) / (photoW + spacing));
+      const rows   = Math.floor((targetCanvas.height + spacing) / (photoH + spacing));
+
+      const totalW = cols * photoW + (cols - 1) * spacing;
+      const totalH = rows * photoH + (rows - 1) * spacing;
+      const offX   = (targetCanvas.width  - totalW) / 2;
+      const offY   = (targetCanvas.height - totalH) / 2;
+
+      let count = 0;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = offX + c * (photoW + spacing);
+          const y = offY + r * (photoH + spacing);
+          tc.drawImage(canvas, x, y, photoW, photoH);
+
+          if (showGuides) {
+            tc.strokeStyle = "#94a3b8";
+            tc.lineWidth = 1;
+            tc.setLineDash([3, 3]);
+            tc.strokeRect(x, y, photoW, photoH);
+            tc.setLineDash([]);
+          }
+          count++;
+        }
+      }
+
+      // Stats
+      return count;
+    }
+
+    function renderPrintSheet() {
+      const paperKey  = document.getElementById("paperSize").value;
+      const spacingMm = parseFloat(document.getElementById("spacingRange").value);
+      const guides    = document.getElementById("printGuides").checked;
+      const count     = renderSheetToCanvas(printCanvas, paperKey, spacingMm, guides);
+      const paper     = PAPERS[paperKey];
+      document.getElementById("printStats").innerText =
+        `${count} photos · ${paper.w}×${paper.h}mm sheet`;
+    }
+
+    function updateSpacing() {
+      document.getElementById("spacingVal").innerText =
+        document.getElementById("spacingRange").value + "mm";
+      renderPrintSheet();
+    }
+
+    function exportPrintSheet() {
+      const paperKey  = document.getElementById("paperSize").value;
+      const spacingMm = parseFloat(document.getElementById("spacingRange").value);
+      const guides    = document.getElementById("printGuides").checked;
+      const tmp = document.createElement("canvas");
+      renderSheetToCanvas(tmp, paperKey, spacingMm, guides);
+      const a = document.createElement("a");
+      a.download = `passport-sheet-${paperKey}-${Date.now()}.jpg`;
+      a.href = tmp.toDataURL("image/jpeg", 0.97);
+      a.click();
+    }
+
+    // ─── Modal ───────────────────────────────────────────────────
+    let modalCanvas = null;
+
+    function openPrintSheet() {
+      document.getElementById("sheetModal").style.display = "flex";
+      renderModalSheet();
+    }
+
+    function closeModal() {
+      document.getElementById("sheetModal").style.display = "none";
+    }
+
+    function renderModalSheet() {
+      const paperKey = document.getElementById("modalPaperSize").value;
+      const paper    = PAPERS[paperKey];
+      const el       = document.getElementById("modalSheetEl");
+
+      if (!modalCanvas) {
+        modalCanvas = document.createElement("canvas");
+        el.appendChild(modalCanvas);
+      }
+
+      const maxH = window.innerHeight * 0.65;
+      const maxW = window.innerWidth  * 0.75;
+      const scaleH = maxH / (paper.h * PMM);
+      const scaleW = maxW / (paper.w * PMM);
+      const displayScale = Math.min(scaleH, scaleW, 1);
+
+      // Render full-res into modalCanvas
+      renderSheetToCanvas(modalCanvas, paperKey, 3, true);
+
+      // Display at screen scale
+      modalCanvas.style.width  = Math.round(modalCanvas.width  * displayScale) + "px";
+      modalCanvas.style.height = Math.round(modalCanvas.height * displayScale) + "px";
+    }
+
+    function exportModalSheet() {
+      const paperKey = document.getElementById("modalPaperSize").value;
+      const tmp = document.createElement("canvas");
+      renderSheetToCanvas(tmp, paperKey, 3, true);
+      const a = document.createElement("a");
+      a.download = `passport-sheet-${paperKey}-${Date.now()}.jpg`;
+      a.href = tmp.toDataURL("image/jpeg", 0.97);
+      a.click();
+    }
+
+    // ─── Export individual photo ──────────────────────────────────
+    function exportPhoto(fmt) {
+      if (!imgLoaded) return;
+      const a = document.createElement("a");
+      a.download = `passport-photo-${Date.now()}.${fmt}`;
+      a.href = canvas.toDataURL(fmt === "jpg" ? "image/jpeg" : "image/png", 0.97);
+      a.click();
+    }
+
+    // ─── UI updates ───────────────────────────────────────────────
+    function updateUI() {
+      document.getElementById("zoomVal").innerText =
+        Math.round(parseFloat(zoomRange.value) * 100) + "%";
+      document.getElementById("brightVal").innerText   = brightRange.value   + "%";
+      document.getElementById("contrastVal").innerText = contrastRange.value + "%";
+      document.getElementById("sharpVal").innerText    = sharpRange.value    + "%";
+    }
+
+    function resetAdj(type) {
+      if (type === "bright")   brightRange.value   = 100;
+      if (type === "contrast") contrastRange.value = 100;
+      updateUI(); draw();
+    }
+
+    // ─── Listeners ────────────────────────────────────────────────
+    function setupListeners() {
+      // File input
+      const loader = document.getElementById("imageLoader");
+      const dz     = document.getElementById("dropZone");
+
+      loader.onchange = e => loadImageFile(e.target.files[0]);
+
+      // Global drag
+      ["dragenter","dragover","dragleave","drop"].forEach(ev =>
+        window.addEventListener(ev, e => e.preventDefault())
+      );
+      dz.addEventListener("dragenter", () => dz.classList.add("border-indigo-400","bg-indigo-50"));
+      dz.addEventListener("dragleave", () => dz.classList.remove("border-indigo-400","bg-indigo-50"));
+      dz.addEventListener("drop", e => {
+        e.preventDefault();
+        dz.classList.remove("border-indigo-400","bg-indigo-50");
+        if (e.dataTransfer.files[0]) loadImageFile(e.dataTransfer.files[0]);
+      });
+      window.addEventListener("drop", e => {
+        e.preventDefault();
+        if (e.dataTransfer.files[0] && e.dataTransfer.files[0].type.startsWith("image/"))
+          loadImageFile(e.dataTransfer.files[0]);
+      });
+
+      // Format buttons
+      document.querySelectorAll(".format-btn").forEach(btn =>
+        btn.addEventListener("click", () => setFormat(btn.dataset.format))
+      );
+
+      // Sliders
+      zoomRange.oninput = () => {
+        imgState.scale = parseFloat(zoomRange.value);
+        updateUI(); draw();
+      };
+      [brightRange, contrastRange, sharpRange].forEach(s =>
+        s.oninput = () => { updateUI(); draw(); }
+      );
+      cuttingGuide.onchange = () => draw();
+
+      // Drag to pan
+      const getPos = e => {
+        const r = canvas.getBoundingClientRect();
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (cx - r.left) * (canvas.width  / r.width),
+          y: (cy - r.top)  * (canvas.height / r.height),
+        };
+      };
+      const startDrag = e => {
+        if (!imgLoaded) return;
+        imgState.isDragging = true;
+        const p = getPos(e);
+        imgState.lastX = p.x; imgState.lastY = p.y;
+      };
+      const moveDrag = e => {
+        if (!imgState.isDragging) return;
+        const p = getPos(e);
+        imgState.x += p.x - imgState.lastX;
+        imgState.y += p.y - imgState.lastY;
+        imgState.lastX = p.x; imgState.lastY = p.y;
+        draw();
+      };
+      canvas.addEventListener("mousedown", startDrag);
+      window.addEventListener("mousemove", moveDrag);
+      window.addEventListener("mouseup", () => imgState.isDragging = false);
+      canvas.addEventListener("touchstart", e => { e.preventDefault(); startDrag(e); });
+      canvas.addEventListener("touchmove",  e => { e.preventDefault(); moveDrag(e); });
+      canvas.addEventListener("touchend",   () => imgState.isDragging = false);
+
+      // Keyboard nudge
+      canvas.addEventListener("keydown", e => {
+        if (!imgLoaded) return;
+        const step = e.shiftKey ? 20 : 3;
+        if (e.key === "ArrowLeft")  { imgState.x -= step; e.preventDefault(); }
+        if (e.key === "ArrowRight") { imgState.x += step; e.preventDefault(); }
+        if (e.key === "ArrowUp")    { imgState.y -= step; e.preventDefault(); }
+        if (e.key === "ArrowDown")  { imgState.y += step; e.preventDefault(); }
+        draw();
+      });
+
+      // Modal close on backdrop
+      document.getElementById("sheetModal").addEventListener("click", e => {
+        if (e.target === document.getElementById("sheetModal")) closeModal();
+      });
+    }
+
+    function loadImageFile(file) {
+      if (!file || !file.type.startsWith("image/")) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        img = new Image();
+        img.onload = () => {
+          imgLoaded = true;
+          document.getElementById("uploadStatus").innerText = file.name;
+          resetFit();
+          draw();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    init();
+    </script>
+  </body>
+</html>
