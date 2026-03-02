@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF Kit — Free Browser-Based PDF Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <style>
       .drop-zone.drag-over { border-color: #3b82f6; background-color: #eff6ff; }
       input[type="range"] { accent-color: #2563eb; }
@@ -295,8 +295,8 @@
       return new Promise((resolve, reject) => {
         if (pdfjsLoaded) return resolve();
         const s = document.createElement("script");
-        s.src = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js";
-        s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"; pdfjsLoaded = true; resolve(); };
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+        s.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; pdfjsLoaded = true; resolve(); };
         s.onerror = reject;
         document.head.appendChild(s);
       });
