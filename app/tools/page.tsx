@@ -20,6 +20,10 @@ const TOOL_META: Record<string, { name: string; description: string }> = {
     name: "Passport Photo Studio",
     description: "Crop and print passport photos for US, UK, India, EU and more — ready to print at home",
   },
+  "resume-builder": {
+    name: "Resume Builder",
+    description: "Build a professional resume with live preview, multiple layouts & themes, and PDF export",
+  },
 };
 
 function getTools() {
@@ -32,10 +36,12 @@ function getTools() {
       .map((file) => {
         const toolId = file.replace(".html", "");
         const meta = TOOL_META[toolId];
-        const name = meta?.name ?? toolId
-          .split("-")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
+        const name =
+          meta?.name ??
+          toolId
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
         const description = meta?.description ?? "";
 
         return {
@@ -80,9 +86,7 @@ export default function ToolsPage() {
                 className="block p-6 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
               >
                 <h2 className="text-xl font-semibold mb-2">{tool.name}</h2>
-                {tool.description && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{tool.description}</p>
-                )}
+                {tool.description && <p className="text-sm text-gray-500 dark:text-gray-400">{tool.description}</p>}
               </Link>
             ))}
           </div>
