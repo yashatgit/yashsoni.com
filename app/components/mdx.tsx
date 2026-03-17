@@ -126,5 +126,11 @@ let components = {
 };
 
 export function CustomMDX(props) {
-  return <MDXRemote {...props} components={{ ...components, ...(props.components || {}) }} />;
+  return (
+    <MDXRemote
+      {...props}
+      options={{ ...props.options, blockJS: false }}
+      components={{ ...components, ...(props.components || {}) }}
+    />
+  );
 }
