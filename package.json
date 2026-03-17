@@ -5,7 +5,8 @@
     "build": "next build",
     "build-only": "next build",
     "start": "next start",
-    "setup": "node ./setup.mjs"
+    "setup": "node ./setup.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "2.12.0",
