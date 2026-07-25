@@ -66,6 +66,11 @@
         background-color: #eff6ff;
         color: #1d4ed8;
       }
+      .align-btn.active {
+        border-color: #bfdbfe;
+        background-color: #eff6ff;
+        color: #2563eb;
+      }
       /* Mode Switch Styling */
       .mode-tab.active {
         background: white;
@@ -327,6 +332,34 @@
                   class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
                 />
               </div>
+              <div>
+                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">
+                  <span>Canvas Orientation</span>
+                  <span id="orientationVal" class="text-slate-600">Portrait</span>
+                </div>
+                <div class="flex gap-1.5">
+                  <button
+                    onclick="setOrientation(false)"
+                    data-orientation="portrait"
+                    class="orientation-btn flex-1 py-1.5 bg-slate-50 border border-transparent rounded-lg text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider"
+                  >
+                    <svg class="orientation-svg w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <rect x="7" y="3" width="10" height="18" rx="1.5" stroke-width="2" />
+                    </svg>
+                    Portrait
+                  </button>
+                  <button
+                    onclick="setOrientation(true)"
+                    data-orientation="landscape"
+                    class="orientation-btn flex-1 py-1.5 bg-slate-50 border border-transparent rounded-lg text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider"
+                  >
+                    <svg class="orientation-svg w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <rect x="3" y="7" width="18" height="10" rx="1.5" stroke-width="2" />
+                    </svg>
+                    Landscape
+                  </button>
+                </div>
+              </div>
             </section>
 
             <!-- 4. Collapsible Filters -->
@@ -486,26 +519,81 @@
               <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-2"
                 >05. Handwritten Caption</label
               >
-              <textarea
-                id="captionInput"
-                rows="2"
-                placeholder="Write message..."
-                class="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all"
-              ></textarea>
-              <div class="mt-2">
-                <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
-                  <span>Text Size</span>
-                  <span id="textSizeVal" class="text-slate-600">40%</span>
+              <!-- Title -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Title</span>
+                  <div class="flex gap-0.5" id="titleAlignPicker">
+                    <button data-align="left" onclick="setAlign('title','left')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align left">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h14" /></svg>
+                    </button>
+                    <button data-align="center" onclick="setAlign('title','center')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align center">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M7 12h10M5 18h14" /></svg>
+                    </button>
+                    <button data-align="right" onclick="setAlign('title','right')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align right">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M10 12h10M6 18h14" /></svg>
+                    </button>
+                  </div>
+                </div>
+                <textarea
+                  id="titleInput"
+                  rows="2"
+                  placeholder="Write title..."
+                  class="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all"
+                ></textarea>
+                <div>
+                  <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                    <span>Title Size</span>
+                    <span id="titleSizeVal" class="text-slate-600">40%</span>
+                  </div>
+                  <input
+                    type="range"
+                    id="titleSizeRange"
+                    min="10"
+                    max="80"
+                    step="1"
+                    value="40"
+                    class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                  />
+                </div>
+              </div>
+              <!-- Date -->
+              <div class="space-y-2 mt-3 pt-3 border-t border-slate-50">
+                <div class="flex items-center justify-between">
+                  <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Date</span>
+                  <div class="flex gap-0.5" id="dateAlignPicker">
+                    <button data-align="left" onclick="setAlign('date','left')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align left">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h14" /></svg>
+                    </button>
+                    <button data-align="center" onclick="setAlign('date','center')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align center">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M7 12h10M5 18h14" /></svg>
+                    </button>
+                    <button data-align="right" onclick="setAlign('date','right')" class="align-btn p-1 rounded border border-transparent text-slate-400 hover:text-slate-600" title="Align right">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-width="2" d="M4 6h16M10 12h10M6 18h14" /></svg>
+                    </button>
+                  </div>
                 </div>
                 <input
-                  type="range"
-                  id="textSizeRange"
-                  min="10"
-                  max="80"
-                  step="1"
-                  value="40"
-                  class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                  type="text"
+                  id="dateInput"
+                  placeholder="e.g. July '26"
+                  class="w-full px-3 py-2 bg-slate-50 border border-slate-100 rounded-lg focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all"
                 />
+                <div>
+                  <div class="flex justify-between text-[9px] font-bold text-slate-400 mb-1 uppercase">
+                    <span>Date Size</span>
+                    <span id="dateSizeVal" class="text-slate-600">25%</span>
+                  </div>
+                  <input
+                    type="range"
+                    id="dateSizeRange"
+                    min="10"
+                    max="60"
+                    step="1"
+                    value="25"
+                    class="w-full h-1 bg-slate-100 rounded-lg appearance-none"
+                  />
+                </div>
               </div>
             </section>
 
@@ -808,8 +896,10 @@
       const contrastRange = document.getElementById("contrastRange");
       const sepiaRange = document.getElementById("sepiaRange");
 
-      const textSizeRange = document.getElementById("textSizeRange");
-      const captionInput = document.getElementById("captionInput");
+      const titleSizeRange = document.getElementById("titleSizeRange");
+      const titleInput = document.getElementById("titleInput");
+      const dateSizeRange = document.getElementById("dateSizeRange");
+      const dateInput = document.getElementById("dateInput");
       const formatButtons = document.querySelectorAll(".format-btn");
       const uploadStatus = document.getElementById("uploadStatus");
       const dragHint = document.getElementById("dragHint");
@@ -857,10 +947,21 @@
 
       let currentKey = "classic";
       let currentPreset = "none";
+      let titleAlign = "center";
+      let dateAlign = "center";
+      let landscape = false;
       let img = new Image();
       let imgLoaded = false;
       let imgState = { x: 0, y: 0, scale: 1, isDragging: false, lastX: 0, lastY: 0 };
       let batchImages = [];
+
+      // The active frame geometry. In landscape the frame's width/height are swapped so the
+      // canvas turns, while the photo and captions are still drawn upright inside it.
+      function getConfig() {
+        const f = FORMATS[currentKey];
+        if (!landscape) return f;
+        return { w: f.h, h: f.w, defaultBtm: f.defaultBtm, realW: f.realH, realH: f.realW };
+      }
 
       function switchMode(mode) {
         const editorWorkspace = document.getElementById("editorWorkspace");
@@ -889,11 +990,16 @@
           "polaroid_studio_settings",
           JSON.stringify({
             format: currentKey,
+            landscape: landscape,
             thickness: thickRange.value,
             bottom: btmRange.value,
             grain: grainRange.value,
-            textSize: textSizeRange.value,
-            caption: captionInput.value,
+            title: titleInput.value,
+            titleAlign: titleAlign,
+            titleSize: titleSizeRange.value,
+            date: dateInput.value,
+            dateAlign: dateAlign,
+            dateSize: dateSizeRange.value,
           })
         );
       }
@@ -905,11 +1011,17 @@
             const s = JSON.parse(saved);
             currentKey = s.format || "classic";
             if (!FORMATS[currentKey]) currentKey = "classic";
+            landscape = !!s.landscape;
             thickRange.value = s.thickness || 8;
             btmRange.value = s.bottom || FORMATS[currentKey].defaultBtm;
             grainRange.value = s.grain !== undefined ? s.grain : 15;
-            textSizeRange.value = s.textSize || 40;
-            captionInput.value = s.caption || "";
+            // Migration: older saves used caption/textSize for the single caption field
+            titleInput.value = s.title !== undefined ? s.title : s.caption || "";
+            titleAlign = s.titleAlign || "center";
+            titleSizeRange.value = s.titleSize || s.textSize || 40;
+            dateInput.value = s.date || "";
+            dateAlign = s.dateAlign || "center";
+            dateSizeRange.value = s.dateSize || 25;
             return true;
           } catch (e) {}
         }
@@ -943,9 +1055,23 @@
         draw();
       }
 
+      function setAlign(which, align) {
+        if (which === "title") titleAlign = align;
+        else dateAlign = align;
+        document.querySelectorAll(`#${which}AlignPicker .align-btn`).forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.align === align);
+        });
+        saveSettings();
+        draw();
+      }
+
       function init() {
         loadSettings();
+        setAlign("title", titleAlign);
+        setAlign("date", dateAlign);
+        syncOrientationButtons();
         setFormat(currentKey);
+        updateUIValues();
         setupListeners();
         document.fonts.load('10pt "Caveat"').then(() => draw());
       }
@@ -953,7 +1079,7 @@
       function setFormat(key) {
         if (!FORMATS[key]) return;
         currentKey = key;
-        const config = FORMATS[key];
+        const config = getConfig();
         canvas.width = config.w;
         canvas.height = config.h;
 
@@ -973,8 +1099,57 @@
         draw();
       }
 
+      // Zoom around the center of the photo window so the framed subject stays put
+      function zoomToCenter(newScale) {
+        const config = getConfig();
+        const pad = (parseInt(thickRange.value) / 100) * config.w;
+        const btm = (parseInt(btmRange.value) / 100) * config.h;
+        const cx = pad + (config.w - pad * 2) / 2;
+        const cy = pad + (config.h - pad - btm) / 2;
+        // Image-space point currently under the window center, kept fixed across the zoom
+        const imgPtX = (cx - imgState.x) / imgState.scale;
+        const imgPtY = (cy - imgState.y) / imgState.scale;
+        imgState.scale = newScale;
+        imgState.x = cx - imgPtX * newScale;
+        imgState.y = cy - imgPtY * newScale;
+      }
+
+      // Turn the frame itself (portrait <-> landscape). Only the canvas shape changes — the
+      // photo and the captions are still drawn upright, so nothing ends up sideways.
+      function setOrientation(next) {
+        if (landscape === next) return;
+        landscape = next;
+        const config = getConfig();
+        canvas.width = config.w;
+        canvas.height = config.h;
+        syncOrientationButtons();
+        if (imgLoaded) resetImageFit();
+        updateUIValues();
+        saveSettings();
+        draw();
+      }
+
+      function syncOrientationButtons() {
+        document.querySelectorAll(".orientation-btn").forEach((btn) => {
+          const isActive = (btn.dataset.orientation === "landscape") === landscape;
+          btn.classList.toggle("border-blue-200", isActive);
+          btn.classList.toggle("bg-blue-50", isActive);
+          btn.classList.toggle("text-blue-700", isActive);
+          btn.classList.toggle("border-transparent", !isActive);
+          btn.classList.toggle("bg-slate-50", !isActive);
+          btn.classList.toggle("text-slate-600", !isActive);
+          btn.querySelector(".orientation-svg").classList.toggle("text-blue-500", isActive);
+          btn.querySelector(".orientation-svg").classList.toggle("text-slate-400", !isActive);
+        });
+      }
+
+      function panBy(dx, dy) {
+        imgState.x += dx;
+        imgState.y += dy;
+      }
+
       function resetImageFit() {
-        const config = FORMATS[currentKey];
+        const config = getConfig();
         const pad = (parseInt(thickRange.value) / 100) * config.w;
         const btm = (parseInt(btmRange.value) / 100) * config.h;
         const photoW = config.w - pad * 2;
@@ -994,27 +1169,35 @@
         document.getElementById("thickVal").innerText = thickRange.value + "%";
         document.getElementById("btmVal").innerText = btmRange.value + "%";
         document.getElementById("grainVal").innerText = grainRange.value + "%";
+        document.getElementById("orientationVal").innerText = landscape ? "Landscape" : "Portrait";
         document.getElementById("brightVal").innerText = brightRange.value + "%";
         document.getElementById("contrastVal").innerText = contrastRange.value + "%";
         document.getElementById("sepiaVal").innerText = sepiaRange.value + "%";
-        document.getElementById("textSizeVal").innerText = textSizeRange.value + "%";
+        document.getElementById("titleSizeVal").innerText = titleSizeRange.value + "%";
+        document.getElementById("dateSizeVal").innerText = dateSizeRange.value + "%";
         if (imgLoaded) infoDimensions.innerText = `${img.naturalWidth} x ${img.naturalHeight} px`;
       }
 
       function draw() {
-        const config = FORMATS[currentKey];
+        const config = getConfig();
         const pad = (parseInt(thickRange.value) / 100) * config.w;
         const btm = (parseInt(btmRange.value) / 100) * config.h;
         const grain = parseInt(grainRange.value);
 
+        // The canvas takes the frame's orientation; everything inside is drawn upright.
+        if (canvas.width !== config.w) canvas.width = config.w;
+        if (canvas.height !== config.h) canvas.height = config.h;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, config.w, config.h);
 
         if (grain > 0) {
           ctx.save();
-          for (let i = 0; i < canvas.width * canvas.height * (grain / 2000); i++) {
-            const gx = Math.random() * canvas.width;
-            const gy = Math.random() * canvas.height;
+          for (let i = 0; i < config.w * config.h * (grain / 2000); i++) {
+            const gx = Math.random() * config.w;
+            const gy = Math.random() * config.h;
             const gs = Math.random() * (PMM / 4);
             ctx.fillStyle = Math.random() > 0.5 ? `rgba(0,0,0,${grain / 500})` : `rgba(255,255,255,${grain / 250})`;
             ctx.fillRect(gx, gy, gs, gs);
@@ -1048,23 +1231,40 @@
         ctx.lineWidth = 4;
         ctx.strokeRect(pad, pad, photoW, photoH);
 
-        const text = captionInput.value.trim();
-        if (text) {
+        const title = titleInput.value.trim();
+        const dateText = dateInput.value.trim();
+        if (title || dateText) {
           ctx.fillStyle = "#2d3748";
-          const fontSize = btm * (parseInt(textSizeRange.value) / 100);
-          ctx.font = `${fontSize}px "Caveat"`;
-          ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          const lines = text.split("\n");
-          const lh = fontSize * 1.1;
-          const sy = config.h - btm / 2 - (lines.length * lh) / 2 + lh / 2;
-          lines.forEach((l, i) => ctx.fillText(l, config.w / 2, sy + i * lh));
+          const areaTop = config.h - btm;
+          // Text aligns with the photo edges (inset by the border width)
+          const xFor = (align) => (align === "left" ? pad : align === "right" ? config.w - pad : config.w / 2);
+          const drawCaption = (text, align, sizePct, zoneTop, zoneH) => {
+            const fontSize = btm * (sizePct / 100);
+            ctx.font = `${fontSize}px "Caveat"`;
+            ctx.textAlign = align;
+            const lines = text.split("\n");
+            const lh = fontSize * 1.1;
+            const sy = zoneTop + zoneH / 2 - (lines.length * lh) / 2 + lh / 2;
+            lines.forEach((l, i) => ctx.fillText(l, xFor(align), sy + i * lh));
+          };
+          if (title && dateText) {
+            // Title takes the upper zone, date the lower zone
+            drawCaption(title, titleAlign, parseInt(titleSizeRange.value), areaTop, btm * 0.62);
+            drawCaption(dateText, dateAlign, parseInt(dateSizeRange.value), areaTop + btm * 0.62, btm * 0.38);
+          } else {
+            // Only one present: it takes the entire bottom space
+            const text = title || dateText;
+            const align = title ? titleAlign : dateAlign;
+            const size = title ? parseInt(titleSizeRange.value) : parseInt(dateSizeRange.value);
+            drawCaption(text, align, size, areaTop, btm);
+          }
         }
 
         if (cuttingGuideToggle.checked) {
           ctx.strokeStyle = "#e5e7eb";
           ctx.lineWidth = 1;
-          ctx.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
+          ctx.strokeRect(0.5, 0.5, config.w - 1, config.h - 1);
         }
       }
 
@@ -1090,6 +1290,8 @@
           img = new Image();
           img.onload = () => {
             imgLoaded = true;
+            titleInput.value = "";
+            saveSettings();
             if (uploadStatus) uploadStatus.innerText = file.name;
             if (dragHint) dragHint.classList.remove("opacity-0");
             resetImageFit();
@@ -1119,7 +1321,7 @@
         });
 
         zoomRange.oninput = () => {
-          imgState.scale = parseFloat(zoomRange.value);
+          zoomToCenter(parseFloat(zoomRange.value));
           updateUIValues();
           draw();
         };
@@ -1153,12 +1355,21 @@
           saveSettings();
           draw();
         };
-        textSizeRange.oninput = () => {
+        titleSizeRange.oninput = () => {
           updateUIValues();
           saveSettings();
           draw();
         };
-        captionInput.oninput = () => {
+        dateSizeRange.oninput = () => {
+          updateUIValues();
+          saveSettings();
+          draw();
+        };
+        titleInput.oninput = () => {
+          saveSettings();
+          draw();
+        };
+        dateInput.oninput = () => {
           saveSettings();
           draw();
         };
@@ -1184,8 +1395,7 @@
         const move = (e) => {
           if (!imgState.isDragging) return;
           const pos = getPos(e);
-          imgState.x += pos.x - imgState.lastX;
-          imgState.y += pos.y - imgState.lastY;
+          panBy(pos.x - imgState.lastX, pos.y - imgState.lastY);
           imgState.lastX = pos.x;
           imgState.lastY = pos.y;
           draw();
@@ -1204,21 +1414,25 @@
         canvas.addEventListener("touchend", () => (imgState.isDragging = false));
 
         window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            if (sheetModal.style.display === "flex") closeSheetPreview();
+            return;
+          }
           if (!imgLoaded || document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA")
             return;
           const step = e.shiftKey ? 40 : 5;
           switch (e.key) {
             case "ArrowLeft":
-              imgState.x -= step;
+              panBy(-step, 0);
               break;
             case "ArrowRight":
-              imgState.x += step;
+              panBy(step, 0);
               break;
             case "ArrowUp":
-              imgState.y -= step;
+              panBy(0, -step);
               break;
             case "ArrowDown":
-              imgState.y += step;
+              panBy(0, step);
               break;
             default:
               return;
@@ -1290,6 +1504,21 @@
         sheetModal.style.display = "flex";
         updateSheetSize();
         if (sheetPreviewContainer.children.length === 0) addMoreToSheet();
+        else refreshLastSheetItem();
+      }
+      // Keep the most recent sheet item in sync with the editor (format/design may have changed)
+      function refreshLastSheetItem() {
+        const last = sheetPreviewContainer.lastElementChild;
+        const sheet = SHEETS[sheetSizeSelector.value];
+        const rw = effectiveRealW();
+        last.src = canvas.toDataURL();
+        last.dataset.formatKey = currentKey;
+        last.dataset.realW = rw;
+        last.style.width = (rw / sheet.w) * 100 + "%";
+      }
+      // Real-world print width of the current polaroid, accounting for frame orientation
+      function effectiveRealW() {
+        return getConfig().realW;
       }
       function closeSheetPreview() {
         sheetModal.style.display = "none";
@@ -1309,22 +1538,24 @@
         }
         Array.from(sheetPreviewContainer.children).forEach((el) => {
           const config = FORMATS[el.dataset.formatKey];
-          if (config) el.style.width = (config.realW / sheet.w) * 100 + "%";
+          const rw = el.dataset.realW ? parseFloat(el.dataset.realW) : config && config.realW;
+          if (rw) el.style.width = (rw / sheet.w) * 100 + "%";
         });
       }
       function addMoreToSheet() {
-        const config = FORMATS[currentKey];
         const sheet = SHEETS[sheetSizeSelector.value];
+        const rw = effectiveRealW();
         const imgEl = new Image();
         imgEl.src = canvas.toDataURL();
         imgEl.className = "shadow border border-slate-100";
         imgEl.dataset.formatKey = currentKey;
-        imgEl.style.width = (config.realW / sheet.w) * 100 + "%";
+        imgEl.dataset.realW = rw;
+        imgEl.style.width = (rw / sheet.w) * 100 + "%";
         sheetPreviewContainer.appendChild(imgEl);
       }
 
       function exportFn(fmt) {
-        if (!imgLoaded && !captionInput.value) return;
+        if (!imgLoaded && !titleInput.value && !dateInput.value) return;
         const link = document.createElement("a");
         link.download = `polaroid-${Date.now()}.${fmt}`;
         link.href = canvas.toDataURL(fmt === "jpg" ? "image/jpeg" : "image/png", 0.95);
