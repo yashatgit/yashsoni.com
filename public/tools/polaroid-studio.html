@@ -736,6 +736,16 @@
                   </svg>
                   <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest">Add Multiple Files</span>
                 </label>
+
+                <div class="flex justify-between items-center mt-4 mb-2">
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Added Items</span>
+                  <span id="batchCount" class="text-[10px] font-black text-blue-600">0</span>
+                </div>
+                <ul id="batchItemList" class="space-y-1 max-h-56 overflow-y-auto pr-1">
+                  <li class="text-[9px] text-slate-400 italic text-center py-3">
+                    Nothing added yet
+                  </li>
+                </ul>
               </section>
 
               <section>
@@ -941,6 +951,8 @@
       const cuttingGuideToggle = document.getElementById("cuttingGuideToggle");
       const batchSpacingRange = document.getElementById("batchSpacingRange");
       const batchSpacingVal = document.getElementById("batchSpacingVal");
+      const batchItemList = document.getElementById("batchItemList");
+      const batchCount = document.getElementById("batchCount");
       const batchGuideToggle = document.getElementById("batchGuideToggle");
       const batchGuideOptions = document.getElementById("batchGuideOptions");
       const batchGuideStyle = document.getElementById("batchGuideStyle");
@@ -1329,7 +1341,7 @@
           reader.onload = (ev) => {
             const bImg = new Image();
             bImg.onload = () => {
-              batchImages.push({ img: bImg, w: bImg.width, h: bImg.height });
+              batchImages.push({ img: bImg, w: bImg.width, h: bImg.height, name: file.name, fits: true });
               renderBatchSheet();
             };
             bImg.src = ev.target.result;
@@ -1572,13 +1584,65 @@
           }
 
           // Don't draw if it goes off the bottom of the sheet
-          if (curY + item.h <= batchCanvas.height) {
+          item.fits = curY + item.h <= batchCanvas.height;
+          if (item.fits) {
             batchCtx.drawImage(item.img, curX, curY);
             drawCutGuide(curX, curY, item.w, item.h);
             maxRowH = Math.max(maxRowH, item.h);
             curX += item.w + spacing;
           }
         });
+
+        renderBatchList();
+      }
+
+      // Sidebar list of everything added, so items can be identified and removed individually
+      function renderBatchList() {
+        batchCount.innerText = batchImages.length;
+        if (batchImages.length === 0) {
+          batchItemList.innerHTML =
+            '<li class="text-[9px] text-slate-400 italic text-center py-3">Nothing added yet</li>';
+          return;
+        }
+        batchItemList.innerHTML = "";
+        batchImages.forEach((item, i) => {
+          const li = document.createElement("li");
+          li.className =
+            "flex items-center gap-2 p-1.5 bg-slate-50 rounded-lg border " +
+            (item.fits ? "border-slate-100" : "border-red-200 bg-red-50");
+
+          const thumb = document.createElement("img");
+          thumb.src = item.img.src;
+          thumb.className = "w-7 h-7 object-contain bg-white rounded border border-slate-200 shrink-0";
+          thumb.alt = "";
+
+          const meta = document.createElement("div");
+          meta.className = "flex-1 min-w-0";
+          const name = document.createElement("span");
+          name.className = "block text-[10px] font-bold text-slate-700 truncate leading-tight";
+          name.innerText = item.name || `Item ${i + 1}`;
+          name.title = item.name || "";
+          const size = document.createElement("span");
+          size.className = "block text-[9px] font-medium leading-tight " + (item.fits ? "text-slate-400" : "text-red-500");
+          size.innerText = item.fits
+            ? `${(item.w / PMM).toFixed(0)} x ${(item.h / PMM).toFixed(0)}mm`
+            : "Doesn't fit on this sheet";
+          meta.append(name, size);
+
+          const del = document.createElement("button");
+          del.className = "text-slate-300 hover:text-red-500 transition-all px-1 text-sm font-bold shrink-0";
+          del.innerHTML = "&times;";
+          del.title = "Remove";
+          del.onclick = () => removeBatchItem(i);
+
+          li.append(thumb, meta, del);
+          batchItemList.appendChild(li);
+        });
+      }
+
+      function removeBatchItem(index) {
+        batchImages.splice(index, 1);
+        renderBatchSheet();
       }
 
       function clearBatchSheet() {
