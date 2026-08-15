@@ -739,7 +739,16 @@
 
                 <div class="flex justify-between items-center mt-4 mb-2">
                   <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">Added Items</span>
-                  <span id="batchCount" class="text-[10px] font-black text-blue-600">0</span>
+                  <div class="flex items-center gap-2">
+                    <button
+                      onclick="rotateAllBatchItems()"
+                      class="text-[9px] font-black uppercase tracking-wider text-slate-400 hover:text-blue-600 transition-all"
+                      title="Rotate every item 90°"
+                    >
+                      Rotate All
+                    </button>
+                    <span id="batchCount" class="text-[10px] font-black text-blue-600">0</span>
+                  </div>
                 </div>
                 <ul id="batchItemList" class="space-y-1 max-h-56 overflow-y-auto pr-1">
                   <li class="text-[9px] text-slate-400 italic text-center py-3">
@@ -1341,7 +1350,7 @@
           reader.onload = (ev) => {
             const bImg = new Image();
             bImg.onload = () => {
-              batchImages.push({ img: bImg, w: bImg.width, h: bImg.height, name: file.name, fits: true });
+              batchImages.push({ img: bImg, w: bImg.width, h: bImg.height, name: file.name, fits: true, rot: 0 });
               renderBatchSheet();
             };
             bImg.src = ev.target.result;
@@ -1562,6 +1571,23 @@
         renderBatchSheet();
       }
 
+      // Placed dimensions: a rotated item swaps its width and height on the sheet
+      const placedW = (item) => (item.rot ? item.h : item.w);
+      const placedH = (item) => (item.rot ? item.w : item.h);
+
+      // Draws the item into a w x h box at (x, y), turning it 90° clockwise when rotated
+      function drawBatchItem(item, x, y) {
+        if (!item.rot) {
+          batchCtx.drawImage(item.img, x, y);
+          return;
+        }
+        batchCtx.save();
+        batchCtx.translate(x + item.h, y);
+        batchCtx.rotate(Math.PI / 2);
+        batchCtx.drawImage(item.img, 0, 0);
+        batchCtx.restore();
+      }
+
       function renderBatchSheet() {
         const sheet = SHEETS[batchSheetSelector.value];
         const spacing = parseInt(batchSpacingRange.value) * PMM;
@@ -1576,24 +1602,38 @@
         let maxRowH = 0;
 
         batchImages.forEach((item) => {
+          const w = placedW(item);
+          const h = placedH(item);
+
           // Check if item fits in current row
-          if (curX + item.w + spacing > batchCanvas.width) {
+          if (curX + w + spacing > batchCanvas.width) {
             curX = spacing;
             curY += maxRowH + spacing;
             maxRowH = 0;
           }
 
-          // Don't draw if it goes off the bottom of the sheet
-          item.fits = curY + item.h <= batchCanvas.height;
+          // Don't draw if it runs off the side or the bottom of the sheet
+          item.fits = curX + w <= batchCanvas.width && curY + h <= batchCanvas.height;
           if (item.fits) {
-            batchCtx.drawImage(item.img, curX, curY);
-            drawCutGuide(curX, curY, item.w, item.h);
-            maxRowH = Math.max(maxRowH, item.h);
-            curX += item.w + spacing;
+            drawBatchItem(item, curX, curY);
+            drawCutGuide(curX, curY, w, h);
+            maxRowH = Math.max(maxRowH, h);
+            curX += w + spacing;
           }
         });
 
         renderBatchList();
+      }
+
+      function rotateBatchItem(index) {
+        const item = batchImages[index];
+        item.rot = item.rot ? 0 : 90;
+        renderBatchSheet();
+      }
+
+      function rotateAllBatchItems() {
+        batchImages.forEach((item) => (item.rot = item.rot ? 0 : 90));
+        renderBatchSheet();
       }
 
       // Sidebar list of everything added, so items can be identified and removed individually
@@ -1614,6 +1654,7 @@
           const thumb = document.createElement("img");
           thumb.src = item.img.src;
           thumb.className = "w-7 h-7 object-contain bg-white rounded border border-slate-200 shrink-0";
+          if (item.rot) thumb.style.transform = "rotate(90deg)";
           thumb.alt = "";
 
           const meta = document.createElement("div");
@@ -1625,9 +1666,17 @@
           const size = document.createElement("span");
           size.className = "block text-[9px] font-medium leading-tight " + (item.fits ? "text-slate-400" : "text-red-500");
           size.innerText = item.fits
-            ? `${(item.w / PMM).toFixed(0)} x ${(item.h / PMM).toFixed(0)}mm`
-            : "Doesn't fit on this sheet";
+            ? `${(placedW(item) / PMM).toFixed(0)} x ${(placedH(item) / PMM).toFixed(0)}mm${item.rot ? " • rotated" : ""}`
+            : "Doesn't fit — try rotating";
           meta.append(name, size);
+
+          const rotate = document.createElement("button");
+          rotate.className =
+            "transition-all px-1 text-sm shrink-0 " +
+            (item.rot ? "text-blue-600" : "text-slate-300 hover:text-blue-600");
+          rotate.innerHTML = "&#8635;";
+          rotate.title = item.rot ? "Rotate back to original" : "Rotate 90°";
+          rotate.onclick = () => rotateBatchItem(i);
 
           const del = document.createElement("button");
           del.className = "text-slate-300 hover:text-red-500 transition-all px-1 text-sm font-bold shrink-0";
@@ -1635,7 +1684,7 @@
           del.title = "Remove";
           del.onclick = () => removeBatchItem(i);
 
-          li.append(thumb, meta, del);
+          li.append(thumb, meta, rotate, del);
           batchItemList.appendChild(li);
         });
       }
