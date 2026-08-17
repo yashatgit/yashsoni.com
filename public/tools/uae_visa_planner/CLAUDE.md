@@ -50,7 +50,8 @@ dates back in Jodhpur, one day later, because the flights land overnight.
 
 - `index.html` — the whole tool. No build step, no dependencies. Fonts load from
   Google Fonts; everything else is inline. Serves at `/tools/uae_visa_planner/`.
-- `UAE_Visa_Fine_Family_Note.md` — the plain-English writeup shared with family.
+- `UAE_Visa_Fine_Family_Note.md` — plain-English writeup shared with family.
+  Kept local only (contains personal identifiers); do not commit it.
 
 ## Architecture
 
@@ -101,8 +102,9 @@ thing that makes the rolling window intuitive.
 - The ICP file validity page shows 39 remaining days where this tool computes 24.
   The gap is exactly the 15 fined days, suggesting they were credited back on
   payment. Unconfirmed. The tool deliberately shows the lower figure.
-- The father's permit (file 101/2024/112/0007560) is linked to passport N1029909
-  but he now travels on C5514966. Needs ICP "Amendment of Visa Data".
+- The father's permit is still linked to his old passport number; he travels on
+  a newer one. Needs ICP "Amendment of Visa Data". (Numbers are in the local
+  family note.)
 - AED 265 per person of the fine is unexplained. AED 750 was the day-rate portion;
   ~AED 55 was an agency service fee per the VAT line. The rest is unaccounted for.
 
