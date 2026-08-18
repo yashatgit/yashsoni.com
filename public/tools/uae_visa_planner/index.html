@@ -120,7 +120,9 @@ button.ghost:hover{background:var(--stamp-soft)}
   }
 }
 .win-meter{margin-top:.65rem}
-.win-track{display:flex;height:20px;border:1px solid var(--ink);border-radius:4px;background:var(--paper-raised);overflow:hidden}
+.win-track{position:relative;display:flex;height:20px;border:1px solid var(--ink);border-radius:4px;background:var(--paper-raised);overflow:hidden}
+.win-limit{position:absolute;top:0;bottom:0;width:2px;background:var(--bad);z-index:2}
+.win-overzone{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(-45deg, rgba(168,50,42,.6) 0 4px, rgba(241,242,237,.55) 4px 8px);pointer-events:none;z-index:1}
 .win-seg{height:100%;flex:none}
 .win-seg + .win-seg{border-left:1px solid var(--paper-raised)}
 .win-legend{margin-top:.45rem;display:flex;flex-wrap:wrap;gap:.25rem 1rem;font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
@@ -147,6 +149,9 @@ button.ghost:hover{background:var(--stamp-soft)}
 .tl-mlabel{position:absolute;bottom:6px;font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);white-space:nowrap;pointer-events:none}
 .tl-bar{position:absolute;top:40px;height:26px;background:var(--stamp);border-radius:4px}
 .tl-bar.planned{background:var(--stamp-soft);border:2px dashed var(--stamp)}
+.tl-over{position:absolute;top:40px;height:26px;background:var(--bad);border-radius:3px}
+.breach-note{margin-top:.6rem;font-size:.88rem;font-weight:600;color:var(--bad);line-height:1.6}
+.breach-note .tl-today-btn{font-weight:600}
 .tl-today{position:absolute;top:6px;bottom:28px;width:2px;background:var(--ink);pointer-events:none}
 .tl-today-label{position:absolute;top:9px;font-family:var(--mono);font-size:.62rem;color:var(--ink);pointer-events:none}
 .tl-dim{position:absolute;top:6px;bottom:28px;background:rgba(241,242,237,.68);pointer-events:none}
@@ -190,6 +195,11 @@ button.ghost:hover{background:var(--stamp-soft)}
 .plan-detail strong{color:var(--ink);font-family:var(--mono);font-size:.86rem}
 .plan-fix{margin-top:.55rem;font-size:.9rem;color:var(--bad);font-weight:600}
 .plan-card .icon-btn{position:absolute;top:.45rem;right:.45rem}
+.shift{display:flex;align-items:center;gap:.4rem;margin-top:.55rem;flex-wrap:wrap}
+.shift button{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--ink);background:var(--paper-raised);border:1px solid var(--ink);border-radius:6px;min-width:44px;min-height:44px;cursor:pointer}
+.shift button:hover{background:var(--stamp-soft);border-color:var(--stamp);color:var(--stamp)}
+.shift .shift-label{font-size:.78rem;color:var(--ink-soft);margin:0 .3rem}
+.shift-err{margin-top:.35rem;font-size:.85rem;color:var(--bad);font-weight:600;display:none}
 .plan-empty{margin-top:1.1rem;color:var(--ink-soft);font-size:.95rem}
 
 /* ---------- footer ---------- */
@@ -530,26 +540,52 @@ function renderTimeline(){
   var minIn = TODAY, maxOut = TODAY;
   bars.forEach(function(t){ if (t.in < minIn) minIn = t.in; if (t.out > maxOut) maxOut = t.out; });
 
-  var px = TL.px;
   var start = monthStartUTC(minIn - 15*DAY);
   var endRange = addMonths(monthStartUTC(maxOut + 400*DAY), 1) - DAY;
   if (TL.end == null || TL.end < start || TL.end > endRange) TL.end = TODAY;
   var totalDays = Math.round((endRange - start)/DAY) + 1;
+  /* fit the whole span in view when possible; the floor keeps short trips legible */
+  var hostW = host.clientWidth || 640;
+  var px = Math.min(1.6, Math.max(0.55, (hostW - 2) / totalDays));
   var width = totalDays * px;
   function X(ms){ return (ms - start)/DAY * px; }
 
+  /* days where being in the country exceeded the limit — the story of the fine */
+  var allTrips = past.concat(planned);
+  var breachRuns = [], runStart = null;
+  for (var bd = start; bd <= endRange; bd += DAY){
+    var present = false;
+    for (var bi = 0; bi < bars.length; bi++){ if (bd >= bars[bi].in && bd <= bars[bi].out){ present = true; break; } }
+    var isOver = present && usedOn(bd, allTrips, TODAY) > LIMIT;
+    if (isOver && runStart == null) runStart = bd;
+    if (!isOver && runStart != null){ breachRuns.push({ s: runStart, e: bd - DAY }); runStart = null; }
+  }
+  if (runStart != null) breachRuns.push({ s: runStart, e: endRange });
+
+  var breachHtml = '';
+  if (breachRuns.length){
+    breachHtml = '<p class="breach-note">' + breachRuns.map(function(r){
+      var n = daysInclusive(r.s, r.e);
+      return 'Over the limit ' + fdate(r.s) + ' – ' + fdate(r.e) + ' · ' + n + ' days · ≈ AED ' + (n * FINE_PER_DAY).toLocaleString('en') + ' per person — <button type="button" class="tl-today-btn" data-jump="' + r.e + '">see how</button>';
+    }).join('<br>') + '</p>';
+  }
+
   var html = '<p class="tl-readout" id="tl-readout" aria-live="polite"></p>' +
     '<div class="win-meter"><div class="win-track" id="win-track"></div><div class="win-legend" id="win-legend"></div></div>' +
+    breachHtml +
     '<div class="tl-scroll" id="tl-scroll">' +
     '<div class="tl-canvas" id="tl-canvas" style="width:' + width + 'px" tabindex="0" role="slider" ' +
       'aria-label="End date of the 365-day window" aria-valuemin="0" aria-valuemax="' + (totalDays - 1) + '">';
 
+  /* label cadence anchored to January so year labels never collide with neighbours */
+  var labelEvery = px * 30.4 >= 34 ? 1 : (px * 30.4 >= 18 ? 2 : 3);
   for (var m = start; m <= endRange; m = addMonths(m, 1)){
     var d = new Date(m);
+    html += '<span class="tl-grid" style="left:' + X(m) + 'px"></span>';
+    if (d.getUTCMonth() % labelEvery !== 0) continue;
     var lab = fmtMonth.format(m);
     if (d.getUTCMonth() === 0) lab += ' ’' + String(d.getUTCFullYear()).slice(2);
-    html += '<span class="tl-grid" style="left:' + X(m) + 'px"></span>' +
-            '<span class="tl-mlabel" style="left:' + (X(m) + 3) + 'px">' + lab + '</span>';
+    html += '<span class="tl-mlabel" style="left:' + (X(m) + 3) + 'px">' + lab + '</span>';
   }
   bars.forEach(function(t){
     var w = Math.max(2, (t.out - t.in)/DAY * px + px);
@@ -559,12 +595,16 @@ function renderTimeline(){
       : 'background:' + t.color;
     html += '<span class="tl-bar' + (t.planned ? ' planned' : '') + '" style="left:' + X(t.in) + 'px;width:' + w + 'px;' + paint + '" title="' + title + '"></span>';
   });
+  breachRuns.forEach(function(r){
+    var w = Math.max(2, (r.e - r.s)/DAY * px + px);
+    html += '<span class="tl-over" style="left:' + X(r.s) + 'px;width:' + w + 'px" title="Over the limit: ' + fdate(r.s) + ' – ' + fdate(r.e) + '"></span>';
+  });
   html += '<span class="tl-today" style="left:' + X(TODAY) + 'px"></span>' +
           '<span class="tl-today-label" style="left:' + (X(TODAY) + 5) + 'px">today</span>' +
           '<span class="tl-dim" id="tl-dim-l"></span><span class="tl-dim" id="tl-dim-r"></span>' +
           '<span class="tl-band" id="tl-band" aria-hidden="true"></span>' +
           '</div></div>' +
-          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window. Solid bars are recorded trips, dashed are planned; anything outside the band no longer counts.</p>';
+          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window. Solid bars are recorded trips, dashed are planned, red marks days over the limit; anything outside the band no longer counts.</p>';
   host.innerHTML = html;
   var winTrack = document.getElementById('win-track');
   var winLegend = document.getElementById('win-legend');
@@ -624,22 +664,34 @@ function updateBand(){
   tlRefs.dimR.style.left = (left + w) + 'px';
   tlRefs.dimR.style.width = Math.max(0, tlRefs.width - (left + w)) + 'px';
 
-  /* stacked composition: what each trip contributes to the window ending at TL.end */
+  /* stacked composition: what each trip contributes to the window ending at TL.end.
+     When over the limit the scale stretches so the whole stack stays visible,
+     with a marker at 90 and a hatch over the excess. */
   var ws = TL.end - 364*DAY;
-  var segs = '', legend = '', used = 0;
+  var parts = [], used = 0;
   tlRefs.bars.forEach(function(t){
     var c = overlapDays(t.in, t.out, ws, TL.end);
     if (!c) return;
     used += c;
-    var wPct = c / LIMIT * 100;
+    parts.push({ t: t, c: c });
+  });
+  var scaleMax = Math.max(used, LIMIT);
+  var segs = '', legend = '';
+  parts.forEach(function(p){
+    var t = p.t;
     var paint = t.planned
       ? 'background:repeating-linear-gradient(45deg,' + t.color + ' 0 3px, var(--paper-raised) 3px 6px)'
       : 'background:' + t.color;
-    segs += '<span class="win-seg" style="width:' + wPct + '%;' + paint + '" title="' + t.name + ' (' + fdate(t.in) + ') — ' + c + ' days in this window"></span>';
+    segs += '<span class="win-seg" style="width:' + (p.c / scaleMax * 100) + '%;' + paint + '" title="' + t.name + ' (' + fdate(t.in) + ') — ' + p.c + ' days in this window"></span>';
     legend += '<span class="item"><span class="dot" style="' + (t.planned
         ? 'background:var(--paper-raised);box-shadow:inset 0 0 0 2px ' + t.color
-        : 'background:' + t.color) + '"></span>' + t.name + ' — ' + c + 'd</span>';
+        : 'background:' + t.color) + '"></span>' + t.name + ' — ' + p.c + 'd</span>';
   });
+  if (used > LIMIT){
+    var lp = LIMIT / scaleMax * 100;
+    segs += '<span class="win-limit" style="left:' + lp + '%"></span>' +
+            '<span class="win-overzone" style="left:' + lp + '%;width:' + (100 - lp) + '%"></span>';
+  }
   tlRefs.winTrack.innerHTML = segs;
   tlRefs.winLegend.innerHTML = legend || '<span class="item">no trips inside this window</span>';
 
@@ -685,10 +737,37 @@ function renderPlanned(){
       if (altStart) parts.push('or keep ' + r.days + ' days by arriving ' + fdate(altStart) + ' at the earliest');
       if (parts.length) fix = '<p class="plan-fix">To stay clear: ' + parts.join(', ') + '.</p>';
     }
-    return '<div class="plan-card">' + head + detail + fix +
+    var shift =
+      '<div class="shift" role="group" aria-label="Shift ' + planName(i) + ' dates">' +
+        '<button type="button" data-shift="-7" aria-label="Shift 7 days earlier">−7</button>' +
+        '<button type="button" data-shift="-1" aria-label="Shift 1 day earlier">−1</button>' +
+        '<span class="shift-label">shift days</span>' +
+        '<button type="button" data-shift="1" aria-label="Shift 1 day later">+1</button>' +
+        '<button type="button" data-shift="7" aria-label="Shift 7 days later">+7</button>' +
+      '</div><p class="shift-err" role="alert"></p>';
+    return '<div class="plan-card" data-idx="' + i + '">' + head + detail + fix + shift +
       '<button type="button" class="icon-btn" data-pdel="' + i + '" aria-label="Remove planned trip ' + fdate(p.in) + '">' +
       '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13"/></svg></button></div>';
   }).join('');
+
+  box.querySelectorAll('[data-shift]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.plan-card');
+      var p = sortedPlanned()[+card.getAttribute('data-idx')];
+      var delta = +btn.getAttribute('data-shift') * DAY;
+      var s = p.in + delta, e = p.out + delta;
+      var others = state.planned.filter(function(t){ return !(t.in === p.in && t.out === p.out); });
+      var clash = overlapsExisting(s, e, others) || overlapsExisting(s, e, state.trips);
+      if (clash){
+        var errEl = card.querySelector('.shift-err');
+        errEl.textContent = 'Can’t shift — would overlap ' + fdate(clash.in) + ' → ' + (clash.out == null ? 'today' : fdate(clash.out)) + '.';
+        errEl.style.display = 'block';
+        return;
+      }
+      state.planned = others.concat([{ in: s, out: e }]);
+      save(); renderAll();
+    });
+  });
 
   box.querySelectorAll('[data-pdel]').forEach(function(btn){
     btn.addEventListener('click', function(){
