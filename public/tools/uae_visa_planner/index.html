@@ -142,7 +142,17 @@ button.ghost:hover{background:var(--stamp-soft)}
 
 /* ---------- timeline ---------- */
 .timeline{margin-top:1.4rem}
-.tl-readout{font-size:.95rem}
+.tl-readout{font-size:.95rem;display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .9rem}
+.win-nudge{display:flex;align-items:center;gap:.4rem}
+.win-nudge button{
+  font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--ink-soft);
+  background:var(--paper-raised);border:1px solid var(--line);border-radius:6px;
+  min-width:44px;min-height:44px;cursor:pointer;
+}
+.win-nudge button:hover:not(:disabled){border-color:var(--stamp);color:var(--stamp);background:var(--stamp-soft)}
+.win-nudge button:disabled{opacity:.3;cursor:default}
+.win-span{font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.win-stat{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem}
 .tl-readout strong{font-family:var(--mono)}
 .tl-readout .ok{color:var(--ok)}
 .tl-readout .bad{color:var(--bad)}
@@ -666,7 +676,7 @@ function renderTimeline(){
           '<span class="tl-dim" id="tl-dim-l"></span><span class="tl-dim" id="tl-dim-r"></span>' +
           '<span class="tl-band" id="tl-band" aria-hidden="true"></span>' +
           '</div></div>' +
-          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window.</p>';
+          '<p class="tl-hint">Drag the band, tap the strip, or use −1 / +1 to move the 365-day window.</p>';
   host.innerHTML = html;
   var winTrack = document.getElementById('win-track');
   var winLegend = document.getElementById('win-legend');
@@ -765,12 +775,29 @@ function updateBand(){
   tlRefs.winLegend.innerHTML = legend || '<span class="item">no trips inside this window</span>';
 
   var over = used > LIMIT;
-  tlRefs.readout.innerHTML = '365 days ending <strong>' + fdate(TL.end) + '</strong> → ' +
-    '<strong class="' + (over ? 'bad' : 'ok') + '">' + used + ' of 90 used</strong>' +
-    (over ? ' · <strong class="bad">' + (used - LIMIT) + ' over</strong>' : ' · ' + (LIMIT - used) + ' free') +
-    (TL.end === TODAY ? ' (today)' : ' · <button type="button" class="tl-today-btn" id="tl-jump">back to today</button>');
+  tlRefs.readout.innerHTML =
+    '<span class="win-nudge">' +
+      '<span class="fix-label">Window</span>' +
+      '<button type="button" data-win="-1" aria-label="Move the window one day earlier"' +
+        (TL.end - 365*DAY < tlRefs.start ? ' disabled' : '') + '>−1</button>' +
+      '<strong class="win-span">' + fdate(ws) + ' → ' + fdate(TL.end) + '</strong>' +
+      '<button type="button" data-win="1" aria-label="Move the window one day later"' +
+        (TL.end >= tlRefs.endRange ? ' disabled' : '') + '>+1</button>' +
+    '</span>' +
+    '<span class="win-stat">' +
+      '<strong class="' + (over ? 'bad' : 'ok') + '">' + used + ' of 90 used</strong>' +
+      (over ? ' · <strong class="bad">' + (used - LIMIT) + ' over</strong>' : ' · ' + (LIMIT - used) + ' free') +
+      (TL.end === TODAY ? ' (today)' : ' · <button type="button" class="tl-today-btn" id="tl-jump">back to today</button>') +
+    '</span>';
   var jump = document.getElementById('tl-jump');
   if (jump) jump.addEventListener('click', function(){ TL.end = TODAY; updateBand(); });
+  tlRefs.readout.querySelectorAll('[data-win]').forEach(function(b){
+    b.addEventListener('click', function(){
+      TL.end = clampDay(TL.end + (+b.getAttribute('data-win'))*DAY);
+      updateBand();
+      tlRefs.scroll.scrollLeft = Math.max(0, (TL.end - tlRefs.start)/DAY*tlRefs.px - tlRefs.scroll.clientWidth*0.7);
+    });
+  });
   tlRefs.canvas.setAttribute('aria-valuenow', Math.round((TL.end - start)/DAY));
   tlRefs.canvas.setAttribute('aria-valuetext', fdate(TL.end));
 }
