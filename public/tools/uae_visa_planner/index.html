@@ -64,6 +64,8 @@ h2{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.
 .ledger-row:first-child{border-top:1px dashed var(--line)}
 .dot{width:10px;height:10px;border-radius:50%;flex:none;display:inline-block}
 .trip-dates{font-family:var(--mono);font-size:.9rem;font-weight:700}
+.plan-head .dot{margin-right:.45rem}
+.plan-head .trip-days{color:var(--ink-soft);font-weight:400}
 .tn{font-family:var(--body);font-size:.82rem;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
 .trip-meta{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);white-space:nowrap;justify-self:end}
 .empty-note{padding:1.1rem .25rem;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);color:var(--ink-soft);font-size:.95rem;margin-top:1.1rem}
@@ -186,21 +188,65 @@ button.ghost:hover{background:var(--stamp-soft)}
 .field.days{flex:0 1 6rem}
 .plan-list{margin-top:1.1rem;display:flex;flex-direction:column;gap:.65rem}
 .plan-card{border:1px solid var(--ink);border-radius:10px;background:var(--paper-raised);padding:.7rem .9rem;position:relative}
-.plan-head{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;padding-right:2.6rem}
+.plan-head{display:flex;flex-wrap:wrap;gap:.3rem .7rem;align-items:baseline;padding-right:2.6rem}
+.plan-verdict{display:flex;flex-wrap:wrap;gap:.35rem .7rem;align-items:center;margin-top:.5rem}
+.plan-verdict .cost{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--bad)}
+.plan-verdict .spare{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--ok)}
+/* ---------- calendar range picker ---------- */
+.cal{margin-top:1rem;border:1px solid var(--ink);border-radius:10px;background:var(--paper-raised);padding:.75rem .85rem 1rem}
+.cal-bar{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.cal-title{font-family:var(--display);font-weight:700;font-size:1rem}
+.cal-nav{
+  min-width:44px;min-height:44px;font-size:1.3rem;line-height:1;color:var(--ink);
+  background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer;
+}
+.cal-nav:hover:not(:disabled){border-color:var(--stamp);color:var(--stamp);background:var(--stamp-soft)}
+.cal-nav:disabled{opacity:.3;cursor:default}
+.cal-months{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.1rem;margin-top:.75rem}
+.cal-mon h4{font-family:var(--body);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);text-align:center;margin-bottom:.4rem}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);text-align:center;padding-bottom:.2rem}
+.cal-d{
+  font-family:var(--mono);font-size:.82rem;aspect-ratio:1;min-height:34px;
+  display:grid;place-items:center;border:0;border-radius:6px;cursor:pointer;
+  background:none;color:var(--ink);position:relative;
+}
+.cal-d:hover:not(:disabled){outline:2px solid var(--stamp);outline-offset:-2px}
+.cal-d.blank{visibility:hidden;cursor:default}
+.cal-d:disabled{cursor:default}
+.cal-d.past{color:var(--line);}
+.cal-d.busy{background:var(--line-soft);color:var(--ink-soft);text-decoration:line-through}
+.cal-d.safe{background:var(--ok-soft);color:var(--ok);font-weight:700}
+.cal-d.unsafe{background:var(--bad-soft);color:var(--bad)}
+.cal-d.inrange{background:var(--stamp-soft);border-radius:0}
+.cal-d.edge{background:var(--stamp);color:var(--paper);font-weight:700;border-radius:6px}
+.cal-key{display:flex;flex-wrap:wrap;gap:.3rem .9rem;margin-top:.75rem;font-size:.75rem;color:var(--ink-soft)}
+.cal-key span{display:flex;align-items:center;gap:.35rem}
+.cal-key i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.cal-summary{flex-basis:100%;font-family:var(--mono);font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+.cal-summary .muted{font-family:var(--body);font-weight:400;color:var(--ink-soft)}
+button.primary:disabled{opacity:.4;cursor:default}
+button.primary:disabled:hover{background:var(--stamp)}
+.fixes{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-top:.6rem}
+.fix-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.fixes button{
+  font-family:var(--body);font-size:.85rem;font-weight:600;color:var(--stamp);
+  background:var(--stamp-soft);border:1px solid var(--stamp);border-radius:20px;
+  min-height:44px;padding:.3rem .85rem;cursor:pointer;
+}
+.fixes button:hover{background:var(--stamp);color:var(--paper)}
 .verdict{
   font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
   padding:.28rem .6rem;border-radius:5px;white-space:nowrap;
 }
 .verdict.ok{color:var(--ok);background:var(--ok-soft);border:1px solid currentColor}
 .verdict.bad{color:#fff;background:var(--bad);border:1px solid var(--bad)}
-.plan-detail{margin-top:.4rem;font-size:.9rem;color:var(--ink-soft)}
-.plan-detail strong{color:var(--ink);font-family:var(--mono);font-size:.86rem}
-.plan-fix{margin-top:.55rem;font-size:.9rem;color:var(--bad);font-weight:600}
+.plan-detail{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
 .plan-card .icon-btn{position:absolute;top:.45rem;right:.45rem}
-.shift{display:flex;align-items:center;gap:.4rem;margin-top:.55rem;flex-wrap:wrap}
-.shift button{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--ink);background:var(--paper-raised);border:1px solid var(--ink);border-radius:6px;min-width:44px;min-height:44px;cursor:pointer}
+.shift{display:flex;align-items:center;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
+.shift button{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--ink-soft);background:none;border:1px solid var(--line);border-radius:6px;min-width:44px;min-height:44px;cursor:pointer}
 .shift button:hover{background:var(--stamp-soft);border-color:var(--stamp);color:var(--stamp)}
-.shift .shift-label{font-size:.78rem;color:var(--ink-soft);margin:0 .3rem}
+.shift .shift-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 .25rem}
 .shift-err{margin-top:.35rem;font-size:.85rem;color:var(--bad);font-weight:600;display:none}
 .plan-empty{margin-top:1.1rem;color:var(--ink-soft);font-size:.95rem}
 
@@ -255,27 +301,29 @@ footer p+p{margin-top:.6rem}
 <!-- ================= PLANNER ================= -->
 <section id="plan-sec" aria-labelledby="plan-h">
   <h2 id="plan-h">Plan the next trips</h2>
-  <p class="section-note">Fill any two of arrive / depart / days — the third completes itself. Give only days and the earliest safe dates are found for you. Each trip is checked against the record plus every planned trip before it.</p>
+  <p class="section-note">Tap your arrival date, then your departure date. Green days are within the 90; red days would be over.</p>
+
+  <div class="cal" id="cal">
+    <div class="cal-bar">
+      <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">‹</button>
+      <span class="cal-title" id="cal-title"></span>
+      <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">›</button>
+    </div>
+    <div class="cal-months" id="cal-months"></div>
+    <div class="cal-key" id="cal-key"></div>
+  </div>
 
   <form class="trip-form" id="plan-form" novalidate>
-    <div class="field">
-      <label for="plan-in">Arrive</label>
-      <input type="date" id="plan-in">
-    </div>
-    <div class="field">
-      <label for="plan-out">Depart</label>
-      <input type="date" id="plan-out">
-    </div>
-    <div class="field days">
-      <label for="plan-days">Days</label>
-      <input type="number" id="plan-days" min="1" max="365" inputmode="numeric">
-    </div>
-    <button type="submit" class="primary">Check this trip</button>
+    <input type="hidden" id="plan-in">
+    <input type="hidden" id="plan-out">
+    <p class="cal-summary" id="cal-summary"></p>
+    <button type="submit" class="primary" id="plan-submit" disabled>Check this trip</button>
+    <button type="button" class="ghost" id="cal-clear">Clear</button>
     <p class="form-error" id="plan-error" role="alert"></p>
   </form>
 
   <div class="plan-list" id="plan-list"></div>
-  <p class="plan-empty" id="plan-empty">No trips planned yet. Add dates — or just a number of days — to see what clears the window.</p>
+  <p class="plan-empty" id="plan-empty">No trips planned yet. Pick dates on the calendar above.</p>
 </section>
 
 <!-- ================= RULES ================= -->
@@ -605,7 +653,7 @@ function renderTimeline(){
           '<span class="tl-dim" id="tl-dim-l"></span><span class="tl-dim" id="tl-dim-r"></span>' +
           '<span class="tl-band" id="tl-band" aria-hidden="true"></span>' +
           '</div></div>' +
-          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window. Solid bars are recorded trips, dashed are planned, red marks days over the limit; anything outside the band no longer counts.</p>';
+          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window.</p>';
   host.innerHTML = html;
   var winTrack = document.getElementById('win-track');
   var winLegend = document.getElementById('win-legend');
@@ -726,37 +774,72 @@ function renderPlanned(){
     var others = past.concat(planned.slice(0, i));
     var r = evaluateTrip(p.in, p.out, others, TODAY);
     var ok = r.over === 0;
+
     var head =
       '<div class="plan-head">' +
-        '<span class="dot" style="background:var(--paper-raised);box-shadow:inset 0 0 0 2px ' + colorFor(past.length + i) + '"></span>' +
-        '<span class="trip-dates"><span class="tn">' + planName(i) + '</span> · ' + fdate(p.in) + ' → ' + fdate(p.out) + '</span>' +
-        '<span class="trip-days">' + r.days + ' days</span>' +
-        '<span class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Clear' : 'Over by ' + r.over + ' days') + '</span>' +
+        '<span class="trip-dates">' +
+          '<span class="dot" style="background:var(--paper-raised);box-shadow:inset 0 0 0 2px ' + colorFor(past.length + i) + '"></span>' +
+          '<span class="tn">' + planName(i) + '</span> · ' + fdate(p.in) + ' → ' + fdate(p.out) +
+          ' <span class="trip-days">' + r.days + 'd</span></span>' +
       '</div>';
-    var detail = ok
-      ? '<p class="plan-detail">Peaks at <strong>' + r.peak + ' / 90</strong> days in the window — margin of ' + (LIMIT - r.peak) + '.</p>'
-      : '<p class="plan-detail">Peaks at <strong>' + r.peak + ' / 90</strong>. First day over: <strong>' + fdate(r.first) + '</strong>. Fine at exit: <strong>AED ' + r.fine.toLocaleString('en') + '</strong> per person.</p>';
-    var fix = '';
+
+    var verdict =
+      '<p class="plan-verdict">' +
+        '<span class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Clear' : 'Over by ' + r.over + 'd') + '</span>' +
+        (ok ? '<span class="spare">' + (LIMIT - r.peak) + ' days to spare</span>'
+            : '<span class="cost">AED ' + r.fine.toLocaleString('en') + ' each</span>') +
+        '<span class="plan-detail">peak ' + r.peak + '/90' + (ok ? '' : ' · over from ' + fdate(r.first)) + '</span>' +
+      '</p>';
+
+    var fixes = '';
     if (!ok){
       var safeLen = longestFrom(p.in, others, TODAY);
       var altStart = earliestFor(r.days, p.in, others, TODAY);
-      var parts = [];
-      if (safeLen > 0) parts.push('shorten to ' + safeLen + ' days (depart by ' + fdate(p.in + (safeLen-1)*DAY) + ')');
-      if (altStart) parts.push('or keep ' + r.days + ' days by arriving ' + fdate(altStart) + ' at the earliest');
-      if (parts.length) fix = '<p class="plan-fix">To stay clear: ' + parts.join(', ') + '.</p>';
+      var btns = '';
+      if (altStart) btns += '<button type="button" data-fix-start="' + altStart + '">Arrive ' + fdate(altStart) + ' — keeps all ' + r.days + 'd</button>';
+      if (safeLen > 0) btns += '<button type="button" data-fix-len="' + safeLen + '">Leave ' + fdate(p.in + (safeLen-1)*DAY) + ' — only ' + safeLen + 'd</button>';
+      if (btns) fixes = '<div class="fixes"><span class="fix-label">Fix</span>' + btns + '</div>';
     }
+
     var shift =
       '<div class="shift" role="group" aria-label="Shift ' + planName(i) + ' dates">' +
         '<button type="button" data-shift="-7" aria-label="Shift 7 days earlier">−7</button>' +
         '<button type="button" data-shift="-1" aria-label="Shift 1 day earlier">−1</button>' +
-        '<span class="shift-label">shift days</span>' +
+        '<span class="shift-label">shift</span>' +
         '<button type="button" data-shift="1" aria-label="Shift 1 day later">+1</button>' +
         '<button type="button" data-shift="7" aria-label="Shift 7 days later">+7</button>' +
       '</div><p class="shift-err" role="alert"></p>';
-    return '<div class="plan-card" data-idx="' + i + '">' + head + detail + fix + shift +
+
+    return '<div class="plan-card" data-idx="' + i + '">' + head + verdict + fixes + shift +
       '<button type="button" class="icon-btn" data-pdel="' + i + '" aria-label="Remove planned trip ' + fdate(p.in) + '">' +
       '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13"/></svg></button></div>';
   }).join('');
+
+  /* one-tap fixes: re-date the trip, keeping it clear of everything else */
+  box.querySelectorAll('[data-fix-start],[data-fix-len]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.plan-card');
+      var p = sortedPlanned()[+card.getAttribute('data-idx')];
+      var s, e;
+      if (btn.hasAttribute('data-fix-start')){
+        s = +btn.getAttribute('data-fix-start');
+        e = s + (daysInclusive(p.in, p.out) - 1)*DAY;
+      } else {
+        s = p.in;
+        e = p.in + (+btn.getAttribute('data-fix-len') - 1)*DAY;
+      }
+      var rest = state.planned.filter(function(t){ return !(t.in === p.in && t.out === p.out); });
+      var clash = overlapsExisting(s, e, rest) || overlapsExisting(s, e, state.trips);
+      if (clash){
+        var errEl = card.querySelector('.shift-err');
+        errEl.textContent = 'That would overlap ' + fdate(clash.in) + ' → ' + (clash.out == null ? 'today' : fdate(clash.out)) + '.';
+        errEl.style.display = 'block';
+        return;
+      }
+      state.planned = rest.concat([{ in: s, out: e }]);
+      save(); renderAll();
+    });
+  });
 
   box.querySelectorAll('[data-shift]').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -787,7 +870,7 @@ function renderPlanned(){
   });
 }
 
-function renderAll(){ renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); }
+function renderAll(){ renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); renderCal(); }
 
 /* ---------- forms ---------- */
 function showError(id, msg){
@@ -821,52 +904,119 @@ document.getElementById('trip-form').addEventListener('submit', function(ev){
   document.getElementById('trip-out').disabled = false;
 });
 
-/* arrive / depart / days: any two fill in the third */
-function syncPlanFields(src){
-  var iEl = document.getElementById('plan-in'), oEl = document.getElementById('plan-out'), dEl = document.getElementById('plan-days');
-  var i = iEl.value ? parseISO(iEl.value) : null;
-  var o = oEl.value ? parseISO(oEl.value) : null;
-  var d = parseInt(dEl.value, 10);
-  if (src === 'in' && i != null){
-    if (o != null && o >= i) dEl.value = daysInclusive(i, o);
-    else if (d > 0) oEl.value = isoOf(i + (d-1)*DAY);
-  } else if (src === 'out' && o != null){
-    if (i != null && o >= i) dEl.value = daysInclusive(i, o);
-    else if (d > 0) iEl.value = isoOf(o - (d-1)*DAY);
-  } else if (src === 'days' && d > 0){
-    if (i != null) oEl.value = isoOf(i + (d-1)*DAY);
-    else if (o != null) iEl.value = isoOf(o - (d-1)*DAY);
+/* ---------- calendar range picker ---------- */
+var CAL = { month: null, start: null, end: null };
+var DOW = ['M','T','W','T','F','S','S'];
+var fmtMonYr = new Intl.DateTimeFormat('en-GB', { month:'long', year:'numeric', timeZone:'UTC' });
+var fmtMonLong = new Intl.DateTimeFormat('en-GB', { month:'long', timeZone:'UTC' });
+
+function monthsShown(){ return window.innerWidth < 560 ? 1 : 2; }
+function firstOfMonth(ms){ var d = new Date(ms); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1); }
+
+/* every day already taken by a recorded or planned trip */
+function busyOn(day){
+  var all = state.trips.concat(state.planned);
+  for (var i = 0; i < all.length; i++){
+    var t = all[i], out = t.out == null ? TODAY : t.out;
+    if (day >= t.in && day <= out) return true;
   }
+  return false;
 }
-document.getElementById('plan-in').addEventListener('change', function(){ syncPlanFields('in'); });
-document.getElementById('plan-out').addEventListener('change', function(){ syncPlanFields('out'); });
-document.getElementById('plan-days').addEventListener('input', function(){ syncPlanFields('days'); });
+
+function renderCal(){
+  var host = document.getElementById('cal-months');
+  if (!host) return;
+  if (CAL.month == null) CAL.month = firstOfMonth(TODAY);
+
+  /* when a start is chosen but no end yet, show how far they may safely go */
+  var lastSafe = null;
+  if (CAL.start != null && CAL.end == null){
+    var others = sortedTrips().concat(sortedPlanned());
+    var n = longestFrom(CAL.start, others, TODAY);
+    lastSafe = n > 0 ? CAL.start + (n-1)*DAY : null;
+  }
+
+  var out = '';
+  for (var k = 0; k < monthsShown(); k++){
+    var m0 = addMonths(CAL.month, k), d0 = new Date(m0);
+    var y = d0.getUTCFullYear(), mo = d0.getUTCMonth();
+    var nDays = new Date(Date.UTC(y, mo+1, 0)).getUTCDate();
+    var lead = (new Date(m0).getUTCDay() + 6) % 7;   /* Monday-first */
+
+    out += '<div class="cal-mon">' + (monthsShown() > 1 ? '<h4>' + fmtMonYr.format(m0) + '</h4>' : '') + '<div class="cal-grid">';
+    for (var w = 0; w < 7; w++) out += '<span class="cal-dow">' + DOW[w] + '</span>';
+    for (var b = 0; b < lead; b++) out += '<button class="cal-d blank" disabled tabindex="-1"></button>';
+
+    for (var dn = 1; dn <= nDays; dn++){
+      var day = Date.UTC(y, mo, dn), cls = [], dis = false;
+      if (day < TODAY){ cls.push('past'); dis = true; }
+      else if (busyOn(day)){ cls.push('busy'); dis = true; }
+      else if (CAL.start != null && CAL.end != null){
+        if (day === CAL.start || day === CAL.end) cls.push('edge');
+        else if (day > CAL.start && day < CAL.end) cls.push('inrange');
+      }
+      else if (CAL.start != null){
+        if (day === CAL.start) cls.push('edge');
+        else if (day > CAL.start) cls.push(lastSafe != null && day <= lastSafe ? 'safe' : 'unsafe');
+      }
+      out += '<button type="button" class="cal-d ' + cls.join(' ') + '" data-day="' + day + '"' +
+             (dis ? ' disabled' : '') + ' aria-label="' + fdate(day) + '">' + dn + '</button>';
+    }
+    out += '</div></div>';
+  }
+  host.innerHTML = out;
+
+  var span = monthsShown() - 1;
+  document.getElementById('cal-title').textContent =
+    span ? fmtMonLong.format(CAL.month) + ' – ' + fmtMonYr.format(addMonths(CAL.month, span))
+         : fmtMonYr.format(CAL.month);
+  document.getElementById('cal-prev').disabled = CAL.month <= firstOfMonth(TODAY);
+
+  document.getElementById('cal-key').innerHTML = CAL.start != null && CAL.end == null
+    ? '<span><i style="background:var(--ok-soft);box-shadow:inset 0 0 0 1px var(--ok)"></i>within your 90 days</span>' +
+      '<span><i style="background:var(--bad-soft);box-shadow:inset 0 0 0 1px var(--bad)"></i>would be over — fined AED 50/day</span>' +
+      '<span><i style="background:var(--line-soft)"></i>already on a trip</span>'
+    : '<span><i style="background:var(--line-soft)"></i>already on a trip</span>' +
+      '<span><i style="background:var(--stamp)"></i>your selection</span>';
+
+  host.querySelectorAll('[data-day]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var day = +btn.getAttribute('data-day');
+      if (CAL.start == null || CAL.end != null || day < CAL.start){ CAL.start = day; CAL.end = null; }
+      else { CAL.end = day; }
+      syncCal();
+    });
+  });
+}
+
+function syncCal(){
+  document.getElementById('plan-in').value  = CAL.start != null ? isoOf(CAL.start) : '';
+  document.getElementById('plan-out').value = CAL.end   != null ? isoOf(CAL.end)   : '';
+  var sum = document.getElementById('cal-summary');
+  if (CAL.start == null) sum.innerHTML = '<span class="muted">Tap your arrival date to begin.</span>';
+  else if (CAL.end == null) sum.innerHTML = fdate(CAL.start) + ' → <span class="muted">now tap your departure date</span>';
+  else sum.innerHTML = fdate(CAL.start) + ' → ' + fdate(CAL.end) + ' · ' + daysInclusive(CAL.start, CAL.end) + ' days';
+  document.getElementById('plan-submit').disabled = !(CAL.start != null && CAL.end != null);
+  showError('plan-error', null);
+  renderCal();
+}
+
+document.getElementById('cal-prev').addEventListener('click', function(){ CAL.month = addMonths(CAL.month, -1); renderCal(); });
+document.getElementById('cal-next').addEventListener('click', function(){ CAL.month = addMonths(CAL.month,  1); renderCal(); });
+document.getElementById('cal-clear').addEventListener('click', function(){ CAL.start = CAL.end = null; syncCal(); });
+addEventListener('resize', function(){ renderCal(); });
 
 document.getElementById('plan-form').addEventListener('submit', function(ev){
   ev.preventDefault();
   showError('plan-error', null);
-  var inV = document.getElementById('plan-in').value;
-  var outV = document.getElementById('plan-out').value;
-  var d = parseInt(document.getElementById('plan-days').value, 10);
-  var s = inV ? parseISO(inV) : null;
-  var e = outV ? parseISO(outV) : null;
-  if (s != null && e == null && d > 0) e = s + (d-1)*DAY;
-  else if (e != null && s == null && d > 0) s = e - (d-1)*DAY;
-  else if (s == null && e == null && d > 0){
-    if (d > 90) return showError('plan-error', 'More than 90 consecutive days can never fit inside the limit.');
-    var others = sortedTrips().concat(sortedPlanned());
-    s = earliestFor(d, TODAY + DAY, others, TODAY);
-    if (s == null) return showError('plan-error', 'No safe start found in the next three years for ' + d + ' days.');
-    e = s + (d-1)*DAY;
-  }
-  if (s == null || e == null) return showError('plan-error', 'Give arrive + depart, one date + days, or just days.');
-  if (e < s) return showError('plan-error', 'Departure is before arrival.');
-  if (overlapsExisting(s, e, state.planned)) return showError('plan-error', 'Overlaps a trip already in the plan.');
-  var clashPast = overlapsExisting(s, e, state.trips);
-  if (clashPast) return showError('plan-error', 'Overlaps the recorded trip ' + fdate(clashPast.in) + ' → ' + (clashPast.out == null ? 'today' : fdate(clashPast.out)) + '.');
+  if (CAL.start == null || CAL.end == null) return showError('plan-error', 'Pick an arrival and a departure date on the calendar.');
+  var s = CAL.start, e = CAL.end;
+  var clash = overlapsExisting(s, e, state.planned) || overlapsExisting(s, e, state.trips);
+  if (clash) return showError('plan-error', 'Overlaps the trip ' + fdate(clash.in) + ' → ' + (clash.out == null ? 'today' : fdate(clash.out)) + '.');
   state.planned.push({ in: s, out: e });
-  save(); renderAll();
-  this.reset();
+  save();
+  CAL.start = CAL.end = null;
+  renderAll(); syncCal();
 });
 
 document.getElementById('reset-btn').addEventListener('click', function(){
@@ -876,6 +1026,7 @@ document.getElementById('reset-btn').addEventListener('click', function(){
 });
 
 renderAll();
+syncCal();
 </script>
 </body>
 </html>
