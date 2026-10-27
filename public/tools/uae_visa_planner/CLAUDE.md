@@ -60,8 +60,11 @@ vanilla JS. No framework. Keep it that way — it needs to work by opening the
 file, including for non-technical family members.
 
 Page structure, answer first: **answer card** (if someone is in the UAE now, the
-leave-by date; otherwise how long a trip starting tomorrow can be) → **Plan a
-trip** (calendar range picker, verdict cards with fixes) → **Your trips** →
+leave-by date; otherwise how long a trip starting tomorrow can be) → **When can
+they come next?** (for every arrival day in the next year, the longest safe stay,
+as a step chart with "earliest date for 1/2/3 months"; tapping a day hands that
+trip to the calendar) → **Plan a trip** (calendar range picker, verdict cards
+with fixes) → **Your trips** →
 folded **How the count works** (stacked meter, draggable window timeline,
 breach note, days-come-back) → folded **Rules** → folded **Settings**.
 
@@ -83,6 +86,9 @@ App conventions:
 - The window is `WINDOW = 366` days: one year back to the same date, both ends
   counted. That is what makes the planner's count match ICP's File Validity
   screen (80 on 27 Oct 2026). Never hard-code 365; use `WINDOW`.
+- `MAX_VISIT = 90`: one continuous visit can't exceed 90 days without an
+  extension, so `longestFrom` / `longestUntil` stop there even with 105 a year.
+- The "come next" chart assumes a visit happening now ends on its leave-by date.
 - `LIMIT` is `state.allowance`: 90 by default, 105 optional (ICP's screen always
   sums to 105 for this file, probably 90 + the 15 fined days; unconfirmed).
 - All dates are UTC epoch milliseconds via `Date.UTC`. **Do not introduce

@@ -170,6 +170,26 @@ button.ghost:hover{background:var(--stamp-soft)}
 .icp-form .field{flex:0 1 11rem}
 .icp-form .field.days{flex:0 1 8rem}
 
+/* ---------- when can they come next ---------- */
+.miles{list-style:none;margin-top:1rem;border-top:1px dashed var(--line)}
+.miles li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0 1rem;border-bottom:1px dashed var(--line);font-size:.95rem}
+.miles .none{font-family:var(--mono);font-size:.85rem;color:var(--ink-soft);min-height:44px;display:flex;align-items:center}
+.miles button{
+  font-family:var(--mono);font-weight:700;font-size:.9rem;color:var(--stamp);background:none;border:0;
+  min-height:44px;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+}
+.miles button:hover{text-decoration-thickness:2px}
+.chart-box{margin-top:1.1rem;border:1px solid var(--ink);border-radius:10px;background:var(--paper-raised);padding:.7rem .6rem .4rem}
+#ahead-svg{display:block;width:100%;touch-action:pan-y;cursor:crosshair;border-radius:4px}
+#ahead-svg:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
+.ahead-read{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;margin-top:.8rem;min-height:44px;font-size:1rem}
+.ahead-read strong{font-family:var(--mono);font-size:.95rem}
+.ahead-read .warn{color:var(--bad)}
+.ahead-key{display:flex;flex-wrap:wrap;gap:.3rem 1rem;margin-top:.5rem;font-size:.75rem;color:var(--ink-soft)}
+.ahead-key span{display:flex;align-items:center;gap:.35rem}
+.ahead-key i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.ahead-note{margin-top:.6rem;font-size:.85rem;color:var(--ink-soft)}
+
 /* ---------- settings ---------- */
 .settings{border:0;margin-top:1rem}
 .settings legend{font-weight:700;font-size:.85rem;color:var(--ink-soft);margin-bottom:.3rem}
@@ -191,6 +211,10 @@ button.ghost:hover{background:var(--stamp-soft)}
 .win-nudge button:disabled{opacity:.3;cursor:default}
 .win-span{font-family:var(--mono);font-size:.9rem;white-space:nowrap}
 .win-stat{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem}
+@media (max-width:440px){
+  .win-nudge .fix-label{display:none}
+  .win-span{font-size:.78rem}
+}
 .tl-readout strong{font-family:var(--mono)}
 .tl-readout .ok{color:var(--ok)}
 .tl-readout .bad{color:var(--bad)}
@@ -324,6 +348,13 @@ footer p+p{margin-top:.6rem}
 <!-- ================= ANSWER ================= -->
 <section id="answer" class="answer" aria-live="polite"></section>
 
+<!-- ================= WHEN NEXT ================= -->
+<section id="ahead-sec" aria-labelledby="ahead-h">
+  <h2 id="ahead-h">When can they come next?</h2>
+  <p class="section-note">Each point on the chart is an arrival day. Its height is the longest stay that day allows. Tap or drag across it, then plan the trip you like.</p>
+  <div id="ahead"></div>
+</section>
+
 <section id="plan-sec" aria-labelledby="plan-h">
   <h2 id="plan-h">Plan a trip</h2>
   <p class="section-note">Tap the day you would arrive. Days stay green up to the last safe day and turn red after it. Then tap the day you would leave.</p>
@@ -452,6 +483,7 @@ var DAY = 86400000;
 var LIMIT = 90;
 var WINDOW = 366;   /* one year back, both ends counted: matches ICP's File Validity count */
 var FINE_PER_DAY = 50;
+var MAX_VISIT = 90;  /* one continuous visit may not run past 90 days without an extension */
 
 function parseISO(s){ var p = s.split('-'); return Date.UTC(+p[0], +p[1]-1, +p[2]); }
 function isoOf(ms){ return new Date(ms).toISOString().slice(0,10); }
@@ -490,7 +522,7 @@ function evaluateTrip(s, e, others, asOf){
 /* longest stay starting `start` that never breaches the limit (0 = cannot even enter) */
 function longestFrom(start, others, asOf){
   var safe = 0;
-  for (var d = start; daysInclusive(start,d) <= WINDOW; d += DAY){
+  for (var d = start; daysInclusive(start,d) <= MAX_VISIT; d += DAY){
     if (usedOn(d, others.concat([{in:start, out:d}]), asOf) > LIMIT) break;
     safe = daysInclusive(start, d);
   }
@@ -500,7 +532,7 @@ function longestFrom(start, others, asOf){
 /* longest stay ending on `end` that never breaches (mirror of longestFrom) */
 function longestUntil(end, others, asOf){
   var safe = 0;
-  for (var d = end; daysInclusive(d, end) <= WINDOW; d -= DAY){
+  for (var d = end; daysInclusive(d, end) <= MAX_VISIT; d -= DAY){
     if (evaluateTrip(d, end, others, asOf).over > 0) break;
     safe = daysInclusive(d, end);
   }
@@ -642,6 +674,20 @@ function icpEditor(){
     '</form></details>';
 }
 
+/* the visit happening now, if any, and the date to leave by (earlier of our count and ICP's) */
+function currentVisit(){
+  var trips = sortedTrips();
+  var here = trips.filter(function(t){ return t.out == null; })[0];
+  if (!here) return null;
+  var others = trips.filter(function(t){ return t !== here; });
+  var safe = longestFrom(here.in, others, TODAY);
+  var ownLast = safe > 0 ? here.in + (safe-1)*DAY : null;
+  var icpLast = state.icp && state.icp.date >= here.in ? state.icp.date + state.icp.remaining*DAY : null;
+  var last = ownLast, fromIcp = false;
+  if (icpLast != null && (last == null || icpLast < last)){ last = icpLast; fromIcp = true; }
+  return { here: here, others: others, ownLast: ownLast, icpLast: icpLast, last: last, fromIcp: fromIcp };
+}
+
 function renderAnswer(){
   var box = document.getElementById('answer');
   var trips = sortedTrips();
@@ -656,19 +702,14 @@ function renderAnswer(){
     var n = longestFrom(TODAY + DAY, trips, TODAY);
     box.innerHTML = n > 0
       ? '<div class="stamp ok thump">If you arrive tomorrow, stay until<span class="big">' + fdate(TODAY + (n)*DAY) + '</span></div>' +
-        '<p class="answer-lead">That is <strong>' + n + ' days</strong>. Planning a later date? Use the calendar below, it shows the last safe day for any arrival.</p>' + usageBar(used)
+        '<p class="answer-lead">That is <strong>' + n + ' days</strong>. For any other arrival date, see the chart below.</p>' + usageBar(used)
       : '<div class="stamp bad thump">No days free<span class="big">Don’t travel yet</span></div>' +
-        '<p class="answer-lead">Arriving tomorrow would go over the limit straight away. The calendar below shows the first date that works.</p>' + usageBar(used);
+        '<p class="answer-lead">Arriving tomorrow would go over the limit straight away. The chart below shows the first date that works.</p>' + usageBar(used);
     return;
   }
 
   /* in the UAE now: when must they leave? */
-  var others = trips.filter(function(t){ return t !== here; });
-  var safe = longestFrom(here.in, others, TODAY);
-  var ownLast = safe > 0 ? here.in + (safe-1)*DAY : null;
-  var icpLast = state.icp && state.icp.date >= here.in ? state.icp.date + state.icp.remaining*DAY : null;
-  var last = ownLast, fromIcp = false;
-  if (icpLast != null && (last == null || icpLast < last)){ last = icpLast; fromIcp = true; }
+  var cv = currentVisit(), others = cv.others, ownLast = cv.ownLast, icpLast = cv.icpLast, last = cv.last, fromIcp = cv.fromIcp;
   var dayNo = daysInclusive(here.in, TODAY);
 
   var head;
@@ -706,6 +747,178 @@ function renderAnswer(){
   });
   var clr = document.getElementById('icp-clear');
   if (clr) clr.addEventListener('click', function(){ state.icp = null; save(); renderAll(); });
+}
+
+/* ---------- render: when can they come next ---------- */
+var AHEAD = { sel: null, data: null };
+var fmtWd = new Intl.DateTimeFormat('en-GB', { weekday:'short', day:'numeric', month:'short', year:'numeric', timeZone:'UTC' });
+var AHEAD_DAYS = 365;
+
+/* every arrival day for the next year, with the longest safe stay from it.
+   A visit happening now is assumed to end on its leave-by date. */
+function aheadData(){
+  var cv = currentVisit();
+  var hereEnd = cv ? (cv.last != null && cv.last >= TODAY ? cv.last : TODAY) : null;
+  var eff = sortedTrips().map(function(t){ return t.out != null ? t : { in: t.in, out: hereEnd }; }).concat(sortedPlanned());
+  var from = cv ? hereEnd + DAY : TODAY + DAY;
+  var days = [];
+  for (var i = 0; i < AHEAD_DAYS; i++){
+    var d = from + i*DAY, blocked = false;
+    for (var k = 0; k < eff.length; k++){ if (d >= eff[k].in && d <= eff[k].out){ blocked = true; break; } }
+    days.push({ d: d, len: blocked ? null : longestFrom(d, eff, TODAY) });
+  }
+  /* a stay can't run into the next trip already on the books */
+  var gap = Infinity;
+  for (var j = days.length - 1; j >= 0; j--){
+    if (days[j].len == null){ gap = 0; continue; }
+    gap = gap + 1;
+    if (days[j].len > gap) days[j].len = gap;
+  }
+  return { cv: cv, hereEnd: hereEnd, from: from, days: days };
+}
+
+function renderAhead(){
+  var host = document.getElementById('ahead');
+  if (!host) return;
+  if (!state.trips.length){ host.innerHTML = ''; return; }
+  var A = AHEAD.data = aheadData();
+  var first = A.days.filter(function(x){ return x.len > 0; })[0];
+  if (AHEAD.sel == null || AHEAD.sel < A.from || AHEAD.sel >= A.from + AHEAD_DAYS*DAY) AHEAD.sel = first ? first.d : A.from;
+
+  var miles = [[30,'A month'],[60,'Two months'],[90,'Three months']].map(function(m){
+    var hit = A.days.filter(function(x){ return x.len >= m[0]; })[0];
+    return '<li><span>' + m[1] + ' (' + m[0] + ' days)</span>' +
+      (hit ? '<button type="button" data-pick="' + hit.d + '">from ' + fdate(hit.d) + '</button>'
+           : '<span class="none">not in the next year</span>') + '</li>';
+  }).join('');
+
+  var notes = [];
+  if (A.cv) notes.push('Assumes they leave on ' + fdate(A.hereEnd) + ', the date at the top.');
+  if (state.planned.length) notes.push('Planned trips below are counted too.');
+
+  host.innerHTML =
+    '<ul class="miles" aria-label="Earliest arrival for each length of stay">' + miles + '</ul>' +
+    '<div class="chart-box"><div id="ahead-chart"></div>' +
+      '<div class="ahead-key">' +
+        '<span><i style="background:var(--stamp-soft);box-shadow:inset 0 -2px 0 var(--stamp)"></i>longest stay</span>' +
+        '<span><i style="background:var(--bad)"></i>can’t come that day</span>' +
+        '<span><i style="background:repeating-linear-gradient(45deg,var(--line) 0 2px,transparent 2px 5px)"></i>already on a trip</span>' +
+      '</div></div>' +
+    '<div class="ahead-read" id="ahead-read" aria-live="polite"></div>' +
+    (notes.length ? '<p class="ahead-note">' + notes.join(' ') + '</p>' : '');
+
+  host.querySelectorAll('[data-pick]').forEach(function(b){
+    b.addEventListener('click', function(){ AHEAD.sel = +b.getAttribute('data-pick'); updateAhead(); });
+  });
+  drawAheadChart();
+}
+
+function drawAheadChart(){
+  var A = AHEAD.data, box = document.getElementById('ahead-chart');
+  if (!A || !box) return;
+  var W = Math.max(260, box.clientWidth || 600), H = W < 480 ? 150 : 180;
+  var pl = 30, pr = 6, pt = 10, pb = 22, pw = W - pl - pr, ph = H - pt - pb, n = A.days.length, bw = pw / n;
+  function X(i){ return pl + i*bw; }
+  function Y(v){ return pt + ph - v / MAX_VISIT * ph; }
+  var base = pt + ph, s = '';
+
+  s += '<defs><pattern id="ahead-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+       '<rect width="2" height="5" fill="#C9CCC0"/></pattern></defs>';
+  [30, 60, 90].forEach(function(v){
+    s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="#DDDFD5" stroke-width="1"/>' +
+         '<text x="' + (pl - 5) + '" y="' + (Y(v) + 3.5) + '" text-anchor="end" font-size="10" font-family="Space Mono, monospace" fill="#4C566B">' + v + 'd</text>';
+  });
+  s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + base + '" y2="' + base + '" stroke="#17233A" stroke-width="1"/>';
+
+  /* months along the bottom; thin out when narrow */
+  var every = pw / 12 < 34 ? 2 : 1;
+  for (var m = addMonths(firstOfMonth(A.from), 1); m < A.from + n*DAY; m = addMonths(m, 1)){
+    var mx = X(Math.round((m - A.from) / DAY)), md = new Date(m);
+    s += '<line x1="' + mx + '" x2="' + mx + '" y1="' + base + '" y2="' + (base + 4) + '" stroke="#17233A"/>';
+    if (every === 2 && md.getUTCMonth() % 2) continue;   /* keep January, so the year change always shows */
+    var jan = md.getUTCMonth() === 0;
+    s += '<text x="' + (mx + 2) + '" y="' + (H - 6) + '" font-size="10" font-family="Space Mono, monospace" fill="' + (jan ? '#17233A' : '#4C566B') + '"' +
+         (jan ? ' font-weight="700"' : '') + '>' + (jan ? md.getUTCFullYear() : fmtMonth.format(m)) + '</text>';
+  }
+
+  /* runs: blocked days hatched, zero days red on the baseline, the rest an area with a 2px top edge */
+  var area = '', edge = '', i = 0;
+  while (i < n){
+    var j = i, kind = A.days[i].len == null ? 'b' : (A.days[i].len === 0 ? 'z' : 'a');
+    while (j + 1 < n && (A.days[j+1].len == null ? 'b' : (A.days[j+1].len === 0 ? 'z' : 'a')) === kind) j++;
+    var x0 = X(i), x1 = X(j + 1);
+    if (kind === 'b') s += '<rect x="' + x0 + '" y="' + pt + '" width="' + (x1 - x0) + '" height="' + ph + '" fill="url(#ahead-hatch)"/>';
+    else if (kind === 'z') s += '<rect x="' + x0 + '" y="' + (base - 4) + '" width="' + (x1 - x0) + '" height="4" rx="1" fill="#A8322A"/>';
+    else {
+      var a = 'M' + x0 + ' ' + base, e = '';
+      for (var k = i; k <= j; k++){
+        var y = Y(A.days[k].len), xa = X(k), xb = X(k + 1);
+        a += ' L' + xa + ' ' + y + ' L' + xb + ' ' + y;
+        e += (k === i ? 'M' : ' L') + xa + ' ' + y + ' L' + xb + ' ' + y;
+      }
+      area += a + ' L' + x1 + ' ' + base + ' Z ';
+      edge += e + ' ';
+    }
+    i = j + 1;
+  }
+  s += '<path d="' + area + '" fill="#EDE6F5"/>' +
+       '<path d="' + edge + '" fill="none" stroke="#6B3FA0" stroke-width="2" stroke-linejoin="round"/>' +
+       '<g id="ahead-cursor"><line id="ahead-cl" y1="' + pt + '" y2="' + base + '" stroke="#17233A" stroke-width="1" stroke-dasharray="3 3"/>' +
+       '<circle id="ahead-cd" r="5" fill="#6B3FA0" stroke="#FAFAF6" stroke-width="2"/></g>';
+
+  box.innerHTML = '<svg id="ahead-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" tabindex="0" role="slider" ' +
+    'aria-label="Arrival day" aria-valuemin="0" aria-valuemax="' + (n - 1) + '">' + s + '</svg>';
+  AHEAD.geo = { X: X, Y: Y, bw: bw, pl: pl, n: n, base: base };
+
+  var svg = document.getElementById('ahead-svg'), down = false;
+  function pick(ev){
+    var r = svg.getBoundingClientRect();
+    var idx = Math.floor(((ev.clientX - r.left) * (W / r.width) - pl) / bw);
+    AHEAD.sel = A.from + Math.max(0, Math.min(n - 1, idx)) * DAY;
+    updateAhead();
+  }
+  svg.addEventListener('pointerdown', function(ev){ down = true; svg.setPointerCapture(ev.pointerId); pick(ev); });
+  svg.addEventListener('pointermove', function(ev){ if (down || ev.pointerType === 'mouse') pick(ev); });
+  svg.addEventListener('pointerup', function(){ down = false; });
+  svg.addEventListener('pointercancel', function(){ down = false; });
+  svg.addEventListener('keydown', function(ev){
+    var step = (ev.shiftKey ? 7 : 1) * DAY;
+    if (ev.key === 'ArrowRight') AHEAD.sel = Math.min(A.from + (n-1)*DAY, AHEAD.sel + step);
+    else if (ev.key === 'ArrowLeft') AHEAD.sel = Math.max(A.from, AHEAD.sel - step);
+    else return;
+    ev.preventDefault(); updateAhead();
+  });
+  updateAhead();
+}
+
+function updateAhead(){
+  var A = AHEAD.data, g = AHEAD.geo;
+  if (!A || !g) return;
+  var idx = Math.round((AHEAD.sel - A.from) / DAY), day = A.days[idx];
+  var cx = g.X(idx) + g.bw / 2;
+  var cl = document.getElementById('ahead-cl'), cd = document.getElementById('ahead-cd');
+  cl.setAttribute('x1', cx); cl.setAttribute('x2', cx);
+  cd.setAttribute('cx', cx); cd.setAttribute('cy', day.len > 0 ? g.Y(day.len) : g.base);
+  cd.setAttribute('fill', day.len > 0 ? '#6B3FA0' : (day.len === 0 ? '#A8322A' : '#4C566B'));
+  var svg = document.getElementById('ahead-svg');
+  svg.setAttribute('aria-valuenow', idx);
+  svg.setAttribute('aria-valuetext', fdate(day.d) + (day.len > 0 ? ', up to ' + day.len + ' days' : ''));
+
+  var read = document.getElementById('ahead-read');
+  if (day.len == null){
+    read.innerHTML = '<span><strong>' + fmtWd.format(day.d) + '</strong>: already on a trip that day.</span>';
+  } else if (day.len === 0){
+    read.innerHTML = '<span class="warn">Arriving <strong>' + fmtWd.format(day.d) + '</strong> would go over the limit on the first day.</span>';
+  } else {
+    var out = day.d + (day.len - 1)*DAY;
+    read.innerHTML = '<span>Arrive <strong>' + fmtWd.format(day.d) + '</strong>, stay up to <strong>' + day.len + ' days</strong>, leave by <strong>' + fdate(out) + '</strong>.</span>' +
+      '<button type="button" class="ghost" id="ahead-plan">Plan this trip</button>';
+    document.getElementById('ahead-plan').addEventListener('click', function(){
+      CAL.start = day.d; CAL.end = out; CAL.month = firstOfMonth(day.d);
+      syncCal();
+      document.getElementById('cal').scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+  }
 }
 
 /* ---------- render: status ---------- */
@@ -1079,7 +1292,7 @@ function renderPlanned(){
   });
 }
 
-function renderAll(){ renderAnswer(); renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); renderCal(); }
+function renderAll(){ renderAnswer(); renderAhead(); renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); renderCal(); }
 
 /* ---------- forms ---------- */
 function showError(id, msg){
@@ -1213,7 +1426,7 @@ function syncCal(){
 document.getElementById('cal-prev').addEventListener('click', function(){ CAL.month = addMonths(CAL.month, -1); renderCal(); });
 document.getElementById('cal-next').addEventListener('click', function(){ CAL.month = addMonths(CAL.month,  1); renderCal(); });
 document.getElementById('cal-clear').addEventListener('click', function(){ CAL.start = CAL.end = null; syncCal(); });
-addEventListener('resize', function(){ renderCal(); });
+addEventListener('resize', function(){ renderCal(); drawAheadChart(); });
 
 document.getElementById('plan-form').addEventListener('submit', function(ev){
   ev.preventDefault();
