@@ -59,11 +59,20 @@ Single file, three parts: CSS custom properties at the top, semantic HTML, then
 vanilla JS. No framework. Keep it that way — it needs to work by opening the
 file, including for non-technical family members.
 
-Page structure: **The record** (past trips, prefilled with the four family trips
-on first run) → **Where you stand today** (stamp verdict, stacked 90-day meter,
-draggable moving-window timeline, days-come-back milestones) → **Plan the next
-trips** (arrive/depart/days form, verdict cards) → **The rules, in plain English**
-(collapsed `<details>`, with source links).
+Page structure, answer first: **answer card** (if someone is in the UAE now, the
+leave-by date; otherwise how long a trip starting tomorrow can be) → **When can
+they come next?** (for every arrival day in the next year, the longest safe stay,
+as a step chart with "earliest date for 1/2/3 months"; tapping a day hands that
+trip to the calendar) → **Plan a trip** (calendar range picker, verdict cards
+with fixes) → **Your trips** →
+folded **How the count works** (stacked meter, draggable window timeline,
+breach note, days-come-back) → folded **Rules** → folded **Settings**.
+
+The answer card shows two leave-by dates and uses the earlier one: the planner's
+own count, and ICP's File Validity screen (`state.icp` = check date + "Remaining
+Days to Stay", entered by hand; ICP's date is check date + remaining). ICP's
+remaining figure is a plain subtraction that ignores days dropping out, so it is
+usually the earlier date.
 
 The pure date engine lives in `<script id="engine">` (extractable for testing):
 
@@ -74,11 +83,19 @@ The pure date engine lives in `<script id="engine">` (extractable for testing):
 
 App conventions:
 
+- The window is `WINDOW = 366` days: one year back to the same date, both ends
+  counted. That is what makes the planner's count match ICP's File Validity
+  screen (80 on 27 Oct 2026). Never hard-code 365; use `WINDOW`.
+- `MAX_VISIT = 90`: one continuous visit can't exceed 90 days without an
+  extension, so `longestFrom` / `longestUntil` stop there even with 105 a year.
+- The "come next" chart assumes a visit happening now ends on its leave-by date.
+- `LIMIT` is `state.allowance`: 90 by default, 105 optional (ICP's screen always
+  sums to 105 for this file, probably 90 + the 15 fined days; unconfirmed).
 - All dates are UTC epoch milliseconds via `Date.UTC`. **Do not introduce
   local-time date construction** — DST shifts silently corrupt day counts by one.
   `TODAY` is the user's wall-clock date normalised to UTC midnight, computed at load.
 - Trips persist in `localStorage` under `uae-visit-planner:v1`
-  (`{trips:[{in,out}], planned:[...]}`, epoch ms). `out: null` means "still in
+  (`{trips:[{in,out}], planned:[...], allowance, icp:{date,remaining}}`, epoch ms). `out: null` means "still in
   the UAE" and counts through today. Wrapped in try/catch so file:// still works.
 - Past trips are "Trip 1..N", planned are "Plan 1..N", chronological. Each gets a
   colour from `TRIP_COLORS` (stamp-ink purple/teal/ochre/blue) shared by the
