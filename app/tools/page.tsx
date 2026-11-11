@@ -24,17 +24,27 @@ const TOOL_META: Record<string, { name: string; description: string }> = {
     name: "Resume Builder",
     description: "Build a professional resume with live preview, multiple layouts & themes, and PDF export",
   },
+  uae_visa_planner: {
+    name: "UAE Visit Planner",
+    description: "Track days on the UAE 5-year visit visa and plan trips that stay inside the 90-day yearly limit",
+  },
 };
 
 function getTools() {
   const toolsDir = path.join(process.cwd(), "public", "tools");
 
   try {
-    const files = fs.readdirSync(toolsDir);
-    const htmlFiles = files
-      .filter((file) => file.endsWith(".html"))
-      .map((file) => {
-        const toolId = file.replace(".html", "");
+    const entries = fs.readdirSync(toolsDir, { withFileTypes: true });
+    // A tool is either public/tools/<id>.html or a folder with public/tools/<id>/index.html
+    const toolIds = entries
+      .filter((entry) =>
+        entry.isDirectory()
+          ? fs.existsSync(path.join(toolsDir, entry.name, "index.html"))
+          : entry.name.endsWith(".html")
+      )
+      .map((entry) => entry.name.replace(/\.html$/, ""));
+    const htmlFiles = toolIds
+      .map((toolId) => {
         const meta = TOOL_META[toolId];
         const name =
           meta?.name ??
@@ -48,7 +58,6 @@ function getTools() {
           id: toolId,
           name,
           description,
-          filename: file,
         };
       });
 

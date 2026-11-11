@@ -39,7 +39,7 @@ body{
   font-size:1rem;
   line-height:1.55;
 }
-.wrap{max-width:41rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.wrap{max-width:64rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
 a{color:var(--stamp);text-underline-offset:2px}
 a:hover{text-decoration-thickness:2px}
 :focus-visible{outline:2px solid var(--stamp);outline-offset:2px;border-radius:2px}
@@ -49,11 +49,12 @@ header{padding-bottom:1.75rem;border-bottom:2px solid var(--ink)}
 h1{font-family:var(--display);font-weight:800;font-size:clamp(2.1rem,7vw,3rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
 .standfirst{margin-top:.85rem;max-width:36rem;color:var(--ink-soft);font-size:1.02rem}
 .standfirst strong{color:var(--ink)}
+.portal{margin-top:.5rem;font-size:.92rem;color:var(--ink-soft)}
 
 /* ---------- sections ---------- */
 section{margin-top:2.25rem}
 h2{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;padding-bottom:.45rem;border-bottom:1px solid var(--line)}
-.section-note{margin-top:.5rem;color:var(--ink-soft);font-size:.92rem}
+.section-note{max-width:44rem;margin-top:.5rem;color:var(--ink-soft);font-size:.92rem}
 
 /* ---------- trip ledger ---------- */
 .ledger{margin-top:.9rem;display:flex;flex-direction:column}
@@ -64,6 +65,8 @@ h2{font-family:var(--display);font-weight:700;font-size:1.3rem;letter-spacing:-.
 .ledger-row:first-child{border-top:1px dashed var(--line)}
 .dot{width:10px;height:10px;border-radius:50%;flex:none;display:inline-block}
 .trip-dates{font-family:var(--mono);font-size:.9rem;font-weight:700}
+.plan-head .dot{margin-right:.45rem}
+.plan-head .trip-days{color:var(--ink-soft);font-weight:400}
 .tn{font-family:var(--body);font-size:.82rem;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em}
 .trip-meta{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);white-space:nowrap;justify-self:end}
 .empty-note{padding:1.1rem .25rem;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);color:var(--ink-soft);font-size:.95rem;margin-top:1.1rem}
@@ -103,24 +106,7 @@ button.ghost:hover{background:var(--stamp-soft)}
 .ongoing{display:flex;align-items:center;gap:.5rem;min-height:44px;flex:0 0 auto;font-size:.88rem;color:var(--ink-soft)}
 .ongoing input{width:18px;height:18px;accent-color:var(--stamp)}
 
-/* ---------- status / stamp ---------- */
-.stamp{
-  display:inline-block;margin-top:1.1rem;padding:.65rem 1.2rem .7rem;
-  border:3px double currentColor;border-radius:10px;transform:rotate(-2deg);
-  font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-  font-size:clamp(.72rem, 2.9vw, 1.02rem);line-height:1.35;opacity:.94;
-  max-width:100%;
-}
-.stamp .big{font-size:clamp(1rem, 5.6vw, 1.5rem);letter-spacing:.02em;display:block}
-.stamp.ok{color:var(--ok)}
-.stamp.bad{color:var(--bad)}
-@media (prefers-reduced-motion:no-preference){
-  .stamp.thump{animation:stamp-in .45s cubic-bezier(.16,1,.3,1) both}
-  @keyframes stamp-in{
-    0%{transform:rotate(-6deg) scale(1.45);opacity:0}
-    100%{transform:rotate(-2deg) scale(1);opacity:.94}
-  }
-}
+/* ---------- window meter ---------- */
 .win-meter{margin-top:.65rem}
 .win-track{position:relative;display:flex;height:20px;border:1px solid var(--ink);border-radius:4px;background:var(--paper-raised);overflow:hidden}
 .win-limit{position:absolute;top:0;bottom:0;width:2px;background:var(--bad);z-index:2}
@@ -129,33 +115,42 @@ button.ghost:hover{background:var(--stamp-soft)}
 .win-seg + .win-seg{border-left:1px solid var(--paper-raised)}
 .win-legend{margin-top:.45rem;display:flex;flex-wrap:wrap;gap:.25rem 1rem;font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
 .win-legend .item{display:flex;align-items:center;gap:.4rem}
-.status-lines{margin-top:1.1rem;display:flex;flex-direction:column;gap:.5rem;font-size:.95rem}
-.status-lines strong{font-family:var(--mono)}
-.comeback{margin-top:1.25rem}
-.comeback h3, .planner h3{font-family:var(--display);font-weight:700;font-size:1.05rem}
-.comeback ul{margin-top:.6rem;list-style:none;display:flex;flex-direction:column;gap:.5rem}
-.comeback li{display:flex;gap:.8rem;align-items:baseline;font-size:.93rem}
-.comeback .date{font-family:var(--mono);font-weight:700;white-space:nowrap}
-.comeback .gain{color:var(--ink-soft)}
+
+/* ---------- settings ---------- */
+.settings{border:0;margin-top:1rem}
+.settings legend{font-weight:700;font-size:.85rem;color:var(--ink-soft);margin-bottom:.3rem}
+.setting{display:flex;gap:.75rem;align-items:flex-start;padding:.75rem .2rem;border-bottom:1px dashed var(--line);cursor:pointer;font-size:.9rem;color:var(--ink-soft);max-width:38rem}
+.setting input{margin-top:.2rem;width:18px;height:18px;flex:none;accent-color:var(--stamp)}
+.setting strong{display:block;color:var(--ink);font-size:.98rem}
+#status .section-note{margin-top:1rem}
 
 /* ---------- timeline ---------- */
 .timeline{margin-top:1.4rem}
-.tl-readout{font-size:.95rem}
+.tl-readout{font-size:.95rem;display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .9rem}
+.win-span{font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.win-stat{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem}
+@media (max-width:440px){ .win-span{font-size:.78rem} }
 .tl-readout strong{font-family:var(--mono)}
 .tl-readout .ok{color:var(--ok)}
 .tl-readout .bad{color:var(--bad)}
+.tl-readout .free{color:var(--ok);font-size:1.15rem}
 .tl-today-btn{background:none;border:none;padding:0;font:inherit;font-size:.88rem;color:var(--stamp);text-decoration:underline;cursor:pointer;text-underline-offset:2px}
-.tl-scroll{margin-top:.65rem;overflow-x:auto;border:1px solid var(--ink);border-radius:8px;background:var(--paper-raised)}
+.tl-frame{margin-top:.65rem;display:flex;align-items:stretch;gap:.35rem}
+.tl-chev{flex:none;width:36px;min-height:44px;display:grid;place-items:center;background:var(--paper-raised);border:1px solid var(--line);border-radius:8px;color:var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tl-chev svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tl-chev:hover:not(:disabled){border-color:var(--stamp);color:var(--stamp);background:var(--stamp-soft)}
+.tl-chev:disabled{opacity:.3;cursor:default}
+.tl-scroll{flex:1;min-width:0;overflow-x:auto;border:1px solid var(--ink);border-radius:8px;background:var(--paper-raised)}
 .tl-canvas{position:relative;height:108px;cursor:pointer;outline-offset:-2px}
 .tl-grid{position:absolute;top:6px;bottom:28px;width:1px;background:var(--line-soft);pointer-events:none}
 .tl-mlabel{position:absolute;bottom:6px;font-family:var(--mono);font-size:.66rem;color:var(--ink-soft);white-space:nowrap;pointer-events:none}
-.tl-bar{position:absolute;top:40px;height:26px;background:var(--stamp);border-radius:4px}
+.tl-bar{position:absolute;top:40px;height:20px;background:var(--stamp);border-radius:4px}
 .tl-bar.planned{background:var(--stamp-soft);border:2px dashed var(--stamp)}
-.tl-over{position:absolute;top:40px;height:26px;background:var(--bad);border-radius:3px}
+.tl-over{position:absolute;top:40px;height:20px;background:var(--bad);border-radius:3px}
 .breach-note{margin-top:.6rem;font-size:.88rem;font-weight:600;color:var(--bad);line-height:1.6}
 .breach-note .tl-today-btn{font-weight:600}
 .tl-today{position:absolute;top:6px;bottom:28px;width:2px;background:var(--ink);pointer-events:none}
-.tl-today-label{position:absolute;top:9px;font-family:var(--mono);font-size:.62rem;color:var(--ink);pointer-events:none}
+.tl-today-label{position:absolute;bottom:30px;font-family:var(--mono);font-size:.62rem;color:var(--ink);pointer-events:none}
 .tl-dim{position:absolute;top:6px;bottom:28px;background:rgba(241,242,237,.68);pointer-events:none}
 .tl-band{position:absolute;top:6px;bottom:28px;background:rgba(107,63,160,.13);border-left:2px solid var(--stamp);border-right:2px solid var(--stamp);cursor:grab;touch-action:none}
 .tl-band:active{cursor:grabbing}
@@ -165,6 +160,14 @@ button.ghost:hover{background:var(--stamp-soft)}
   background:linear-gradient(90deg, var(--stamp) 0 5px, var(--paper-raised) 5px 7px, var(--stamp) 7px 9px, var(--paper-raised) 9px 11px, var(--stamp) 11px 16px);
 }
 .tl-hint{margin-top:.5rem;font-size:.82rem;color:var(--ink-soft)}
+.tl-blabel{position:absolute;font-family:var(--mono);font-size:.68rem;font-weight:700;color:var(--ink);white-space:nowrap;pointer-events:none;line-height:18px;z-index:3;background:rgba(250,250,246,.85);padding:0 3px;border-radius:3px}
+.tl-bar.draft{background:var(--ok-soft);border:2px solid var(--ok);z-index:2}
+.tl-bar.draft.bad{background:var(--bad-soft);border-color:var(--bad)}
+.tl-blabel.bad{color:var(--bad)}
+.tl-blabel.out{color:var(--ink-soft);font-weight:400;opacity:.7}
+.tl-edge{position:absolute;top:-1px;font-family:var(--mono);font-size:.6rem;color:var(--stamp);font-weight:700;white-space:nowrap;pointer-events:none}
+.tl-edge.l{left:4px}
+.tl-edge.r{right:12px}
 
 /* ---------- rules ---------- */
 .rules-fold summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.6rem;padding-bottom:.45rem;border-bottom:1px solid var(--line)}
@@ -186,21 +189,40 @@ button.ghost:hover{background:var(--stamp-soft)}
 .field.days{flex:0 1 6rem}
 .plan-list{margin-top:1.1rem;display:flex;flex-direction:column;gap:.65rem}
 .plan-card{border:1px solid var(--ink);border-radius:10px;background:var(--paper-raised);padding:.7rem .9rem;position:relative}
-.plan-head{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;padding-right:2.6rem}
+.plan-head{display:flex;flex-wrap:wrap;gap:.3rem .7rem;align-items:baseline;padding-right:5.5rem}
+.plan-verdict{display:flex;flex-wrap:wrap;gap:.35rem .7rem;align-items:center;margin-top:.5rem}
+.plan-verdict .cost{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--bad)}
+.plan-verdict .spare{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--ok)}
+.or{min-height:44px;display:flex;align-items:center;align-self:flex-end;font-size:.85rem;color:var(--ink-soft)}
+.plan-preview{flex-basis:100%;font-size:.9rem;color:var(--ink-soft);min-height:1.4em}
+.plan-preview strong{font-family:var(--mono);color:var(--ink)}
+.plan-preview .ok{color:var(--ok);font-weight:600}
+.plan-preview .bad{color:var(--bad);font-weight:600}
+button.primary:disabled{opacity:.4;cursor:default}
+button.primary:disabled:hover{background:var(--stamp)}
+.fixes{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-top:.6rem}
+.fix-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.fixes button{
+  font-family:var(--body);font-size:.78rem;font-weight:600;color:var(--ink-soft);
+  background:var(--paper-raised);border:1px solid var(--line);border-radius:8px;
+  min-height:44px;padding:.3rem .7rem;cursor:pointer;text-align:left;line-height:1.25;
+}
+.fixes button b{display:block;font-family:var(--mono);font-size:.82rem;color:var(--stamp)}
+.fixes button:hover b{color:var(--paper)}
+.fixes button:hover{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}
 .verdict{
   font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
   padding:.28rem .6rem;border-radius:5px;white-space:nowrap;
 }
 .verdict.ok{color:var(--ok);background:var(--ok-soft);border:1px solid currentColor}
 .verdict.bad{color:#fff;background:var(--bad);border:1px solid var(--bad)}
-.plan-detail{margin-top:.4rem;font-size:.9rem;color:var(--ink-soft)}
-.plan-detail strong{color:var(--ink);font-family:var(--mono);font-size:.86rem}
-.plan-fix{margin-top:.55rem;font-size:.9rem;color:var(--bad);font-weight:600}
-.plan-card .icon-btn{position:absolute;top:.45rem;right:.45rem}
-.shift{display:flex;align-items:center;gap:.4rem;margin-top:.55rem;flex-wrap:wrap}
-.shift button{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--ink);background:var(--paper-raised);border:1px solid var(--ink);border-radius:6px;min-width:44px;min-height:44px;cursor:pointer}
+.plan-detail{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft)}
+.card-actions{position:absolute;top:.35rem;right:.35rem;display:flex}
+.plan-card .icon-btn[data-pedit]:hover{color:var(--stamp);background:var(--stamp-soft)}
+.shift{display:flex;align-items:center;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
+.shift button{font-family:var(--mono);font-size:.82rem;font-weight:700;color:var(--ink-soft);background:none;border:1px solid var(--line);border-radius:6px;min-width:44px;min-height:44px;cursor:pointer}
 .shift button:hover{background:var(--stamp-soft);border-color:var(--stamp);color:var(--stamp)}
-.shift .shift-label{font-size:.78rem;color:var(--ink-soft);margin:0 .3rem}
+.shift .shift-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 .25rem}
 .shift-err{margin-top:.35rem;font-size:.85rem;color:var(--bad);font-weight:600;display:none}
 .plan-empty{margin-top:1.1rem;color:var(--ink-soft);font-size:.95rem}
 
@@ -212,7 +234,6 @@ footer p+p{margin-top:.6rem}
 @media (max-width:620px){
   .ledger-row{grid-template-columns:auto 1fr auto}
   .trip-meta{grid-row:2;grid-column:2;justify-self:start;white-space:normal}
-  .stamp{padding:.6rem 1rem .65rem}
 }
 </style>
 </head>
@@ -221,13 +242,14 @@ footer p+p{margin-top:.6rem}
 
 <header>
   <h1>UAE Visit Planner</h1>
-  <p class="standfirst">Every day inside the UAE on the 5-year visit visa counts against <strong>90 days in any rolling 365</strong>. This page keeps the record, shows where you stand today, and checks future trips before they turn into fines.</p>
+  <p class="standfirst">For the 5-year UAE visit visa. It works out the last day you can stay without a fine, and checks a trip before you book it.</p>
+  <p class="portal">To check the official count, look up the file on <a href="https://smartservices.icp.gov.ae/echannels/web/client/default.html#/fileValidity" target="_blank" rel="noopener">ICP’s File Validity portal</a> and compare its days spent with this page.</p>
 </header>
 
-<!-- ================= RECORD ================= -->
+<!-- ================= TRIPS ================= -->
 <section id="record" aria-labelledby="record-h">
-  <h2 id="record-h">The record</h2>
-  <p class="section-note">Entry and exit dates as stamped at UAE immigration — not the dates you landed back home. Both the entry day and the exit day count.</p>
+  <h2 id="record-h">Your trips</h2>
+  <p class="section-note">Use the dates stamped by UAE immigration, not the dates you landed back home. The day you arrive and the day you fly out both count.</p>
 
   <div class="ledger" id="trip-list" role="list"></div>
 
@@ -246,16 +268,19 @@ footer p+p{margin-top:.6rem}
   </form>
 </section>
 
-<!-- ================= STATUS ================= -->
+<!-- ================= THE ROLLING WINDOW ================= -->
 <section id="status" aria-labelledby="status-h">
-  <h2 id="status-h">Where you stand today</h2>
+  <h2 id="status-h">How the one-year window works</h2>
+  <p class="section-note">On any day in the UAE, the limit looks back exactly one year from that day. The shaded band is that year. Trips inside it count, and trips that slide out of it stop counting. Drag the band to see the count on other days.</p>
   <div id="status-body"></div>
 </section>
 
-<!-- ================= PLANNER ================= -->
+<!-- ================= ANSWER ================= -->
+
+<!-- ================= PLAN ================= -->
 <section id="plan-sec" aria-labelledby="plan-h">
-  <h2 id="plan-h">Plan the next trips</h2>
-  <p class="section-note">Fill any two of arrive / depart / days — the third completes itself. Give only days and the earliest safe dates are found for you. Each trip is checked against the record plus every planned trip before it.</p>
+  <h2 id="plan-h">Plan a new trip</h2>
+  <p class="section-note">Fill in any of the three. An arrival date alone gives the longest stay that fits from that day. Days alone start the day after the last trip. The trip shows up on the timeline as a dashed bar.</p>
 
   <form class="trip-form" id="plan-form" novalidate>
     <div class="field">
@@ -263,20 +288,26 @@ footer p+p{margin-top:.6rem}
       <input type="date" id="plan-in">
     </div>
     <div class="field">
-      <label for="plan-out">Depart</label>
+      <label for="plan-out">Leave</label>
       <input type="date" id="plan-out">
     </div>
+    <span class="or">or</span>
     <div class="field days">
       <label for="plan-days">Days</label>
       <input type="number" id="plan-days" min="1" max="365" inputmode="numeric">
     </div>
-    <button type="submit" class="primary">Check this trip</button>
+    <label class="ongoing"><input type="checkbox" id="plan-stick"> End on the window’s right edge</label>
+    <p class="plan-preview" id="plan-preview" aria-live="polite"></p>
+    <button type="submit" class="primary">Add to timeline</button>
+    <button type="button" class="ghost" id="plan-clear">Clear</button>
     <p class="form-error" id="plan-error" role="alert"></p>
   </form>
 
   <div class="plan-list" id="plan-list"></div>
-  <p class="plan-empty" id="plan-empty">No trips planned yet. Add dates — or just a number of days — to see what clears the window.</p>
 </section>
+
+
+
 
 <!-- ================= RULES ================= -->
 <section id="rules-sec">
@@ -292,7 +323,7 @@ footer p+p{margin-top:.6rem}
 
     <div class="rule">
       <p class="lead">2. The year rolls. It never resets.</p>
-      <p>The 90 days are measured over the 365 days behind <em>any given day you are in the country</em> — not a calendar year, not the visa anniversary. Each day you spend only comes back exactly 365 days later. Three modest trips can quietly stack past 90 inside one moving window, which is precisely how a 15-day overstay happened to us without any single trip being too long.</p>
+      <p>On any day you are in the UAE, the system looks back one year to the same date and counts every day you spent inside. It is not a calendar year and not the visa anniversary. Each day you spend stops counting a year later. Three ordinary trips can add up past 90 inside one year, which is how the 15-day fine in February 2026 happened even though no single trip was long.</p>
       <span class="src">Sources: <a href="https://gulfnews.com/uae/government/uae-5-year-tourist-visa-explained-stay-up-to-180-days-a-year-1.500609458" target="_blank" rel="noopener">Gulf News — year counted from first entry, not calendar year</a> · <a href="https://www.khaleejtimes.com/life-and-living/visa-and-immigration-in-uae/uae-5-year-multiple-entry-tourist-visa-fees-documents-refund-policy-rejection" target="_blank" rel="noopener">Khaleej Times — 5-year visa rules</a></span>
     </div>
 
@@ -309,9 +340,9 @@ footer p+p{margin-top:.6rem}
     </div>
 
     <div class="rule">
-      <p class="lead">5. Keep your own count. Don’t trust the dashboard.</p>
-      <p>The ICP file-validity page has shown us 15 more remaining days than the arithmetic allows — exactly the days that were fined. Keep your own entry/exit list (this page), plan on the <em>lower</em> number, and get anything important confirmed by ICP in writing.</p>
-      <span class="src">Check yourself: <a href="https://smartservices.icp.gov.ae/" target="_blank" rel="noopener">ICP Smart Services</a> · <a href="https://www.gdrfad.gov.ae/en" target="_blank" rel="noopener">GDRFA Dubai</a> · ICP call centre 600&nbsp;522&nbsp;222</span>
+      <p class="lead">5. Check ICP's screen too, and go with the earlier date.</p>
+      <p>ICP's File Validity screen shows days spent and days remaining. For this file they always add up to 105, not 90, probably because the 15 fined days were added back. Its remaining days are a plain subtraction, so its leave-by date can be earlier than this planner's. Enter ICP's number at the top of this page and the planner uses whichever date comes first.</p>
+      <span class="src">Check yourself: <a href="https://smartservices.icp.gov.ae/echannels/web/client/default.html#/fileValidity" target="_blank" rel="noopener">ICP File Validity</a> · <a href="https://www.gdrfad.gov.ae/en" target="_blank" rel="noopener">GDRFA Dubai</a> · ICP call centre 600&nbsp;522&nbsp;222</span>
     </div>
 
   </div>
@@ -319,6 +350,20 @@ footer p+p{margin-top:.6rem}
   <div class="caveat">
     <strong>Caveat:</strong> UAE visa rules changed twice during 2026, and the guidance above comes from news reporting of GDRFA and ICP announcements rather than a single official rulebook. Whatever ICP confirms in writing overrides anything on this page.
   </div>
+  </details>
+</section>
+
+<!-- ================= SETTINGS ================= -->
+<section id="settings-sec">
+  <details class="rules-fold">
+  <summary><h2>Settings</h2><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3 L11 8 L5 13"/></svg></summary>
+  <fieldset class="settings">
+    <legend>Days allowed in a year</legend>
+    <label class="setting"><input type="radio" name="allowance" value="90">
+      <span><strong>90 days</strong>The published default for this visa without a paid extension. The safest choice.</span></label>
+    <label class="setting"><input type="radio" name="allowance" value="105">
+      <span><strong>105 days</strong>What ICP's File Validity screen adds up to for this file (66 + 39 in August, 80 + 25 in October). Probably the 90 plus the 15 days paid for in the February fine. ICP has not confirmed it.</span></label>
+  </fieldset>
   </details>
 </section>
 
@@ -333,8 +378,9 @@ footer p+p{margin-top:.6rem}
 /* ---------- pure date/window engine — all UTC-midnight epoch ms ---------- */
 var DAY = 86400000;
 var LIMIT = 90;
-var WINDOW = 365;
+var WINDOW = 366;   /* one year back, both ends counted: matches ICP's File Validity count */
 var FINE_PER_DAY = 50;
+var MAX_VISIT = 90;  /* one continuous visit may not run past 90 days without an extension */
 
 function parseISO(s){ var p = s.split('-'); return Date.UTC(+p[0], +p[1]-1, +p[2]); }
 function isoOf(ms){ return new Date(ms).toISOString().slice(0,10); }
@@ -346,7 +392,7 @@ function overlapDays(tin, tout, ws, we){
   return b >= a ? daysInclusive(a,b) : 0;
 }
 
-/* days used in the 365-day window ending on `day`; ongoing trips (out=null) count through `asOf` */
+/* days used in the one-year window ending on `day`; ongoing trips (out=null) count through `asOf` */
 function usedOn(day, trips, asOf){
   var ws = day - (WINDOW-1)*DAY, total = 0;
   for (var i=0;i<trips.length;i++){
@@ -373,9 +419,19 @@ function evaluateTrip(s, e, others, asOf){
 /* longest stay starting `start` that never breaches the limit (0 = cannot even enter) */
 function longestFrom(start, others, asOf){
   var safe = 0;
-  for (var d = start; daysInclusive(start,d) <= WINDOW; d += DAY){
+  for (var d = start; daysInclusive(start,d) <= MAX_VISIT; d += DAY){
     if (usedOn(d, others.concat([{in:start, out:d}]), asOf) > LIMIT) break;
     safe = daysInclusive(start, d);
+  }
+  return safe;
+}
+
+/* longest stay ending on `end` that never breaches (mirror of longestFrom) */
+function longestUntil(end, others, asOf){
+  var safe = 0;
+  for (var d = end; daysInclusive(d, end) <= MAX_VISIT; d -= DAY){
+    if (evaluateTrip(d, end, others, asOf).over > 0) break;
+    safe = daysInclusive(d, end);
   }
   return safe;
 }
@@ -397,8 +453,13 @@ var SEED_TRIPS = [
   { in: parseISO('2024-10-03'), out: parseISO('2024-11-09') },
   { in: parseISO('2025-03-12'), out: parseISO('2025-04-19') },
   { in: parseISO('2025-10-17'), out: parseISO('2025-11-24') },
-  { in: parseISO('2026-01-20'), out: parseISO('2026-02-15') }
+  { in: parseISO('2026-01-20'), out: parseISO('2026-02-15') },
+  { in: parseISO('2026-10-04'), out: parseISO('2026-11-14') }
 ];
+
+function seedState(){
+  return { trips: SEED_TRIPS.slice(), planned: [], allowance: 90 };
+}
 
 function todayUTC(){
   var n = new Date();
@@ -409,11 +470,11 @@ var fmtLong = new Intl.DateTimeFormat('en-GB', { day:'numeric', month:'short', y
 var fmtMonth = new Intl.DateTimeFormat('en-GB', { month:'short', timeZone:'UTC' });
 
 /* one colour per trip, shared by the record list, the meter stack and the timeline bars.
-   Distinct stamp-ink hues: purple, teal, ochre, blue. */
-var TRIP_COLORS = ['#6B3FA0', '#12766B', '#B0620F', '#2456A6'];
+   Distinct stamp-ink hues: purple, teal, ochre, blue, rose. */
+var TRIP_COLORS = ['#6B3FA0', '#12766B', '#B0620F', '#2456A6', '#A3305E'];
 function colorFor(i){ return TRIP_COLORS[i % TRIP_COLORS.length]; }
 function tripName(i){ return 'Trip ' + (i + 1); }
-function planName(i){ return 'Plan ' + (i + 1); }
+function planName(i){ return 'Trip ' + (state.trips.length + i + 1); }   /* planned trips carry on the numbering */
 function fdate(ms){ return fmtLong.format(ms); }
 
 function load(){
@@ -421,10 +482,14 @@ function load(){
     var raw = localStorage.getItem(STORE_KEY);
     if (raw){
       var d = JSON.parse(raw);
-      if (Array.isArray(d.trips)) return { trips: d.trips, planned: Array.isArray(d.planned) ? d.planned : [] };
+      if (Array.isArray(d.trips)) return {
+        trips: d.trips,
+        planned: Array.isArray(d.planned) ? d.planned : [],
+        allowance: d.allowance === 105 ? 105 : 90
+      };
     }
   } catch(e){}
-  return { trips: SEED_TRIPS.slice(), planned: [] };
+  return seedState();
 }
 function save(){
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){}
@@ -432,6 +497,7 @@ function save(){
 
 var state = load();
 var TODAY = todayUTC();
+LIMIT = state.allowance;
 
 function sortedTrips(){ return state.trips.slice().sort(function(a,b){ return a.in - b.in; }); }
 function sortedPlanned(){ return state.planned.slice().sort(function(a,b){ return a.in - b.in; }); }
@@ -456,10 +522,11 @@ function renderTrips(){
     var ongoing = t.out == null;
     var out = ongoing ? TODAY : t.out;
     var n = daysInclusive(t.in, out);
-    var dropsOut = out + 365*DAY;
-    var meta = n + 'd' + (ongoing
-      ? ' · in UAE now'
-      : (dropsOut <= TODAY ? ' · aged out' : ' · counts till ' + fdate(dropsOut)));
+    var lastCounted = out + (WINDOW-1)*DAY;
+    var meta = n + ' days' + (ongoing
+      ? ' · in the UAE now'
+      : isHere(t) ? ' · in the UAE now, flying out ' + fdate(t.out)
+      : (lastCounted < TODAY ? ' · no longer counts' : ' · counts until ' + fdate(lastCounted)));
     return '<div class="ledger-row" role="listitem">' +
       '<span class="dot" style="background:' + colorFor(i) + '"></span>' +
       '<span class="trip-dates"><span class="tn">' + tripName(i) + '</span> · ' + fdate(t.in) + ' → ' + (ongoing ? 'now' : fdate(t.out)) + '</span>' +
@@ -482,43 +549,15 @@ function renderTrips(){
   });
 }
 
+/* in the UAE today: either no exit yet, or an exit date that is still ahead (a booked flight) */
+function isHere(t){ return t.out == null || (t.in <= TODAY && t.out >= TODAY); }
+
 /* ---------- render: status ---------- */
 function renderStatus(){
   var box = document.getElementById('status-body');
-  var trips = sortedTrips();
-  if (!trips.length){
-    box.innerHTML = '<p class="plan-empty">Add at least one trip to the record and the summary appears here.</p>';
-    return;
-  }
-  var used = usedOn(TODAY, trips, TODAY);
-  var avail = LIMIT - used;
-  var over = avail < 0;
-  var longest = longestFrom(TODAY + DAY, trips, TODAY);
-
-  var stamp = over
-    ? '<div class="stamp bad thump"><span class="big">Over the limit</span>' + (-avail) + ' days over · as of ' + fdate(TODAY) + '</div>'
-    : '<div class="stamp ok thump"><span class="big">' + avail + ' days available</span>within the 90 · as of ' + fdate(TODAY) + '</div>';
-
-  var lines =
-    '<div class="status-lines">' +
-      '<span>Longest trip if you land tomorrow: <strong>' + longest + ' days</strong>' + (longest > 0 ? ' (depart by ' + fdate(TODAY + DAY + (longest-1)*DAY) + ')' : ' — entering now would breach immediately') + '</span>' +
-    '</div>';
-
-  /* milestones: when each trip's days are fully back */
-  var items = '';
-  trips.forEach(function(t, i){
-    var out = t.out == null ? TODAY : t.out;
-    var back = out + 365*DAY;
-    if (back > TODAY){
-      var availThen = LIMIT - usedOn(back, trips, TODAY);
-      items += '<li><span class="date">' + fdate(back) + '</span><span class="gain">all ' + daysInclusive(t.in,out) + ' days of ' + tripName(i) + ' are back → ' + availThen + ' available</span></li>';
-    }
-  });
-  var comeback = items
-    ? '<div class="comeback"><h3>When days come back</h3><ul>' + items + '</ul></div>'
-    : '<div class="comeback"><h3>When days come back</h3><p class="section-note">All recorded days have already aged out of the window.</p></div>';
-
-  box.innerHTML = stamp + '<div class="timeline" id="timeline"></div>' + lines + comeback;
+  box.innerHTML = state.trips.length
+    ? '<div class="timeline" id="timeline"></div>'
+    : '<p class="plan-empty">Add at least one trip and the timeline appears here.</p>';
 }
 
 /* ---------- render: timeline ---------- */
@@ -550,6 +589,9 @@ function renderTimeline(){
   var px = Math.min(1.6, Math.max(0.55, (hostW - 2) / totalDays));
   var width = totalDays * px;
   function X(ms){ return (ms - start)/DAY * px; }
+  /* one row per trip, so each bar has room for its own label */
+  var ROW_TOP = 24, ROW_H = 26;
+  function rowOf(ms){ for (var i = 0; i < bars.length; i++){ if (ms >= bars[i].in && ms <= bars[i].out) return i; } return 0; }
 
   /* days where being in the country exceeded the limit — the story of the fine */
   var allTrips = past.concat(planned);
@@ -574,9 +616,11 @@ function renderTimeline(){
   var html = '<p class="tl-readout" id="tl-readout" aria-live="polite"></p>' +
     '<div class="win-meter"><div class="win-track" id="win-track"></div><div class="win-legend" id="win-legend"></div></div>' +
     breachHtml +
+    '<div class="tl-frame">' +
+    '<button type="button" class="tl-chev" data-win="-1" aria-label="Move the window one day earlier"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13"/></svg></button>' +
     '<div class="tl-scroll" id="tl-scroll">' +
-    '<div class="tl-canvas" id="tl-canvas" style="width:' + width + 'px" tabindex="0" role="slider" ' +
-      'aria-label="End date of the 365-day window" aria-valuemin="0" aria-valuemax="' + (totalDays - 1) + '">';
+    '<div class="tl-canvas" id="tl-canvas" style="width:' + width + 'px;height:' + (ROW_TOP + (bars.length + (stickOn() ? 1 : 0))*ROW_H + 48) + 'px" tabindex="0" role="slider" ' +
+      'aria-label="End date of the one-year window" aria-valuemin="0" aria-valuemax="' + (totalDays - 1) + '">';
 
   /* label cadence anchored to January so year labels never collide with neighbours */
   var labelEvery = px * 30.4 >= 34 ? 1 : (px * 30.4 >= 18 ? 2 : 3);
@@ -588,24 +632,36 @@ function renderTimeline(){
     if (d.getUTCMonth() === 0) lab += ' ’' + String(d.getUTCFullYear()).slice(2);
     html += '<span class="tl-mlabel" style="left:' + (X(m) + 3) + 'px">' + lab + '</span>';
   }
-  bars.forEach(function(t){
+  bars.forEach(function(t, i){
     var w = Math.max(2, (t.out - t.in)/DAY * px + px);
     var title = t.name + ' · ' + fdate(t.in) + ' → ' + (t.ongoing ? 'in UAE' : fdate(t.out));
     var paint = t.planned
       ? 'background:' + t.color + '2E;border-color:' + t.color
       : 'background:' + t.color;
-    html += '<span class="tl-bar' + (t.planned ? ' planned' : '') + '" style="left:' + X(t.in) + 'px;width:' + w + 'px;' + paint + '" title="' + title + '"></span>';
+    var top = ROW_TOP + i*ROW_H;
+    /* label sits after the bar, or before it when the bar is near the right edge */
+    var after = X(t.in) + w + 6 + 190 < width;
+    html += '<span class="tl-bar' + (t.planned ? ' planned' : '') + '" style="left:' + X(t.in) + 'px;top:' + (top + 3) + 'px;width:' + w + 'px;' + paint + '" title="' + title + '"></span>' +
+            '<span class="tl-blabel" data-bl style="top:' + (top + 4) + 'px;' + (after ? 'left:' + (X(t.in) + w + 6) : 'right:' + (width - X(t.in) + 6)) + 'px"></span>';
   });
   breachRuns.forEach(function(r){
     var w = Math.max(2, (r.e - r.s)/DAY * px + px);
-    html += '<span class="tl-over" style="left:' + X(r.s) + 'px;width:' + w + 'px" title="Over the limit: ' + fdate(r.s) + ' – ' + fdate(r.e) + '"></span>';
+    html += '<span class="tl-over" style="left:' + X(r.s) + 'px;top:' + (ROW_TOP + rowOf(r.s)*ROW_H + 3) + 'px;width:' + w + 'px" title="Over the limit: ' + fdate(r.s) + ' – ' + fdate(r.e) + '"></span>';
   });
+  /* the trip being planned, pinned to the band's right edge; placed in updateBand */
+  if (stickOn()){
+    var dTop = ROW_TOP + bars.length*ROW_H;
+    html += '<span class="tl-bar draft" id="tl-draft" style="top:' + (dTop + 3) + 'px"></span>' +
+            '<span class="tl-blabel" id="tl-draft-label" style="top:' + (dTop + 4) + 'px"></span>';
+  }
   html += '<span class="tl-today" style="left:' + X(TODAY) + 'px"></span>' +
           '<span class="tl-today-label" style="left:' + (X(TODAY) + 5) + 'px">today</span>' +
           '<span class="tl-dim" id="tl-dim-l"></span><span class="tl-dim" id="tl-dim-r"></span>' +
-          '<span class="tl-band" id="tl-band" aria-hidden="true"></span>' +
+          '<span class="tl-band" id="tl-band" aria-hidden="true"><span class="tl-edge l" id="tl-edge-l"></span><span class="tl-edge r" id="tl-edge-r"></span></span>' +
           '</div></div>' +
-          '<p class="tl-hint">Drag the shaded band — or tap anywhere on the strip — to move the 365-day window. Solid bars are recorded trips, dashed are planned, red marks days over the limit; anything outside the band no longer counts.</p>';
+          '<button type="button" class="tl-chev" data-win="1" aria-label="Move the window one day later"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13"/></svg></button>' +
+          '</div>' +
+          '<p class="tl-hint">Drag the band, tap the strip, or press and hold the arrows to move the one-year window.</p>';
   host.innerHTML = html;
   var winTrack = document.getElementById('win-track');
   var winLegend = document.getElementById('win-legend');
@@ -617,7 +673,8 @@ function renderTimeline(){
     dimL: document.getElementById('tl-dim-l'), dimR: document.getElementById('tl-dim-r'),
     readout: document.getElementById('tl-readout'), scroll: document.getElementById('tl-scroll'),
     winTrack: winTrack, winLegend: winLegend,
-    bars: bars, all: past.concat(planned)
+    bars: bars, all: past.concat(planned),
+    chevL: host.querySelector('[data-win="-1"]'), chevR: host.querySelector('[data-win="1"]')
   };
   updateBand();
   tlRefs.scroll.scrollLeft = Math.max(0, X(TL.end) - tlRefs.scroll.clientWidth * 0.7);
@@ -651,6 +708,23 @@ function renderTimeline(){
     else return;
     ev.preventDefault(); updateBand();
   });
+  /* chevrons: one day per tap, keep going while held */
+  [tlRefs.chevL, tlRefs.chevR].forEach(function(b){
+    var step = +b.getAttribute('data-win'), timer = null;
+    function move(){
+      var next = clampDay(TL.end + step*DAY);
+      if (next === TL.end){ stop(); return; }
+      TL.end = next; updateBand();
+      tlRefs.scroll.scrollLeft = Math.max(0, X(TL.end) - tlRefs.scroll.clientWidth*0.7);
+    }
+    function stop(){ clearTimeout(timer); clearInterval(timer); timer = null; }
+    b.addEventListener('pointerdown', function(ev){
+      ev.preventDefault(); move();
+      timer = setTimeout(function(){ timer = setInterval(move, 60); }, 350);
+    });
+    ['pointerup','pointerleave','pointercancel'].forEach(function(e){ b.addEventListener(e, stop); });
+    b.addEventListener('keydown', function(ev){ if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); move(); } });
+  });
   host.querySelectorAll('[data-jump]').forEach(function(btn){
     btn.addEventListener('click', function(){
       TL.end = clampDay(+btn.getAttribute('data-jump'));
@@ -663,8 +737,8 @@ function renderTimeline(){
 function updateBand(){
   if (!tlRefs) return;
   var px = tlRefs.px, start = tlRefs.start;
-  var left = (TL.end - 364*DAY - start)/DAY * px;
-  var w = 365 * px;
+  var left = (TL.end - (WINDOW-1)*DAY - start)/DAY * px;
+  var w = WINDOW * px;
   tlRefs.band.style.left = left + 'px';
   tlRefs.band.style.width = w + 'px';
   tlRefs.dimL.style.left = '0px';
@@ -675,7 +749,7 @@ function updateBand(){
   /* stacked composition: what each trip contributes to the window ending at TL.end.
      When over the limit the scale stretches so the whole stack stays visible,
      with a marker at 90 and a hatch over the excess. */
-  var ws = TL.end - 364*DAY;
+  var ws = TL.end - (WINDOW-1)*DAY;
   var parts = [], used = 0;
   tlRefs.bars.forEach(function(t){
     var c = overlapDays(t.in, t.out, ws, TL.end);
@@ -683,6 +757,26 @@ function updateBand(){
     used += c;
     parts.push({ t: t, c: c });
   });
+  var draft = stickDraft(), draftEl = document.getElementById('tl-draft');
+  if (draftEl){
+    draftEl.style.display = draft ? '' : 'none';
+    document.getElementById('tl-draft-label').style.display = draft ? '' : 'none';
+  }
+  if (draft && draftEl){
+    var clash = overlapsExisting(draft.in, draft.out, state.planned) || overlapsExisting(draft.in, draft.out, state.trips);
+    var r = evaluateTrip(draft.in, draft.out, sortedTrips().concat(sortedPlanned()), TODAY);
+    var bad = clash || r.over;
+    var dx = (draft.in - start)/DAY * px, dw = Math.max(2, (draft.out - draft.in)/DAY * px + px);
+    draftEl.style.left = dx + 'px'; draftEl.style.width = dw + 'px';
+    draftEl.classList.toggle('bad', !!bad);
+    var lab = document.getElementById('tl-draft-label');
+    lab.style.right = (tlRefs.width - dx + 6) + 'px';
+    lab.textContent = 'New trip · ' + r.days + ' days · ' + (clash ? 'overlaps a trip' : r.over ? 'over by ' + r.over : 'clear');
+    lab.classList.toggle('bad', !!bad);
+    var dc = overlapDays(draft.in, draft.out, ws, TL.end);
+    used += dc;
+    parts.push({ t: { name: 'New trip', in: draft.in, out: draft.out, planned: true, color: bad ? '#A8322A' : '#1E6B44' }, c: dc });
+  }
   var scaleMax = Math.max(used, LIMIT);
   var segs = '', legend = '';
   parts.forEach(function(p){
@@ -701,15 +795,35 @@ function updateBand(){
             '<span class="win-overzone" style="left:' + lp + '%;width:' + (100 - lp) + '%"></span>';
   }
   tlRefs.winTrack.innerHTML = segs;
+  /* under each bar: how many of its days sit inside the band */
+  tlRefs.canvas.querySelectorAll('[data-bl]').forEach(function(el, i){
+    var t = tlRefs.bars[i], c = overlapDays(t.in, t.out, ws, TL.end);
+    var whole = daysInclusive(t.in, t.out);
+    el.textContent = t.name + (t.planned ? ' (planned)' : '') + ' · ' + (c ? (c < whole ? c + ' of ' + whole : 'all ' + whole) + ' days count' : 'outside the year');
+    el.classList.toggle('out', !c);
+  });
+  document.getElementById('tl-edge-l').textContent = fdate(ws);
+  document.getElementById('tl-edge-r').textContent = fdate(TL.end);
   tlRefs.winLegend.innerHTML = legend || '<span class="item">no trips inside this window</span>';
 
   var over = used > LIMIT;
-  tlRefs.readout.innerHTML = '365 days ending <strong>' + fdate(TL.end) + '</strong> → ' +
-    '<strong class="' + (over ? 'bad' : 'ok') + '">' + used + ' of 90 used</strong>' +
-    (over ? ' · <strong class="bad">' + (used - LIMIT) + ' over</strong>' : ' · ' + (LIMIT - used) + ' free') +
-    (TL.end === TODAY ? ' (today)' : ' · <button type="button" class="tl-today-btn" id="tl-jump">back to today</button>');
+  tlRefs.readout.innerHTML =
+    '<strong class="win-span">' + fdate(ws) + ' → ' + fdate(TL.end) + '</strong>' +
+    '<span class="win-stat">' +
+      '<strong class="' + (over ? 'bad' : 'ok') + '">' + used + ' of ' + LIMIT + ' used</strong>' +
+      (over ? ' · <strong class="bad">' + (used - LIMIT) + ' over</strong>' : ' · <strong class="free">' + (LIMIT - used) + ' free</strong>') +
+      (TL.end === TODAY ? ' (today)' : ' · <button type="button" class="tl-today-btn" id="tl-jump">back to today</button>') +
+    '</span>';
   var jump = document.getElementById('tl-jump');
   if (jump) jump.addEventListener('click', function(){ TL.end = TODAY; updateBand(); });
+  tlRefs.chevL.disabled = TL.end - WINDOW*DAY < tlRefs.start;
+  tlRefs.chevR.disabled = TL.end >= tlRefs.endRange;
+  if (draft){
+    /* show the pinned trip in the form: the band's edge is the leaving date */
+    document.getElementById('plan-out').value = isoOf(draft.out);
+    if (planArrive() != null) document.getElementById('plan-days').value = daysInclusive(draft.in, draft.out);
+    previewPlan();
+  } else if (stickOn()) document.getElementById('plan-out').value = '';
   tlRefs.canvas.setAttribute('aria-valuenow', Math.round((TL.end - start)/DAY));
   tlRefs.canvas.setAttribute('aria-valuetext', fdate(TL.end));
 }
@@ -717,46 +831,97 @@ function updateBand(){
 /* ---------- render: planner ---------- */
 function renderPlanned(){
   var box = document.getElementById('plan-list');
-  var empty = document.getElementById('plan-empty');
   var planned = sortedPlanned();
-  empty.style.display = planned.length ? 'none' : 'block';
 
   var past = sortedTrips();
   box.innerHTML = planned.map(function(p, i){
     var others = past.concat(planned.slice(0, i));
     var r = evaluateTrip(p.in, p.out, others, TODAY);
     var ok = r.over === 0;
+
     var head =
       '<div class="plan-head">' +
-        '<span class="dot" style="background:var(--paper-raised);box-shadow:inset 0 0 0 2px ' + colorFor(past.length + i) + '"></span>' +
-        '<span class="trip-dates"><span class="tn">' + planName(i) + '</span> · ' + fdate(p.in) + ' → ' + fdate(p.out) + '</span>' +
-        '<span class="trip-days">' + r.days + ' days</span>' +
-        '<span class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Clear' : 'Over by ' + r.over + ' days') + '</span>' +
+        '<span class="trip-dates">' +
+          '<span class="dot" style="background:var(--paper-raised);box-shadow:inset 0 0 0 2px ' + colorFor(past.length + i) + '"></span>' +
+          '<span class="tn">' + planName(i) + ' · planned</span> · ' + fdate(p.in) + ' → ' + fdate(p.out) +
+          ' <span class="trip-days">' + r.days + 'd</span></span>' +
       '</div>';
-    var detail = ok
-      ? '<p class="plan-detail">Peaks at <strong>' + r.peak + ' / 90</strong> days in the window — margin of ' + (LIMIT - r.peak) + '.</p>'
-      : '<p class="plan-detail">Peaks at <strong>' + r.peak + ' / 90</strong>. First day over: <strong>' + fdate(r.first) + '</strong>. Fine at exit: <strong>AED ' + r.fine.toLocaleString('en') + '</strong> per person.</p>';
-    var fix = '';
+
+    var verdict =
+      '<p class="plan-verdict">' +
+        '<span class="verdict ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Clear' : 'Over by ' + r.over + 'd') + '</span>' +
+        (ok ? '<span class="spare">' + (LIMIT - r.peak) + ' day' + (LIMIT - r.peak === 1 ? '' : 's') + ' to spare</span>'
+            : '<span class="cost">AED ' + r.fine.toLocaleString('en') + ' each</span>') +
+        '<span class="plan-detail">peak ' + r.peak + '/90' + (ok ? '' : ' · over from ' + fdate(r.first)) + '</span>' +
+      '</p>';
+
+    var fixes = '';
     if (!ok){
-      var safeLen = longestFrom(p.in, others, TODAY);
+      var btns = '';
+      /* keep the arrival date, cut the trip short */
+      var keepInLen = longestFrom(p.in, others, TODAY);
+      if (keepInLen > 0)
+        btns += '<button type="button" data-fix-len="' + keepInLen + '">' +
+                'Keep arriving ' + fdate(p.in) + '<b>leave ' + fdate(p.in + (keepInLen-1)*DAY) + ' · ' + keepInLen + 'd</b></button>';
+      /* keep the departure date, arrive later */
+      var keepOutLen = longestUntil(p.out, others, TODAY);
+      if (keepOutLen > 0)
+        btns += '<button type="button" data-fix-end="' + (p.out - (keepOutLen-1)*DAY) + '">' +
+                'Keep leaving ' + fdate(p.out) + '<b>arrive ' + fdate(p.out - (keepOutLen-1)*DAY) + ' · ' + keepOutLen + 'd</b></button>';
+      /* keep the full length, move the whole trip later */
       var altStart = earliestFor(r.days, p.in, others, TODAY);
-      var parts = [];
-      if (safeLen > 0) parts.push('shorten to ' + safeLen + ' days (depart by ' + fdate(p.in + (safeLen-1)*DAY) + ')');
-      if (altStart) parts.push('or keep ' + r.days + ' days by arriving ' + fdate(altStart) + ' at the earliest');
-      if (parts.length) fix = '<p class="plan-fix">To stay clear: ' + parts.join(', ') + '.</p>';
+      if (altStart)
+        btns += '<button type="button" data-fix-start="' + altStart + '">' +
+                'Keep all ' + r.days + ' days<b>' + fdate(altStart) + ' → ' + fdate(altStart + (r.days-1)*DAY) + '</b></button>';
+      if (btns) fixes = '<div class="fixes"><span class="fix-label">Fix</span>' + btns + '</div>';
     }
+
     var shift =
       '<div class="shift" role="group" aria-label="Shift ' + planName(i) + ' dates">' +
         '<button type="button" data-shift="-7" aria-label="Shift 7 days earlier">−7</button>' +
         '<button type="button" data-shift="-1" aria-label="Shift 1 day earlier">−1</button>' +
-        '<span class="shift-label">shift days</span>' +
+        '<span class="shift-label">shift</span>' +
         '<button type="button" data-shift="1" aria-label="Shift 1 day later">+1</button>' +
         '<button type="button" data-shift="7" aria-label="Shift 7 days later">+7</button>' +
       '</div><p class="shift-err" role="alert"></p>';
-    return '<div class="plan-card" data-idx="' + i + '">' + head + detail + fix + shift +
-      '<button type="button" class="icon-btn" data-pdel="' + i + '" aria-label="Remove planned trip ' + fdate(p.in) + '">' +
-      '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13"/></svg></button></div>';
+
+    return '<div class="plan-card" data-idx="' + i + '">' + head + verdict + fixes + shift +
+      '<div class="card-actions">' +
+        '<button type="button" class="icon-btn" data-pedit="' + i + '" aria-label="Edit dates of ' + planName(i) + '">' +
+          '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11.5 1.5 L14.5 4.5 L5 14 L1.5 14.5 L2 11 Z"/></svg></button>' +
+        '<button type="button" class="icon-btn" data-pdel="' + i + '" aria-label="Remove ' + planName(i) + '">' +
+          '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13"/></svg></button>' +
+      '</div></div>';
   }).join('');
+
+  /* one-tap fixes: re-date the trip, keeping it clear of everything else */
+  box.querySelectorAll('[data-fix-start],[data-fix-len],[data-fix-end]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var card = btn.closest('.plan-card');
+      var p = sortedPlanned()[+card.getAttribute('data-idx')];
+      var s, e;
+      if (btn.hasAttribute('data-fix-start')){
+        s = +btn.getAttribute('data-fix-start');
+        e = s + (daysInclusive(p.in, p.out) - 1)*DAY;
+      } else if (btn.hasAttribute('data-fix-end')){
+        s = +btn.getAttribute('data-fix-end');
+        e = p.out;
+      } else {
+        s = p.in;
+        e = p.in + (+btn.getAttribute('data-fix-len') - 1)*DAY;
+      }
+      var rest = state.planned.filter(function(t){ return !(t.in === p.in && t.out === p.out); });
+      var clash = overlapsExisting(s, e, rest) || overlapsExisting(s, e, state.trips);
+      if (clash){
+        var errEl = card.querySelector('.shift-err');
+        errEl.textContent = 'That would overlap ' + fdate(clash.in) + ' → ' + (clash.out == null ? 'today' : fdate(clash.out)) + '.';
+        errEl.style.display = 'block';
+        return;
+      }
+      state.planned = rest.concat([{ in: s, out: e }]);
+      save(); renderAll();
+    });
+  });
 
   box.querySelectorAll('[data-shift]').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -777,6 +942,16 @@ function renderPlanned(){
     });
   });
 
+  box.querySelectorAll('[data-pedit]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var victim = sortedPlanned()[+btn.getAttribute('data-pedit')];
+      state.planned = state.planned.filter(function(t){ return !(t.in === victim.in && t.out === victim.out); });
+      save(); renderAll();
+      setPlanForm(victim.in, victim.out, '');
+      document.getElementById('plan-form').scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+  });
+
   box.querySelectorAll('[data-pdel]').forEach(function(btn){
     btn.addEventListener('click', function(){
       var planned2 = sortedPlanned();
@@ -787,7 +962,7 @@ function renderPlanned(){
   });
 }
 
-function renderAll(){ renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); }
+function renderAll(){ renderTrips(); renderStatus(); renderPlanned(); renderTimeline(); previewPlan(); }
 
 /* ---------- forms ---------- */
 function showError(id, msg){
@@ -821,57 +996,163 @@ document.getElementById('trip-form').addEventListener('submit', function(ev){
   document.getElementById('trip-out').disabled = false;
 });
 
-/* arrive / depart / days: any two fill in the third */
-function syncPlanFields(src){
-  var iEl = document.getElementById('plan-in'), oEl = document.getElementById('plan-out'), dEl = document.getElementById('plan-days');
-  var i = iEl.value ? parseISO(iEl.value) : null;
-  var o = oEl.value ? parseISO(oEl.value) : null;
-  var d = parseInt(dEl.value, 10);
-  if (src === 'in' && i != null){
-    if (o != null && o >= i) dEl.value = daysInclusive(i, o);
-    else if (d > 0) oEl.value = isoOf(i + (d-1)*DAY);
-  } else if (src === 'out' && o != null){
-    if (i != null && o >= i) dEl.value = daysInclusive(i, o);
-    else if (d > 0) iEl.value = isoOf(o - (d-1)*DAY);
-  } else if (src === 'days' && d > 0){
-    if (i != null) oEl.value = isoOf(i + (d-1)*DAY);
-    else if (o != null) iEl.value = isoOf(o - (d-1)*DAY);
-  }
+/* ---------- plan form: any two of arrive / leave / days ---------- */
+
+/* the day after the last trip on the timeline, recorded or planned */
+function afterLastBar(){
+  var end = TODAY;
+  state.trips.concat(state.planned).forEach(function(t){
+    var o = t.out == null ? TODAY : t.out;
+    if (o > end) end = o;
+  });
+  return end + DAY;
 }
-document.getElementById('plan-in').addEventListener('change', function(){ syncPlanFields('in'); });
-document.getElementById('plan-out').addEventListener('change', function(){ syncPlanFields('out'); });
-document.getElementById('plan-days').addEventListener('input', function(){ syncPlanFields('days'); });
+
+function stickOn(){ var c = document.getElementById('plan-stick'); return !!(c && c.checked); }
+function planDays(){ var n = parseInt(document.getElementById('plan-days').value, 10); return n > 0 ? n : 0; }
+
+function planArrive(){ var v = document.getElementById('plan-in').value; return v ? parseISO(v) : null; }
+
+/* with "end on the window's right edge" the trip ends on the band's last day:
+   from the arrival date if there is one (it stretches as the band moves),
+   otherwise the last n days of the band (it slides) */
+function stickDraft(){
+  if (!stickOn()) return null;
+  var a = planArrive(), n = planDays();
+  if (a != null) return TL.end >= a ? { in: a, out: TL.end } : null;
+  return n ? { in: TL.end - (n-1)*DAY, out: TL.end } : null;
+}
+
+/* work out the trip from whatever was filled in; null when empty, {err} when it can't */
+function readPlan(){
+  if (stickOn()){
+    var d = stickDraft();
+    if (d) return { in: d.in, out: d.out, stick: true };
+    return { err: planArrive() != null
+      ? 'Move the window past ' + fdate(planArrive()) + ' so the trip has days in it.'
+      : 'Add an arrival date or the number of days. The trip then ends on the window’s right edge.' };
+  }
+  var inV = document.getElementById('plan-in').value;
+  var outV = document.getElementById('plan-out').value;
+  var n = parseInt(document.getElementById('plan-days').value, 10);
+  var hasN = n > 0, s = inV ? parseISO(inV) : null, e = outV ? parseISO(outV) : null;
+  if (s != null && e != null){ if (e < s) return { err: 'The leaving date is before the arrival date.' }; }
+  else if (s != null && hasN) e = s + (n-1)*DAY;
+  else if (e != null && hasN) s = e - (n-1)*DAY;
+  else if (hasN){ s = afterLastBar(); e = s + (n-1)*DAY; }
+  else if (s != null){
+    /* a start date alone: stay as long as the limit allows from that day */
+    var n2 = longestFrom(s, sortedTrips().concat(sortedPlanned()), TODAY);
+    if (!n2) return { err: 'Arriving on ' + fdate(s) + ' would go over the limit on the first day.' };
+    e = s + (n2-1)*DAY;
+    return { in: s, out: e, longest: true };
+  }
+  else if (e != null) return { err: 'Add the arrival date or the number of days.' };
+  else return null;
+  return { in: s, out: e, auto: !inV && !outV };
+}
+
+function previewPlan(){
+  var out = document.getElementById('plan-preview');
+  var p = readPlan();
+  if (!p){ out.innerHTML = ''; return; }
+  if (p.err){ out.textContent = p.err; return; }
+  var clash = overlapsExisting(p.in, p.out, state.planned) || overlapsExisting(p.in, p.out, state.trips);
+  var r = evaluateTrip(p.in, p.out, sortedTrips().concat(sortedPlanned()), TODAY);
+  out.innerHTML = '<strong>' + fdate(p.in) + ' → ' + fdate(p.out) + '</strong> · ' + r.days + ' days' +
+    (p.auto ? ', starting after the last trip' : p.stick ? ', ending on the window’s right edge' : p.longest ? ', the longest stay from that day' : '') + ' · ' +
+    (clash ? '<span class="bad">overlaps another trip</span>'
+      : r.over ? '<span class="bad">over by ' + r.over + ' days, AED ' + r.fine.toLocaleString('en') + ' each</span>'
+      : '<span class="ok">clear, ' + (LIMIT - r.peak) + ' day' + (LIMIT - r.peak === 1 ? '' : 's') + ' to spare</span>');
+}
+
+function setPlanForm(s, e, n){
+  document.getElementById('plan-in').value = s != null ? isoOf(s) : '';
+  document.getElementById('plan-out').value = e != null ? isoOf(e) : '';
+  document.getElementById('plan-days').value = n;
+  showError('plan-error', null);
+  previewPlan();
+}
+
+['plan-in','plan-out','plan-days'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', function(){ showError('plan-error', null); previewPlan(); });
+});
+document.getElementById('plan-clear').addEventListener('click', function(){ setPlanForm(null, null, ''); setStick(false); });
+
+/* where the band starts once pinned: with an arrival date, at the longest stay that
+   fits from it; with days only, right after the last trip. Then drag to adjust. */
+function placeStuck(){
+  var a = planArrive(), n = planDays();
+  if (a != null){
+    var len = longestFrom(a, sortedTrips().concat(sortedPlanned()), TODAY);
+    TL.end = a + (Math.max(len, 1) - 1)*DAY;
+    return;
+  }
+  if (!n) return;
+  var first = afterLastBar();
+  if (TL.end - (n-1)*DAY < first) TL.end = first + (n-1)*DAY;
+}
+function setStick(on){
+  document.getElementById('plan-stick').checked = on;
+  /* the leaving date is the band's edge while pinned */
+  var out = document.getElementById('plan-out');
+  out.disabled = on;
+  if (on) out.value = '';
+  if (on) placeStuck();
+  renderTimeline(); previewPlan();
+}
+document.getElementById('plan-stick').addEventListener('change', function(){
+  setStick(this.checked);
+  if (this.checked) document.getElementById('timeline').scrollIntoView({ behavior:'smooth', block:'center' });
+});
+document.getElementById('plan-in').addEventListener('input', function(){
+  if (stickOn()){ placeStuck(); renderTimeline(); }
+});
+/* typing days with an arrival date moves the band's edge to match */
+document.getElementById('plan-days').addEventListener('input', function(){
+  if (!stickOn()) return;
+  var a = planArrive(), n = planDays();
+  if (a != null && n) TL.end = clampDay(a + (n-1)*DAY);
+  else placeStuck();
+  renderTimeline();
+});
 
 document.getElementById('plan-form').addEventListener('submit', function(ev){
   ev.preventDefault();
   showError('plan-error', null);
-  var inV = document.getElementById('plan-in').value;
-  var outV = document.getElementById('plan-out').value;
-  var d = parseInt(document.getElementById('plan-days').value, 10);
-  var s = inV ? parseISO(inV) : null;
-  var e = outV ? parseISO(outV) : null;
-  if (s != null && e == null && d > 0) e = s + (d-1)*DAY;
-  else if (e != null && s == null && d > 0) s = e - (d-1)*DAY;
-  else if (s == null && e == null && d > 0){
-    if (d > 90) return showError('plan-error', 'More than 90 consecutive days can never fit inside the limit.');
-    var others = sortedTrips().concat(sortedPlanned());
-    s = earliestFor(d, TODAY + DAY, others, TODAY);
-    if (s == null) return showError('plan-error', 'No safe start found in the next three years for ' + d + ' days.');
-    e = s + (d-1)*DAY;
-  }
-  if (s == null || e == null) return showError('plan-error', 'Give arrive + depart, one date + days, or just days.');
-  if (e < s) return showError('plan-error', 'Departure is before arrival.');
-  if (overlapsExisting(s, e, state.planned)) return showError('plan-error', 'Overlaps a trip already in the plan.');
-  var clashPast = overlapsExisting(s, e, state.trips);
-  if (clashPast) return showError('plan-error', 'Overlaps the recorded trip ' + fdate(clashPast.in) + ' → ' + (clashPast.out == null ? 'today' : fdate(clashPast.out)) + '.');
-  state.planned.push({ in: s, out: e });
-  save(); renderAll();
-  this.reset();
+  var p = readPlan();
+  if (!p) return showError('plan-error', 'Enter the dates, or just the number of days.');
+  if (p.err) return showError('plan-error', p.err);
+  var clash = overlapsExisting(p.in, p.out, state.planned) || overlapsExisting(p.in, p.out, state.trips);
+  if (clash) return showError('plan-error', 'Overlaps the trip ' + fdate(clash.in) + ' → ' + (clash.out == null ? 'today' : fdate(clash.out)) + '.');
+  state.planned.push({ in: p.in, out: p.out });
+  save();
+  TL.end = p.out;   /* show the year that ends on the new trip's last day */
+  setPlanForm(null, null, '');
+  setStick(false);
+  renderAll();
+  document.getElementById('timeline').scrollIntoView({ behavior:'smooth', block:'center' });
+});
+
+var lastW = innerWidth;
+addEventListener('resize', function(){
+  if (innerWidth === lastW) return;   /* phones fire resize on scroll when the address bar hides */
+  lastW = innerWidth;
+  renderTimeline();
+});
+
+document.querySelectorAll('input[name="allowance"]').forEach(function(r){
+  r.checked = +r.value === state.allowance;
+  r.addEventListener('change', function(){
+    state.allowance = +r.value; LIMIT = state.allowance;
+    save(); renderAll();
+  });
 });
 
 document.getElementById('reset-btn').addEventListener('click', function(){
-  if (!confirm('Replace the current record and plans with the original four family trips?')) return;
-  state = { trips: SEED_TRIPS.slice(), planned: [] };
+  if (!confirm('Replace your trips, plans and settings with the original family record?')) return;
+  state = seedState(); LIMIT = state.allowance;
+  document.querySelectorAll('input[name="allowance"]').forEach(function(r){ r.checked = +r.value === state.allowance; });
   save(); renderAll();
 });
 
