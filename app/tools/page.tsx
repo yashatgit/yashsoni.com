@@ -24,6 +24,10 @@ const TOOL_META: Record<string, { name: string; description: string }> = {
     name: "Resume Builder",
     description: "Build a professional resume with live preview, multiple layouts & themes, and PDF export",
   },
+  "mahjong-for-rummy-players": {
+    name: "Mahjong for Rummy Players",
+    description: "Learn Hong Kong style mahjong from what you already know about rummy, with practice hands to check",
+  },
   uae_visa_planner: {
     name: "UAE Visit Planner",
     description: "Track days on the UAE 5-year visit visa and plan trips that stay inside the 90-day yearly limit",

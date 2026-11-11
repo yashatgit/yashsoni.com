@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mahjong for Rummy Players</title>
+<style>
+:root{
+  --bg:#fbf6ec; --ink:#2b2118; --muted:#7a6a58; --card:#fff; --line:#eadfcb;
+  --accent:#b8341b; --green:#2f7d4a; --blue:#2856a3; --gold:#c8902e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:2rem;line-height:1.15;margin:.2em 0 .3em}
+h2{font-size:1.3rem;margin:0 0 .6em;display:flex;align-items:center;gap:.5em}
+h2 .n{background:var(--accent);color:#fff;font-size:.8rem;width:1.7em;height:1.7em;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none}
+h3{font-size:1.02rem;margin:1.1em 0 .4em}
+p{margin:.4em 0 .8em}
+.lead{font-size:1.1rem;color:var(--muted)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 14px;margin:18px 0}
+.big{background:#fff4e2;border:1px solid #f0d7ae;border-radius:12px;padding:14px 16px;font-size:1.08rem}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td:first-child{color:var(--muted);width:38%}
+td b{color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:8px 0 6px}
+.group{display:flex;flex-direction:column;gap:5px}
+.group .label{font-size:.78rem;color:var(--muted);text-align:center}
+.tiles{display:flex;gap:3px}
+.tile{width:40px;height:54px;border-radius:6px;background:linear-gradient(#fffdf7,#f0e7d3);
+  box-shadow:0 3px 0 #cdbb90,0 4px 8px rgba(60,40,10,.18);display:flex;align-items:center;justify-content:center;
+  position:relative;flex:none;font-family:"Songti SC","Noto Serif CJK SC","SimSun",serif}
+.grid{display:grid;grid-template-columns:repeat(3,9px);grid-template-rows:repeat(3,12px);gap:1px 2px;align-items:center;justify-items:center}
+.dot{width:8px;height:8px;border-radius:50%;border:2px solid currentColor;background:radial-gradient(circle,currentColor 30%,transparent 35%)}
+.bam{width:4px;height:12px;border-radius:2px;background:var(--green);box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+.bam.r{background:var(--accent)}
+.chr{display:flex;flex-direction:column;align-items:center;line-height:1}
+.chr .num{font-size:15px;color:var(--ink);font-weight:700}
+.chr .wan{font-size:19px;color:var(--accent);font-weight:700;margin-top:2px}
+.hon{font-size:24px;font-weight:700}
+.wind{color:var(--ink)}
+.drR{color:var(--accent)}
+.drG{color:var(--green)}
+.drW{width:24px;height:32px;border:3px solid var(--blue);border-radius:3px}
+.tile.ghost{background:repeating-linear-gradient(45deg,#f3ead8,#f3ead8 5px,#ece0c8 5px,#ece0c8 10px);box-shadow:none;border:2px dashed #cdbb90}
+.tile.ghost::after{content:"?";font:700 20px sans-serif;color:var(--muted)}
+.cap{font-size:.85rem;color:var(--muted);margin-top:2px}
+ol,ul{padding-left:1.25em;margin:.3em 0 .8em}
+li{margin:.3em 0}
+.calls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.call{border:1px solid var(--line);border-radius:12px;padding:12px}
+.call .w{font-weight:800;font-size:1.15rem;color:var(--accent)}
+.call .s{font-size:.9rem;color:var(--muted)}
+.warn{border-left:4px solid var(--accent);background:#fff6f2;padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:#fffdf8}
+summary{cursor:pointer;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"Tap to check";float:right;font-size:.8rem;font-weight:600;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px}
+details[open] summary::after{content:"Answer";background:var(--green)}
+.ans{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.yes{color:var(--green);font-weight:700}
+.no{color:var(--accent);font-weight:700}
+
+.vis{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin-top:8px}
+.vis .tile{zoom:.62}
+.card{width:26px;height:36px;border-radius:4px;background:#fff;border:1px solid #d9d2c4;box-shadow:0 1px 2px rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;font:700 12px/1 Georgia,serif;color:#222;flex:none}
+.card .su{font-size:14px;margin-top:2px}
+.card.red{color:#c0262d}
+.card.back{background:repeating-linear-gradient(45deg,#2856a3,#2856a3 3px,#3d6cc0 3px,#3d6cc0 6px);border:2px solid #fff;outline:1px solid #d9d2c4}
+.card.joker{font-size:7px;letter-spacing:.02em;color:#7a2bb0;text-align:center}
+.tile.tback{background:linear-gradient(#3e9a7a,#2b7a5e);box-shadow:0 3px 0 #1d5a44,0 4px 8px rgba(0,0,0,.18)}
+.wall{display:grid;grid-template-columns:repeat(5,auto);gap:0 1px}
+.wall .tile{zoom:.42}
+.scatter{position:relative;width:110px;height:44px}
+.scatter .tile{position:absolute;zoom:.55}
+.pile{position:relative;width:40px;height:42px}
+.pile .card{position:absolute}
+.tag{font-size:.72rem;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:12px;margin-left:2px}
+.tag.g{background:var(--green)}
+.tag.n{background:#7a6a58}
+.none{width:30px;height:30px;border:3px solid var(--accent);border-radius:50%;position:relative}
+.none::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:3px;background:var(--accent);transform:translateX(-50%) rotate(45deg)}
+.plus{font-size:.8rem;color:var(--muted);font-weight:700;margin-left:2px}
+
+.figs{display:flex;flex-direction:column;gap:10px;margin:10px 0 6px}
+.fig{position:relative;border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px 40px;background:#fffdf8}
+.fn{position:absolute;left:10px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font:700 12px/22px sans-serif;text-align:center}
+.figsvg{width:100%;height:auto;display:block;max-width:420px}
+.figsvg.sq{max-width:340px;margin:0 auto}
+.figsvg .ft{font:12px sans-serif;fill:#7a6a58}
+.figsvg .fl{font:12px sans-serif;fill:#2b2118}
+.figsvg .seat{font:700 13px sans-serif;fill:#b8341b}
+.fl2{font-size:.88rem;color:var(--muted);margin-top:4px}
+
+.pts{margin:.2em 0 .8em;font-size:.95rem}
+.pts li{margin:.25em 0}
+table.tot td:nth-child(2),table.tot td:nth-child(3),table.tot th:nth-child(2),table.tot th:nth-child(3){text-align:right}
+table.tot td:first-child{width:auto;color:var(--ink)}
+table.tot tr.sub td{background:#fff4e2}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:24px}
+@media (max-width:520px){
+  body{font-size:16px}
+  .tile{width:32px;height:44px}
+  .grid{grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,10px)}
+  .dot{width:7px;height:7px;border-width:1.5px}
+  .bam{width:3px;height:10px}
+  .hon{font-size:19px}
+  .chr .num{font-size:12px}.chr .wan{font-size:15px}
+  .drW{width:19px;height:26px}
+  td:first-child{width:40%}
+}
+@media print{
+  body{background:#fff}
+  section{break-inside:avoid;border-color:#ddd}
+  details{display:block}
+  details .ans{display:block}
+}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Mahjong for Rummy Players</h1>
+<p class="lead">Simple Chinese / Hong Kong style, with no scoring. Enough to play your first game tonight.</p>
+
+<div class="big"><b>The short version:</b> it's rummy with tiles. You hold 13, draw one and discard one each turn. The first player to finish <b>4 sets + 1 pair</b> (14 tiles) calls "Mahjong!" and wins.</div>
+
+<section>
+<h2><span class="n">1</span>Rummy word → mahjong word</h2>
+<table class="tr">
+<tr><th>In rummy</th><th>In mahjong</th></tr>
+<tr><td>Cards<div class="vis" data-c="AS"></div></td><td><b>Tiles</b><div class="vis" data-m="d1"></div></td></tr>
+<tr><td>4 suits, A to K<div class="vis" data-c="AS AH AD AC"></div></td><td><b>3 suits, 1 to 9:</b> dots, bamboo, characters. 4 copies of each tile, like playing with 4 decks.<div class="vis" data-m="d3 b3 c3"></div></td></tr>
+<tr><td>Face cards<div class="vis" data-c="KS QH JD"></div></td><td><b>Honour tiles:</b> 4 winds and 3 dragons. These go only in sets of three, never in runs.<div class="vis" data-m="E N RD GD WD"></div></td></tr>
+<tr><td>Set (three 7s)<div class="vis" data-c="7S 7H 7D"></div></td><td><b>Pung</b>: three identical tiles<div class="vis" data-m="b7 b7 b7"></div></td></tr>
+<tr><td>Sequence (4-5-6 of hearts)<div class="vis" data-c="4H 5H 6H"></div></td><td><b>Chow</b>: a run of three in the same suit<div class="vis" data-m="d4 d5 d6"></div></td></tr>
+<tr><td>Four of a kind<div class="vis" data-c="9S 9H 9D 9C"></div></td><td><b>Kong</b>: counts as one set, then draw an extra tile<div class="vis" data-m="c9 c9 c9 c9"></div></td></tr>
+<tr><td>Hand of 13 cards<div class="vis" data-c="BK BK BK BK +13"></div></td><td><b>Hand of 13 tiles</b><div class="vis" data-m="c2 d5 b6 E +13"></div></td></tr>
+<tr><td>Stock pile<div class="vis" data-c="BK BK BK"></div></td><td><b>The wall</b>: the face-down tiles you draw from<div class="vis" data-m="WALL"></div></td></tr>
+<tr><td>Discard pile (only the top card matters)<div class="vis" data-c="PILE"></div></td><td><b>Discards spread in the middle,</b> all face up so everyone can read them<div class="vis" data-m="SCATTER"></div></td></tr>
+<tr><td>Take the top discard on your own turn<div class="vis" data-c="3H !YOUR_TURN"></div></td><td><b>Take anyone's latest discard,</b> even when it isn't your turn (see section 6)<div class="vis" data-m="b5 !PUNG!"></div></td></tr>
+<tr><td>Joker / wild card<div class="vis" data-c="JK"></div></td><td><b>None</b><div class="vis" data-m="NONE"></div></td></tr>
+<tr><td>Pure sequence required<div class="vis" data-c="4H 5H 6H !REQUIRED"></div></td><td><b>Not needed.</b> You need exactly <b>one pair</b> instead.<div class="vis" data-m="S S !PAIR"></div></td></tr>
+<tr><td>Declare / show<div class="vis" data-c="AS 2S 3S !SHOW"></div></td><td><b>Call "Mahjong!"</b> and lay your hand down<div class="vis" data-m="RD RD RD !MAHJONG!"></div></td></tr>
+</table>
+</section>
+
+<section>
+<h2><span class="n">2</span>The tiles</h2>
+<h3>Dots (circles) · 36 tiles</h3>
+<div class="row"><div class="tiles" data-t="d1 d2 d3 d4 d5 d6 d7 d8 d9"></div></div>
+<ul class="pts">
+<li>Numbers 1 to 9, 4 copies of each. Count the rings to read the number.</li>
+<li>1 dot is the one big flower-shaped circle.</li>
+<li>Can make runs, pungs, kongs and pairs.</li>
+</ul>
+<h3>Bamboo (sticks)</h3>
+<div class="row"><div class="tiles" data-t="b1 b2 b3 b4 b5 b6 b7 b8 b9"></div></div>
+<ul class="pts">
+<li>36 tiles: numbers 1 to 9, 4 copies of each. Count the sticks.</li>
+<li>1 bamboo is the bird. 8 bamboo is the W over an M. The red sticks are only decoration.</li>
+<li>Can make runs, pungs, kongs and pairs.</li>
+</ul>
+<h3>Characters</h3>
+<div class="row"><div class="tiles" data-t="c1 c2 c3 c4 c5 c6 c7 c8 c9"></div></div>
+<ul class="pts">
+<li>36 tiles: numbers 1 to 9, 4 copies of each.</li>
+<li>Read the dark symbol on top. 一 二 三 are 1, 2, 3 lines. 伍 is 5 in your set. The red 萬 below is the same on every tile and just marks the suit.</li>
+<li>Can make runs, pungs, kongs and pairs.</li>
+</ul>
+<h3>Honours: winds and dragons · 28 tiles</h3>
+<div class="row">
+  <div class="group"><div class="tiles" data-t="E S W N"></div><div class="label">East, South, West, North</div></div>
+  <div class="group"><div class="tiles" data-t="RD GD WD"></div><div class="label">Red, Green, White dragon</div></div>
+</div>
+<ul class="pts">
+<li><b>Winds (16 tiles):</b> 東 East, 南 South, 西 West, 北 North, 4 copies of each.</li>
+<li><b>Dragons (12 tiles):</b> 中 red, 發 green, and white (the empty frame), 4 copies of each.</li>
+<li>Honours <b>can't make runs</b>. They only make pungs, kongs and pairs. Section 7 explains how to use them.</li>
+</ul>
+<h3>Also in your box</h3>
+<ul>
+<li><b>8 flower and season tiles</b> with small numbers 1 to 4. Bonus tiles: put them back in the box for your first few games.</li>
+<li><b>A few completely blank tiles.</b> These are spares for replacing a lost tile. Leave them out. The white dragon has a blue frame; the spares are plain.</li>
+<li><b>Dice</b>, used to choose the dealer and to break the wall (section 4).</li>
+</ul>
+<h3>Totals</h3>
+<table class="tot">
+<tr><th>Tiles</th><th>Kinds × copies</th><th>Total</th></tr>
+<tr><td>Dots</td><td>9 × 4</td><td>36</td></tr>
+<tr><td>Bamboo</td><td>9 × 4</td><td>36</td></tr>
+<tr><td>Characters</td><td>9 × 4</td><td>36</td></tr>
+<tr><td>Winds</td><td>4 × 4</td><td>16</td></tr>
+<tr><td>Dragons</td><td>3 × 4</td><td>12</td></tr>
+<tr class="sub"><td><b>Tiles you play with</b></td><td></td><td><b>136</b></td></tr>
+<tr><td>Flowers and seasons</td><td>8 × 1</td><td>8</td></tr>
+<tr class="sub"><td><b>Full set</b></td><td></td><td><b>144</b></td></tr>
+</table>
+<p class="cap">Plus a few blank spares. At the deal, 53 of the 136 tiles go out (13 each, 14 for East), leaving 83 in the wall. Every tile exists exactly 4 times, which is what lets you count what's left (section 7).</p>
+</section>
+
+<section>
+<h2><span class="n">3</span>What a winning hand looks like</h2>
+<div class="row">
+  <div class="group"><div class="tiles" data-t="d2 d3 d4"></div><div class="label">Chow (run)</div></div>
+  <div class="group"><div class="tiles" data-t="b7 b7 b7"></div><div class="label">Pung (set)</div></div>
+  <div class="group"><div class="tiles" data-t="c6 c7 c8"></div><div class="label">Chow (run)</div></div>
+  <div class="group"><div class="tiles" data-t="RD RD RD"></div><div class="label">Pung of dragons</div></div>
+  <div class="group"><div class="tiles" data-t="E E"></div><div class="label">The pair</div></div>
+</div>
+<p>4 sets + 1 pair = 14 tiles. You can mix runs and sets any way you like.</p>
+<h3>Pair vs pung</h3>
+<table>
+<tr><th></th><th>Pair</th><th>Pung</th></tr>
+<tr><td>Tiles</td><td>2 identical</td><td>3 identical</td></tr>
+<tr><td>Needed to win</td><td>Exactly 1</td><td>Counts as one of your 4 sets</td></tr>
+<tr><td>Can be any tile?</td><td>Yes, number or honour</td><td>Yes, number or honour</td></tr>
+<tr><td>Claim a discard for it?</td><td>No. Only if that tile wins you the hand.</td><td>Yes, from any player</td></tr>
+</table>
+<ul class="pts">
+<li>"Identical" means exactly the same tile: 5 dots with 5 bamboo is not a pair.</li>
+<li>A pair in your hand can stay a pair, or become a pung if the third tile turns up. Keeping two or three pairs early gives you options.</li>
+<li>Your booklet calls the pair <b>"the head of the bird"</b>. If your 4 sets are done and you hold one single tile, only its exact match can win you the game.</li>
+<li>With a kong in your hand, a winning hand has 15 tiles (4 + 3 + 3 + 3 + 2). That's fine.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">4</span>Starting a game</h2>
+
+<h3>Step 1: Sort the tiles</h3>
+<p>Take out the flowers, seasons and blank spares. That leaves <b>136 tiles</b>. Turn them all face down and mix them around on the table with both hands. This is the "shuffle".</p>
+
+<h3>Step 2: Sit and pick the dealer</h3>
+<p>Each player rolls the two dice. The highest roll is the dealer, called <b>East</b>. The others take their seat names going anticlockwise from East: the player on East's right is <b>South</b>, then <b>West</b> opposite, then <b>North</b> on East's left.</p>
+<div class="warn">Play always moves anticlockwise: East → South → West → North → East. So "the next player" is the one on your right.</div>
+
+<h3>Step 3: Build the wall</h3>
+<p>Each player builds their own row in front of them, face down: <b>17 stacks long, each stack 2 tiles high</b> (34 tiles). Then everyone pushes their row forward so the four rows meet and form a square. This square is the wall, your stock pile.</p>
+<div class="figs">
+  <div class="fig"><div class="fn">A</div><svg viewBox="0 0 220 70" class="figsvg"><rect x="20" y="14" width="60" height="16" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="20" y="32" width="60" height="16" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><text x="92" y="26" class="ft">top tile</text><text x="92" y="44" class="ft">bottom tile</text><text x="20" y="64" class="fl">1 stack = 2 tiles on top of each other</text></svg></div>
+  <div class="fig"><div class="fn">B</div><svg viewBox="0 0 280 70" class="figsvg"><rect x="10" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="10" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="25" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="25" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="40" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="55" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="55" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="70" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="70" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="85" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="85" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="100" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="100" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="115" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="115" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="130" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="130" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="145" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="145" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="160" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="160" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="175" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="175" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="190" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="190" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="205" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="205" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="220" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="220" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="235" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="235" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><rect x="250" y="14" width="14" height="8" rx="1.5" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="250" y="23" width="14" height="8" rx="1.5" fill="#2b7a5e" stroke="#174c39" stroke-width=".8"/><path d="M10 38 v4 h254 v-4" fill="none" stroke="#7a6a58" stroke-width="1"/><text x="137" y="54" text-anchor="middle" class="fl">1 row = 17 stacks side by side = 34 tiles</text></svg></div>
+  <div class="fig"><div class="fn">C</div><svg viewBox="0 30 270 265" class="figsvg sq"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#b8341b"/></marker></defs><rect x="40" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="50" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="60" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="70" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="80" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="90" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="100" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="110" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="120" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="130" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="140" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="150" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="160" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="170" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="180" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="190" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="200" y="236" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="80" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="90" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="100" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="110" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="120" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="130" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="140" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="150" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="160" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="170" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="180" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="190" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="200" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="210" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="220" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="230" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="210" y="240" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="54" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="64" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="74" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="84" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="94" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="104" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="114" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="124" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="134" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="144" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="154" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="164" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="174" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="184" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="194" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="204" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="214" y="66" width="10" height="14" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="66" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="76" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="86" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="96" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="106" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="116" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="126" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="136" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="146" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="156" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="166" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="176" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="186" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="196" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="206" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="216" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><rect x="40" y="226" width="14" height="10" rx="1.2" fill="#3e9a7a" stroke="#174c39" stroke-width=".8"/><text x="125" y="272" text-anchor="middle" class="seat">East (dealer)</text><text x="125" y="285" text-anchor="middle" class="fl">builds this row</text><text x="250" y="162" text-anchor="middle" class="seat" transform="rotate(-90 250 162)">South</text><text x="139" y="54" text-anchor="middle" class="seat">West</text><text x="18" y="155" text-anchor="middle" class="seat" transform="rotate(90 18 155)">North</text><text x="132" y="150" text-anchor="middle" class="fl">Middle of the table:</text><text x="132" y="164" text-anchor="middle" class="fl">discards go here</text><path d="M160 214 a28 28 0 0 0 26 -32" fill="none" stroke="#b8341b" stroke-width="1.6" marker-end="url(#ar)"/><text x="125" y="212" text-anchor="middle" class="ft">turn order</text><text x="125" y="226" text-anchor="middle" class="ft">E → S → W → N</text></svg><div class="fl2">Each player pushes their row forward. The 4 rows meet at the corners and make a square, seen here from above. Each player sits behind their own row.</div></div>
+</div>
+
+
+<h3>Step 4: Break the wall</h3>
+<ol>
+<li>East rolls both dice and adds them up, say 7.</li>
+<li>Count around the table anticlockwise, starting with East as 1: East 1, South 2, West 3, North 4, East 5, South 6, West 7. So the break happens in <b>West's</b> row.</li>
+<li>West counts 7 stacks from the right end of their row and pulls the wall apart there.</li>
+</ol>
+<p class="cap">Want to keep it simple? Skip the dice and let East start taking tiles from any corner. The game plays the same.</p>
+
+<h3>Step 5: Deal</h3>
+<ol>
+<li>Starting at the break, East takes the next <b>2 stacks (4 tiles)</b>. Then South takes the next 2 stacks, then West, then North.</li>
+<li>Go round like this <b>3 times</b>, so everyone has 12 tiles.</li>
+<li>Then each player takes <b>1 more tile</b>, and East takes 1 extra. East now has 14, everyone else has 13.</li>
+<li>Tiles always come off the wall in one direction (clockwise around the square), so the wall shrinks from one end.</li>
+</ol>
+<p>Stand your tiles up facing you, like holding cards, and sort them by suit.</p>
+
+<h3>Step 6: East starts</h3>
+<p>East already has 14 tiles, so East <b>does not draw</b>. If East's 14 tiles already form a winning hand (rare), East wins straight away. Otherwise East discards one tile, and the game is running.</p>
+</section>
+
+<section>
+<h2><span class="n">5</span>How the turns go</h2>
+
+<h3>A normal turn</h3>
+<ol>
+<li><b>Draw</b> the next tile from the wall. You now have 14.</li>
+<li>If those 14 tiles make 4 sets + 1 pair, call <b>"Mahjong!"</b> and show your hand. You win.</li>
+<li>If not, <b>discard</b> one tile face up into the middle and say its name out loud, for example "five bamboo".</li>
+<li>Pause a second so others can claim it. Then the player on your right takes their turn.</li>
+</ol>
+<p>Just like rummy, you always end your turn holding 13 tiles.</p>
+
+<h3>After every discard, the table checks</h3>
+<ol>
+<li><b>Can anyone win with it?</b> They call "Mahjong!" and take it.</li>
+<li><b>Does anyone have a pair of it?</b> They can call "Pung!" from any seat.</li>
+<li><b>Does the next player have two tiles that make a run with it?</b> Only they can call "Chow!"</li>
+<li><b>Nobody wants it?</b> The next player draws from the wall as normal.</li>
+</ol>
+<p>Whoever claims the tile lays the finished set face up, discards one tile, and play continues to <b>their</b> right. Anyone in between is skipped.</p>
+
+<h3>Example of a few turns</h3>
+<ol>
+<li><b>East</b> discards 3 dots. South holds 4 and 5 dots, calls <b>"Chow!"</b>, lays 3-4-5 dots face up, then discards 9 bamboo.</li>
+<li><b>North</b> holds two 9 bamboo, calls <b>"Pung!"</b> even though it's West's turn. West is skipped. North lays 9-9-9 bamboo face up and discards South wind.</li>
+<li>Nobody wants South wind. Play moves to North's right, so <b>East</b> draws from the wall and discards.</li>
+<li>It keeps going round like this until someone calls "Mahjong!"</li>
+</ol>
+
+<h3>Kong (four of a kind)</h3>
+<ul>
+<li><b>From a discard:</b> you hold three, someone discards the fourth. Call "Kong!", lay all four face up.</li>
+<li><b>All four drawn yourself:</b> on your turn, lay them face down (or show them) to declare the kong.</li>
+<li><b>Adding to your pung:</b> if you have an exposed pung and draw the fourth, add it.</li>
+</ul>
+<p>Every kong uses 4 tiles for one set, so <b>draw a replacement tile</b> from the far end of the wall, then discard as usual. Your booklet calls a kong from a discard a <b>"Ming-kong"</b> (visible) and one you drew yourself an <b>"Em-kong"</b> (hidden).</p>
+<h3>Should you call kong?</h3>
+<p>You're never forced to. Your three tiles are already a valid set, so weigh it up:</p>
+<table>
+<tr><th>You gain</th><th>You give up</th></tr>
+<tr><td>A free extra draw from the wall</td><td>Everyone sees the set and knows that tile is gone</td></tr>
+<tr><td>Your turn comes sooner (section 6)</td><td>Those tiles can't be used in runs any more</td></tr>
+<tr><td>More points, once you add scoring</td><td></td></tr>
+</table>
+<p class="cap">Simple rule: call it when your hand is still messy. Skip it when you're close to winning and want to keep quiet, or when those tiles fit runs you're building.</p>
+
+<h3>How a hand ends</h3>
+<ul>
+<li><b>Someone wins:</b> they call "Mahjong!" on their own draw or on anyone's discard, and lay all 14 tiles face up so everyone can check.</li>
+<li><b>The wall runs out:</b> nobody wins. The hand is a draw.</li>
+</ul>
+
+<h3>The next hand</h3>
+<p>If East won (or it was a draw), East deals again. If anyone else won, the dealer role moves to the right: South becomes the new East, and everyone's seat name shifts. Mix the tiles, rebuild the wall and go again.</p>
+</section>
+
+<section>
+<h2><span class="n">6</span>Grabbing discards (the big change from rummy)</h2>
+<p>Each discard can be claimed for a short moment, until the next player draws. Who can take it depends on what you'll use it for:</p>
+<table>
+<tr><th>To make…</th><th>Who can claim it</th></tr>
+<tr><td><b>Mahjong</b> (it finishes your hand)</td><td>Anyone. This always wins the tile.</td></tr>
+<tr><td><b>Pung</b> or <b>Kong</b></td><td>Anyone, even out of turn. Play jumps to you.</td></tr>
+<tr><td><b>Chow</b> (a run)</td><td>Only the player next in turn, the one to the discarder's right.</td></tr>
+</table>
+<p>When you claim, take the tile, <b>put that finished set face up</b> in front of you, then discard. Play continues from your seat, so people in between lose their turn.</p>
+<div class="warn">Sets made from tiles you drew yourself stay hidden in your hand. Only sets made with a claimed discard go face up. Keep everything else standing up, facing you.</div>
+<h3>Only the latest discard</h3>
+<p>You can only claim the tile that was <b>just</b> thrown, and only before the next player draws. After that it's dead: it stays in the middle for the rest of the hand and nobody can take it.</p>
+<h3>Who loses a turn when you claim</h3>
+<p>Turns go East → South → West → North. Say you're North and East discards a tile you pung:</p>
+<ul class="pts">
+<li><b>Without claiming:</b> South plays, then West, then you.</li>
+<li><b>With pung or kong:</b> you play straight away, then East. South and West lose their turn.</li>
+</ul>
+<table>
+<tr><th>Who discarded</th><th>Players skipped</th></tr>
+<tr><td>The player on your right (plays just after you)</td><td>2</td></tr>
+<tr><td>The player opposite</td><td>1</td></tr>
+<tr><td>The player on your left (plays just before you)</td><td>0, you were next anyway</td></tr>
+</table>
+<p class="cap">Chow never skips anyone, because you can only chow from the player on your left.</p>
+</section>
+
+<section>
+<h2><span class="n">7</span>Playing smarter</h2>
+<h3>What to throw away first</h3>
+<ol>
+<li><b>Lone winds.</b> A single wind only helps if two more of that exact wind turn up.</li>
+<li><b>Lone dragons</b>, especially ones others have already discarded. Keep a dragon once you have two.</li>
+<li><b>Lone 1s and 9s.</b> They fit only one run each (1-2-3 or 7-8-9).</li>
+<li>Keep <b>middle numbers (3 to 7)</b>. A 5 can join 3-4-5, 4-5-6 or 5-6-7, or become a pair.</li>
+</ol>
+<h3>Good and bad waits</h3>
+<table>
+<tr><th>You hold</th><th>Wins on</th><th>Tiles that can come</th></tr>
+<tr><td>5-6 dots (open)</td><td>4 or 7 dots</td><td>up to 8, best</td></tr>
+<tr><td>5-7 dots (gap)</td><td>6 dots</td><td>up to 4</td></tr>
+<tr><td>8-9 characters (edge)</td><td>7 characters only</td><td>up to 4</td></tr>
+<tr><td>A single tile</td><td>its exact match</td><td>up to 3</td></tr>
+</table>
+<h3>Count what's left</h3>
+<p>Every tile exists 4 times. Before waiting on a tile, count how many you can see in discards and face-up sets.</p>
+<ul class="pts">
+<li>Example: you hold 7-8 bamboo, waiting for 6 or 9. Three 6 bamboo are in someone's pung, so only one 6 is left. Hope for the 9.</li>
+<li>You can't see other players' hidden tiles, so you never know for sure. If your wait isn't coming after several turns, rebuild around a different one.</li>
+<li>If nobody has thrown a certain suit for a while, someone is probably collecting it. Don't throw it to them.</li>
+</ul>
+<h3>Getting value from honours</h3>
+<ul class="pts">
+<li><b>Pairs of honours are worth holding.</b> Others throw honours early, so the third often comes, and anyone can pung it.</li>
+<li><b>They make a clean pair</b> for your winning hand.</li>
+<li><b>They're safe late discards.</b> If two East winds are already out, a third is unlikely to give someone the win, because nobody can use it in a run.</li>
+<li>Without scoring they're mostly junk. Add the simple scoring in section 10 and they start to matter.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">8</span>What trips up rummy players</h2>
+<ul>
+<li><b>No runs with honours.</b> East-South-West is not a run. Winds and dragons only make pungs, kongs and pairs.</li>
+<li><b>Runs stay in one suit.</b> 3 dots, 4 bamboo, 5 dots is not a chow.</li>
+<li><b>Exactly one pair.</b> Not zero, not two.</li>
+<li><b>No jokers and no laying off</b> tiles on other people's sets.</li>
+<li><b>Discards are public.</b> Look at what others throw away and which sets they've laid down. It tells you what they don't need.</li>
+<li><b>Don't claim everything.</b> Every exposed set shows the table what you're building and leaves you fewer options.</li>
+<li><b>No claiming a discard for a pair</b>, unless it's the tile that wins you the hand.</li>
+<li><b>Don't lay half-built runs face up.</b> Only completed sets made with a claimed discard go on the table.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">9</span>Say it out loud</h2>
+<div class="calls">
+  <div class="call"><div class="w">"Pung!"</div><div class="s">I'm taking that discard to make three of a kind.</div></div>
+  <div class="call"><div class="w">"Chow!"</div><div class="s">I'm taking it for a run. Only when it's my turn next.</div></div>
+  <div class="call"><div class="w">"Kong!"</div><div class="s">Four of a kind. I'll draw a replacement tile.</div></div>
+  <div class="call"><div class="w">"Mahjong!"</div><div class="s">My hand is complete. I win.</div></div>
+</div>
+</section>
+
+
+<section>
+<h2><span class="n">10</span>House rules</h2>
+<h3>Playing with 3</h3>
+<ul class="pts">
+<li><b>Easiest:</b> same rules, nobody sits at North. Still build 4 walls, deal 13 each (14 to East). Hands take a bit longer.</li>
+<li><b>Faster option:</b> remove characters 2 to 8 (keep 1 and 9) before shuffling. Many groups also stop allowing chow from discards.</li>
+</ul>
+<h3>Simple scoring</h3>
+<p>Keep a tally on paper over several hands:</p>
+<table>
+<tr><th>For</th><th>Points</th></tr>
+<tr><td>Winning the hand</td><td>1</td></tr>
+<tr><td>Each pung or kong of dragons</td><td>+1</td></tr>
+<tr><td>Each pung or kong of your own seat wind</td><td>+1</td></tr>
+<tr><td>Winning with a tile you drew yourself</td><td>+1</td></tr>
+</table>
+<p class="cap">Once this feels easy, move on to full Hong Kong scoring.</p>
+</section>
+
+<section>
+<h2><span class="n">11</span>Practice: is this a win?</h2>
+
+<details>
+<summary>Hand A</summary>
+<div class="row" style="margin-top:12px">
+  <div class="tiles" data-t="d1 d2 d3"></div><div class="tiles" data-t="b5 b5 b5"></div>
+  <div class="tiles" data-t="N N N"></div><div class="tiles" data-t="c7 c8 c9"></div><div class="tiles" data-t="d9 d9"></div>
+</div>
+<div class="ans"><span class="yes">Yes, that's Mahjong.</span> A run, a set, a set of North winds, a run and a pair of 9 dots.</div>
+</details>
+
+<details>
+<summary>Hand B</summary>
+<div class="row" style="margin-top:12px">
+  <div class="tiles" data-t="E S W"></div><div class="tiles" data-t="b2 b3 b4"></div>
+  <div class="tiles" data-t="c4 c4 c4"></div><div class="tiles" data-t="d6 d7 d8"></div><div class="tiles" data-t="GD GD"></div>
+</div>
+<div class="ans"><span class="no">No.</span> East-South-West looks like a run, but honours can't make runs. Winds only count as a pung of the same wind.</div>
+</details>
+
+<details>
+<summary>Hand C</summary>
+<div class="row" style="margin-top:12px">
+  <div class="tiles" data-t="d3 b4 d5"></div><div class="tiles" data-t="b8 b8 b8"></div>
+  <div class="tiles" data-t="c1 c2 c3"></div><div class="tiles" data-t="RD RD RD"></div><div class="tiles" data-t="c5 c5"></div>
+</div>
+<div class="ans"><span class="no">No.</span> The first group mixes dots and bamboo. A run has to stay in one suit, like a rummy sequence.</div>
+</details>
+
+<details>
+<summary>Hand D: which tile would win?</summary>
+<div class="row" style="margin-top:12px">
+  <div class="tiles" data-t="b1 b2 b3"></div><div class="tiles" data-t="WD WD WD"></div>
+  <div class="tiles" data-t="c2 c3 c4"></div><div class="tiles" data-t="d5 d6"></div><div class="tiles" data-t="S S"></div>
+  <div class="tiles" data-t="?"></div>
+</div>
+<div class="ans"><b>4 dots or 7 dots.</b> Either one turns 5-6 dots into a run, and South-South is your pair. Like waiting on both ends of an open sequence in rummy. You can take it from the wall or from anyone's discard.</div>
+</details>
+</section>
+
+<footer>Once winning feels easy, add scoring. Hong Kong "fan" scoring is a good next step.</footer>
+</main>
+
+<script>
+const NUM = ['一','二','三','四','伍','六','七','八','九'];
+const C = { b:'#22397a', r:'#b8341b', g:'#2f7d4a' };
+const NS = 'http://www.w3.org/2000/svg';
+function svg(vb, inner, w='82%', h='86%') { return '<svg xmlns="'+NS+'" viewBox="'+vb+'" width="'+w+'" height="'+h+'">'+inner+'</svg>'; }
+function ring(x, y, r, c) {
+  return '<circle cx="'+x+'" cy="'+y+'" r="'+(r*.86)+'" fill="none" stroke="'+c+'" stroke-width="'+(r*.28)+'"/>'+
+         '<circle cx="'+x+'" cy="'+y+'" r="'+(r*.42)+'" fill="none" stroke="'+c+'" stroke-width="'+(r*.2)+'"/>'+
+         '<circle cx="'+x+'" cy="'+y+'" r="'+(r*.14)+'" fill="'+c+'"/>';
+}
+// dot positions and colours, matched to the set in the photo
+const DOTS = {
+  2:[[15,11,6,'g'],[15,29,6,'b']],
+  3:[[8,9,5.5,'b'],[15,20,5.5,'r'],[22,31,5.5,'g']],
+  4:[[9,11,5.5,'b'],[21,11,5.5,'g'],[9,29,5.5,'g'],[21,29,5.5,'b']],
+  5:[[8,9,5,'b'],[22,9,5,'g'],[15,20,5,'r'],[8,31,5,'g'],[22,31,5,'b']],
+  6:[[9,8,4.8,'g'],[21,8,4.8,'g'],[9,21,4.8,'r'],[21,21,4.8,'r'],[9,33,4.8,'r'],[21,33,4.8,'r']],
+  7:[[7,6,4.2,'g'],[15,10,4.2,'g'],[23,14,4.2,'g'],[10,24,4.2,'r'],[20,24,4.2,'r'],[10,34,4.2,'r'],[20,34,4.2,'r']],
+  8:[[9,6,4.3,'b'],[21,6,4.3,'b'],[9,15.3,4.3,'b'],[21,15.3,4.3,'b'],[9,24.6,4.3,'b'],[21,24.6,4.3,'b'],[9,34,4.3,'b'],[21,34,4.3,'b']],
+  9:[[6,8,4.3,'b'],[15,8,4.3,'b'],[24,8,4.3,'b'],[6,20,4.3,'r'],[15,20,4.3,'r'],[24,20,4.3,'r'],[6,32,4.3,'g'],[15,32,4.3,'g'],[24,32,4.3,'g']]
+};
+function stick(x, y, h, c) {
+  const w = 4.2, t = y - h/2;
+  return '<rect x="'+(x-w/2)+'" y="'+t+'" width="'+w+'" height="'+h+'" rx="2.1" fill="none" stroke="'+c+'" stroke-width="1.4"/>'+
+         '<path d="M'+(x-w/2-.6)+' '+y+' h'+(w+1.2)+'" stroke="'+c+'" stroke-width="1.6"/>';
+}
+const BAMS = {
+  2:[[15,10,14,'g'],[15,30,14,'g']],
+  3:[[15,10,14,'g'],[9,30,14,'g'],[21,30,14,'g']],
+  4:[[9,10,14,'g'],[21,10,14,'g'],[9,30,14,'g'],[21,30,14,'g']],
+  5:[[7,10,14,'g'],[23,10,14,'g'],[15,20,14,'r'],[7,30,14,'g'],[23,30,14,'g']],
+  6:[[7,10,14,'g'],[15,10,14,'g'],[23,10,14,'g'],[7,30,14,'g'],[15,30,14,'g'],[23,30,14,'g']],
+  7:[[15,7,10,'r'],[7,20,10,'g'],[15,20,10,'g'],[23,20,10,'g'],[7,33,10,'g'],[15,33,10,'g'],[23,33,10,'g']],
+  9:[[7,7,10,'g'],[15,7,10,'r'],[23,7,10,'g'],[7,20,10,'g'],[15,20,10,'r'],[23,20,10,'g'],[7,33,10,'g'],[15,33,10,'r'],[23,33,10,'g']]
+};
+function tile(code) {
+  const t = document.createElement('div'); t.className = 'tile';
+  const s = code[0], n = +code.slice(1);
+  if (code === '?') { t.classList.add('ghost'); return t; }
+  if (code === 'BK') { t.classList.add('tback'); return t; }
+  if (code === 'd1') {
+    t.title = '1 dot';
+    let p = '';
+    for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; p += '<circle cx="'+(15+Math.cos(a)*10.5)+'" cy="'+(20+Math.sin(a)*10.5)+'" r="2.4" fill="none" stroke="'+C.g+'" stroke-width="1.3"/>'; }
+    p += '<circle cx="15" cy="20" r="7.6" fill="none" stroke="'+C.g+'" stroke-width="1.2"/>' + ring(15, 20, 5.6, C.r);
+    t.innerHTML = svg('0 0 30 40', p); return t;
+  }
+  if (code === 'b1') {
+    t.title = '1 bamboo (bird)';
+    t.innerHTML = svg('0 0 30 40', '<path d="M5 30 Q8 14 22 8 Q14 18 15 28" fill="none" stroke="'+C.g+'" stroke-width="1.6"/><path d="M9 31 Q12 18 25 13 Q18 21 18 30" fill="none" stroke="'+C.g+'" stroke-width="1.6"/><ellipse cx="16" cy="29" rx="6" ry="4.5" fill="none" stroke="'+C.b+'" stroke-width="1.6"/><circle cx="17" cy="29" r="1.6" fill="'+C.r+'"/><path d="M21 6 l2 -3 M23 7 l3 -2" stroke="'+C.b+'" stroke-width="1.3"/><path d="M13 33 l-2 4 M19 33 l2 4" stroke="'+C.b+'" stroke-width="1.4"/>');
+    return t;
+  }
+  if (code === 'b8') {
+    t.title = '8 bamboo';
+    t.innerHTML = svg('0 0 30 40', '<g fill="none" stroke="'+C.g+'" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5 L9 17 L15 7 L21 17 L27 5"/><path d="M3 35 L9 23 L15 33 L21 23 L27 35"/></g><g fill="none" stroke="#fffaf0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5 L9 17 L15 7 L21 17 L27 5"/><path d="M3 35 L9 23 L15 33 L21 23 L27 35"/></g>');
+    return t;
+  }
+  if (s === 'd' && n) { t.title = n + ' dots'; t.innerHTML = svg('0 0 30 40', DOTS[n].map(([x,y,r,c]) => ring(x,y,r,C[c])).join('')); return t; }
+  if (s === 'b' && n) { t.title = n + ' bamboo'; t.innerHTML = svg('0 0 30 40', BAMS[n].map(([x,y,h,c]) => stick(x,y,h,C[c])).join('')); return t; }
+  if (s === 'c' && n) {
+    t.title = n + ' characters';
+    t.innerHTML = '<div class="chr"><span class="num" style="color:'+C.b+'">' + NUM[n - 1] + '</span><span class="wan">萬</span></div>';
+    return t;
+  }
+  const map = { E: ['東','wind','East wind'], S: ['南','wind','South wind'], W: ['西','wind','West wind'], N: ['北','wind','North wind'],
+                RD: ['中','drR','Red dragon'], GD: ['發','drG','Green dragon'] };
+  if (code === 'WD') { t.title = 'White dragon'; const b = document.createElement('div'); b.className = 'drW'; t.appendChild(b); }
+  else { const [ch, cls, name] = map[code]; t.title = name; t.innerHTML = '<span class="hon ' + cls + '">' + ch + '</span>'; }
+  return t;
+}
+function card(code) {
+  const c = document.createElement('div'); c.className = 'card';
+  if (code === 'BK') { c.classList.add('back'); return c; }
+  if (code === 'JK') { c.classList.add('joker'); c.innerHTML = '★<br>JOKER'; return c; }
+  const r = code.slice(0, -1), su = code.slice(-1);
+  const sym = { S:'♠', H:'♥', D:'♦', C:'♣' }[su];
+  if (su === 'H' || su === 'D') c.classList.add('red');
+  c.innerHTML = '<span>' + r + '</span><span class="su">' + sym + '</span>';
+  return c;
+}
+function extra(el, code) {
+  if (code[0] === '!') { const g = document.createElement('span'); g.className = 'tag' + (/PAIR|MAHJONG/.test(code) ? ' g' : /TURN|REQUIRED|SHOW/.test(code) ? ' n' : ''); g.textContent = code.slice(1).replace(/_/g, ' ').toLowerCase().replace(/^\w/, m => m.toUpperCase()); el.appendChild(g); return true; }
+  if (code[0] === '+') { const p = document.createElement('span'); p.className = 'plus'; p.textContent = '… ×' + code.slice(1); el.appendChild(p); return true; }
+  return false;
+}
+document.querySelectorAll('.tiles[data-t]').forEach(el => el.dataset.t.split(' ').forEach(c => el.appendChild(tile(c))));
+document.querySelectorAll('.vis[data-c]').forEach(el => {
+  const v = el.dataset.c;
+  if (v === 'PILE') { const p = document.createElement('div'); p.className = 'pile'; ['BK','BK','8C'].forEach((c, i) => { const k = card(c); k.style.left = i*3+'px'; k.style.top = i*2+'px'; p.appendChild(k); }); el.appendChild(p); return; }
+  v.split(' ').forEach(c => extra(el, c) || el.appendChild(card(c)));
+});
+document.querySelectorAll('.vis[data-m]').forEach(el => {
+  const v = el.dataset.m;
+  if (v === 'WALL') { const w = document.createElement('div'); w.className = 'wall'; for (let i = 0; i < 10; i++) w.appendChild(tile('BK')); el.appendChild(w); return; }
+  if (v === 'SCATTER') {
+    const box = document.createElement('div'); box.className = 'scatter';
+    [['d7',0,4,-8],['b2',28,0,6],['N',54,8,-4],['c4',80,2,10],['GD',40,22,-12]].forEach(([c,x,y,r]) => { const k = tile(c); k.style.left = (x/.55)+'px'; k.style.top = (y/.55)+'px'; k.style.transform = 'rotate('+r+'deg)'; box.appendChild(k); });
+    el.appendChild(box); return;
+  }
+  if (v === 'NONE') { const n = document.createElement('div'); n.className = 'none'; el.appendChild(n); return; }
+  v.split(' ').forEach(c => extra(el, c) || el.appendChild(tile(c)));
+});
+</script>
+</body>
+</html>
