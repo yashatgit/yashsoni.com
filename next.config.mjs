@@ -1,3 +1,12 @@
+import fs from "fs";
+import path from "path";
+
+// Tools that live in their own folder (public/tools/<name>/index.html)
+const folderTools = fs
+  .readdirSync(path.join(process.cwd(), "public", "tools"), { withFileTypes: true })
+  .filter((d) => d.isDirectory() && fs.existsSync(path.join(process.cwd(), "public", "tools", d.name, "index.html")))
+  .map((d) => d.name);
+
 const nextConfig = {
   experimental: {
     ppr: false,
@@ -12,6 +21,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
+      // Folder tools: /tools/<name> serves public/tools/<name>/index.html
+      ...folderTools.map((name) => ({ source: `/tools/${name}`, destination: `/tools/${name}/index.html` })),
       {
         // Rewrite /tools/:path to /tools/:path.html
         // This allows clean URLs like /tools/polaroid-studio instead of /tools/polaroid-studio.html
